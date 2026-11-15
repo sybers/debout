@@ -34,14 +34,14 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 
 ### États
 
-| État | Signification | Rendu |
-|---|---|---|
-| Hors ligne | La machine ne répond pas | Bouton éteint, teinte froide |
-| Envoi | Paquets en cours d'émission | Pulsation brève, haptique net |
-| Démarrage… | Paquets envoyés, en attente de réponse | Animation de réveil progressive, temps écoulé discret |
-| En ligne | La machine répond | Bouton illuminé, haptique double tick |
-| Pas de réponse | Aucune réponse après ~90 s | État d'échec doux, « Réessayer », accès à l'aide |
-| Inconnu | Statut impossible à déterminer (pas d'IP, hors réseau local) | État neutre, distinct de « Hors ligne » |
+| État | Signification | Mot affiché (vue héros) | Rendu |
+|---|---|---|---|
+| Hors ligne | La machine ne répond pas | « Endormi » | Fond sombre et froid |
+| Envoi | Paquets en cours d'émission | « Hé ! » | Transition brève, haptique net |
+| Démarrage… | Paquets envoyés, en attente de réponse | « Réveil… » | Fond ambre sombre qui respire, temps écoulé discret |
+| En ligne | La machine répond | « Debout ! » | Fond ambre plein, haptique double tick |
+| Pas de réponse | Aucune réponse après ~90 s | « Silence radio » | Fond éteint, haptique de rejet, maintien pour réessayer, accès à l'aide |
+| Inconnu | Statut impossible à déterminer (pas d'IP, hors réseau local) | « Hors réseau » | Fond neutre, distinct de « Hors ligne », maintien désactivé |
 
 Une demande de réveil sur une machine déjà en ligne n'envoie rien et affiche « Déjà allumé ».
 
@@ -62,9 +62,11 @@ Après un réveil, une notification temporaire suit la progression (« Mon-PC d�
 
 ### Appui maintenu dans l'app
 
-- Un anneau se remplit pendant l'appui. Au terme des ~0,5 s, le réveil part avec un retour haptique.
-- Si l'utilisateur relâche avant, l'anneau se vide en douceur et rien n'est envoyé.
+- Dans la vue héros, tout l'écran est la zone de maintien. Pendant l'appui, la couleur se répand en cercle depuis le doigt. Au terme des ~0,5 s, le réveil part avec un retour haptique.
+- Sur une carte de la grille, le bouton de la carte se remplit de la même manière, en format compact.
+- Si l'utilisateur relâche avant, la couleur se retire en douceur et rien n'est envoyé.
 - Le geste évite les déclenchements accidentels, notamment en faisant défiler la grille.
+- Les éléments de navigation (retour, réglages) restent au-dessus de la zone de maintien et ne la déclenchent pas.
 - TalkBack expose une action « Réveiller » standard.
 
 La tuile et le raccourci gardent un tap simple : ce sont déjà des actions délibérées en deux temps, et Android réserve l'appui long sur une tuile à l'ouverture de l'app. La tuile affiche les états de la machine favorite.
@@ -73,8 +75,8 @@ La tuile et le raccourci gardent un tap simple : ce sont déjà des actions dél
 
 ### Accueil
 
-- **1 machine** : vue héros avec un grand bouton d'alimentation centré, le nom et le statut.
-- **2 machines ou plus** : grille de cartes. Chaque carte affiche le nom, l'icône de type, le statut et son propre bouton de réveil, actionnable directement. Un tap sur le reste de la carte ouvre la vue détaillée de la machine.
+- **1 machine** : vue héros plein écran. Tout l'écran est le bouton ; le nom de la machine s'affiche en petit, l'état en très gros mot, et une ligne d'indication en dessous (« Maintiens n'importe où », temps écoulé, aide).
+- **2 machines ou plus** : grille de cartes. Chaque carte affiche le nom, l'icône de type, le statut et son propre bouton de réveil, actionnable directement. Un tap sur le reste de la carte ouvre la vue héros plein écran de la machine.
 
 ### Premier lancement
 
@@ -157,7 +159,7 @@ URI versionnée : `debout://v1?mac=…&ip=…&name=…&os=…`. L'app rejette pr
 ## Design
 
 - **Material 3** pour la structure, les composants et les comportements attendus.
-- **Identité propre** : palette, typographie et un composant signature, le bouton d'alimentation et ses états animés.
+- **Identité propre** : palette, typographie et un composant signature, la vue héros plein écran et ses états animés.
 - Micro-animations et retours haptiques soignés.
 - Mode sombre de premier ordre.
 - Couleurs dynamiques (Material You) en option dans les réglages.
