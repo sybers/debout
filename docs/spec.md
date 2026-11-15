@@ -45,6 +45,20 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 
 Une demande de réveil sur une machine déjà en ligne n'envoie rien et affiche « Déjà allumé ».
 
+### Transitions
+
+| Depuis | Événement | Vers |
+|---|---|---|
+| Tout état | Le téléphone quitte le réseau local | Inconnu (l'envoi et l'attente en cours sont annulés) |
+| Tout état | La sonde répond | En ligne (l'envoi et l'attente en cours sont annulés) |
+| Inconnu, En ligne | La sonde ne répond pas | Hors ligne |
+| Envoi, Démarrage…, Pas de réponse | La sonde ne répond pas | Inchangé |
+| Hors ligne, Pas de réponse | Demande de réveil | Envoi |
+| En ligne | Demande de réveil | Inchangé, « Déjà allumé » |
+| Inconnu, Envoi, Démarrage… | Demande de réveil | Inchangé, refusée |
+| Envoi | Dernier des 3 paquets envoyé | Démarrage… |
+| Démarrage… | ~90 s sans réponse | Pas de réponse |
+
 ### Notification de suivi
 
 Après un réveil, une notification temporaire suit la progression (« Mon-PC démarre… » → « Mon-PC est allumé ✓ » ou « Pas de réponse ») et disparaît seule après quelques secondes. Elle s'appuie sur un travail court, limité à 90 s.
