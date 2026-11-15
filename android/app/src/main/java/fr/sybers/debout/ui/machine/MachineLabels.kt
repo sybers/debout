@@ -1,5 +1,6 @@
 package fr.sybers.debout.ui.machine
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import fr.sybers.debout.R
 import fr.sybers.debout.domain.MachineType
@@ -13,6 +14,17 @@ val MachineType.label: Int
         MachineType.Nas -> R.string.type_nas
         MachineType.Mac -> R.string.type_mac
         MachineType.Other -> R.string.type_other
+    }
+
+@get:DrawableRes
+val MachineType.icon: Int
+    get() = when (this) {
+        MachineType.Desktop -> R.drawable.ic_type_desktop
+        MachineType.Laptop -> R.drawable.ic_type_laptop
+        MachineType.Server -> R.drawable.ic_type_server
+        MachineType.Nas -> R.drawable.ic_type_nas
+        MachineType.Mac -> R.drawable.ic_type_mac
+        MachineType.Other -> R.drawable.ic_type_other
     }
 
 @get:StringRes

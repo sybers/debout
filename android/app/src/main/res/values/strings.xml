@@ -7,11 +7,38 @@
     <string name="undo">Undo</string>
     <string name="close">Close</string>
 
-    <string name="home_empty_title">No machines yet</string>
     <string name="home_add_manually">Enter manually</string>
     <string name="home_add_machine">Add a machine</string>
     <string name="home_favorite">Favorite</string>
     <string name="home_machine_deleted">Deleted %1$s</string>
+
+    <string name="action_wake">Wake</string>
+    <string name="already_on">Already on</string>
+    <string name="local_network_denied">Debout needs the “Nearby devices” permission to reach your local network. Allow it in the app settings.</string>
+    <string name="edit_machine">Edit</string>
+
+    <string name="home_scan_qr">Scan a QR code</string>
+    <string name="home_scan_hint">On your PC, open debout.sybers.fr</string>
+
+    <string name="hero_word_unknown">Off\nnetwork</string>
+    <string name="hero_word_offline">Asleep</string>
+    <string name="hero_word_sending">Hey!</string>
+    <string name="hero_word_booting">Waking…</string>
+    <string name="hero_word_online">Awake!</string>
+    <string name="hero_word_no_response">Radio\nsilence</string>
+    <string name="hero_hint_not_local">Not on a local network</string>
+    <string name="hero_hint_hold">Hold anywhere</string>
+    <string name="hero_hint_sending">Sending…</string>
+    <string name="hero_hint_elapsed">%1$d s</string>
+    <string name="hero_hint_online">Ready.</string>
+    <string name="hero_hint_retry">Hold to try again</string>
+
+    <string name="status_unknown">Off network</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_sending">Sending…</string>
+    <string name="status_booting">Starting…</string>
+    <string name="status_online">Online</string>
+    <string name="status_no_response">No response</string>
 
     <string name="edit_title_add">Add a machine</string>
     <string name="edit_title_edit">Edit machine</string>

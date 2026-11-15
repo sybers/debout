@@ -51,6 +51,14 @@ android {
         compose = true
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            // Robolectric reaches into FileDescriptor internals, which JDK 17+ closes by default.
+            it.jvmArgs("--add-exports=java.base/jdk.internal.access=ALL-UNNAMED")
+        }
+    }
+
     dependenciesInfo {
         // F-Droid rejects the encrypted dependency metadata blob AGP embeds by default.
         includeInApk = false
@@ -80,6 +88,12 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.junit)
+    testImplementation(platform(libs.androidx.compose.bom))
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    // Compose test pulls espresso 3.5, which calls InputManager.getInstance(), gone in SDK 37.
+    testImplementation(libs.androidx.espresso.core)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

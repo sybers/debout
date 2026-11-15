@@ -84,9 +84,10 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 
 - Mots d'état et couleurs : voir le tableau des états de la spec.
 - Action TalkBack « Réveiller ».
+- Permission `ACCESS_LOCAL_NETWORK` déclarée et demandée au premier réveil (Android 17+ : sans elle, chaque paquet échoue en `EPERM`).
 - Accueil : vue héros directe s'il y a 1 machine, grille de cartes sinon. Chaque carte porte un bouton maintenu compact, et un tap sur la carte ouvre la vue héros.
 - État vide : « Scanner un QR code » (désactivé jusqu'à l'étape 8) et « Saisir manuellement ».
-- Test UI Compose : un relâchement avant 0,5 s n'envoie rien.
+- Test UI Compose, exécuté en JVM avec Robolectric : un relâchement avant 0,5 s n'envoie rien.
 - La sonde TCP n'existe pas encore : après l'envoi, l'état reste `Booting` puis passe à `NoResponse`. Ça suffit à valider le réveil réel.
 
 **Terminé quand** le PC du salon se réveille depuis l'app, sur un vrai téléphone.

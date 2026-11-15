@@ -5,11 +5,38 @@
     <string name="undo">Annuler</string>
     <string name="close">Fermer</string>
 
-    <string name="home_empty_title">Aucune machine pour l’instant</string>
     <string name="home_add_manually">Saisir manuellement</string>
     <string name="home_add_machine">Ajouter une machine</string>
     <string name="home_favorite">Favorite</string>
     <string name="home_machine_deleted">%1$s supprimée</string>
+
+    <string name="action_wake">Réveiller</string>
+    <string name="already_on">Déjà allumé</string>
+    <string name="local_network_denied">Debout a besoin de l’autorisation « Appareils à proximité » pour joindre ton réseau local. Active-la dans les réglages de l’app.</string>
+    <string name="edit_machine">Modifier</string>
+
+    <string name="home_scan_qr">Scanner un QR code</string>
+    <string name="home_scan_hint">Sur ton PC, ouvre debout.sybers.fr</string>
+
+    <string name="hero_word_unknown">Hors\nréseau</string>
+    <string name="hero_word_offline">Endormi</string>
+    <string name="hero_word_sending">Hé !</string>
+    <string name="hero_word_booting">Réveil…</string>
+    <string name="hero_word_online">Debout !</string>
+    <string name="hero_word_no_response">Silence\nradio</string>
+    <string name="hero_hint_not_local">Pas sur un réseau local</string>
+    <string name="hero_hint_hold">Maintiens n’importe où</string>
+    <string name="hero_hint_sending">Envoi…</string>
+    <string name="hero_hint_elapsed">%1$d s</string>
+    <string name="hero_hint_online">Prêt.</string>
+    <string name="hero_hint_retry">Maintiens pour réessayer</string>
+
+    <string name="status_unknown">Hors réseau</string>
+    <string name="status_offline">Hors ligne</string>
+    <string name="status_sending">Envoi…</string>
+    <string name="status_booting">Démarrage…</string>
+    <string name="status_online">En ligne</string>
+    <string name="status_no_response">Pas de réponse</string>
 
     <string name="edit_title_add">Ajouter une machine</string>
     <string name="edit_title_edit">Modifier la machine</string>

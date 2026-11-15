@@ -19,6 +19,7 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 
 - Réveil sur le **réseau local uniquement** en V1.
 - Envoi de **3 magic packets** (6 × `FF` + 16 × MAC) en broadcast UDP, espacés de ~100 ms.
+- Depuis Android 17, tout trafic vers le réseau local exige la permission `ACCESS_LOCAL_NETWORK` (groupe « Appareils à proximité »). Elle est demandée au premier réveil ; si elle est refusée, l'app explique comment l'activer dans les réglages.
 - Une machine est modélisée par une MAC, une adresse de destination et un port, pour que le réveil à distance (hôte public, VPN) puisse s'ajouter sans refonte.
 
 ### Hors réseau local
@@ -198,7 +199,7 @@ Android Auto Backup : les machines et les préférences sont restaurées automat
 | Scan QR | CameraX + ZXing (pas de Play Services) |
 | Suivi du réveil | WorkManager expedited ou foreground service court |
 | Package | `fr.sybers.debout` |
-| Permissions | `INTERNET`, `ACCESS_NETWORK_STATE`, `CAMERA` (au scan), `POST_NOTIFICATIONS` (au premier réveil) |
+| Permissions | `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_LOCAL_NETWORK` (Android 17+, au premier réveil), `CAMERA` (au scan), `POST_NOTIFICATIONS` (au premier réveil) |
 
 Le projet n'embarque aucune dépendance propriétaire, pour rester compatible F-Droid.
 

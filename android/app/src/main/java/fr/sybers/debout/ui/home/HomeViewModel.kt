@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class MachineListViewModel(private val repository: MachineRepository) : ViewModel() {
+class HomeViewModel(private val repository: MachineRepository) : ViewModel() {
 
     /** Null until the first read from the database, so the empty state does not flash. */
     val machines: StateFlow<List<Machine>?> =
