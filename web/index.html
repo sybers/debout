@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debout</title>
+  <meta name="description" content="Wake your computers from your Android phone.">
+  <style>
+    :root {
+      --bg: #fffbf8;
+      --fg: #1c1410;
+      --accent: #944a15;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1c1410;
+        --fg: #f1dfd5;
+        --accent: #ffb68a;
+      }
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: system-ui, sans-serif;
+    }
+    h1 {
+      color: var(--accent);
+      font-size: clamp(3rem, 12vw, 6rem);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Debout</h1>
+  </main>
+</body>
+</html>
