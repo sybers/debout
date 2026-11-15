@@ -5,6 +5,8 @@ value class MacAddress(val value: Long) {
 
     fun toBytes(): ByteArray = ByteArray(6) { (value shr (8 * (5 - it))).toByte() }
 
+    override fun toString(): String = toBytes().joinToString(":") { "%02X".format(it) }
+
     companion object {
         private const val HEX_DIGITS = 12
 
@@ -13,7 +15,8 @@ value class MacAddress(val value: Long) {
             if (!hex.all { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }) {
                 return MacAddressParseResult.Invalid(MacAddressError.InvalidCharacter)
             }
-            if (hex.length != HEX_DIGITS) return MacAddressParseResult.Invalid(MacAddressError.WrongLength)
+            if (hex.length < HEX_DIGITS) return MacAddressParseResult.Invalid(MacAddressError.TooShort)
+            if (hex.length > HEX_DIGITS) return MacAddressParseResult.Invalid(MacAddressError.TooLong)
             return MacAddressParseResult.Valid(MacAddress(hex.toLong(16)))
         }
     }
@@ -25,6 +28,7 @@ sealed interface MacAddressParseResult {
 }
 
 enum class MacAddressError {
-    WrongLength,
+    TooShort,
+    TooLong,
     InvalidCharacter,
 }

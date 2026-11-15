@@ -37,14 +37,14 @@ class MacAddressTest {
     fun `rejects MAC with too few digits`() {
         val result = MacAddress.parse("AA:BB:CC:DD:EE")
 
-        assertEquals(MacAddressParseResult.Invalid(MacAddressError.WrongLength), result)
+        assertEquals(MacAddressParseResult.Invalid(MacAddressError.TooShort), result)
     }
 
     @Test
     fun `rejects MAC with too many digits`() {
         val result = MacAddress.parse("AA:BB:CC:DD:EE:FF:00")
 
-        assertEquals(MacAddressParseResult.Invalid(MacAddressError.WrongLength), result)
+        assertEquals(MacAddressParseResult.Invalid(MacAddressError.TooLong), result)
     }
 
     @Test
@@ -52,6 +52,11 @@ class MacAddressTest {
         val result = MacAddress.parse("AA:BB:CC:DD:EE:GG")
 
         assertEquals(MacAddressParseResult.Invalid(MacAddressError.InvalidCharacter), result)
+    }
+
+    @Test
+    fun `formats as colon-separated uppercase pairs`() {
+        assertEquals("0A:1B:2C:3D:4E:5F", MacAddress(0x0A1B2C3D4E5F).toString())
     }
 
     @Test

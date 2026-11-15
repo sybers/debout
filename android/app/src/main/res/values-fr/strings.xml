@@ -1,0 +1,49 @@
+<resources>
+    <string name="navigate_back">Retour</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
+    <string name="undo">Annuler</string>
+    <string name="close">Fermer</string>
+
+    <string name="home_empty_title">Aucune machine pour l’instant</string>
+    <string name="home_add_manually">Saisir manuellement</string>
+    <string name="home_add_machine">Ajouter une machine</string>
+    <string name="home_favorite">Favorite</string>
+    <string name="home_machine_deleted">%1$s supprimée</string>
+
+    <string name="edit_title_add">Ajouter une machine</string>
+    <string name="edit_title_edit">Modifier la machine</string>
+    <string name="field_name">Nom</string>
+    <string name="field_type">Type</string>
+    <string name="field_mac">Adresse MAC</string>
+    <string name="field_ip">Adresse IP (facultative)</string>
+    <string name="field_hostname">Nom d’hôte (facultatif)</string>
+    <string name="field_favorite">Favorite</string>
+    <string name="field_favorite_summary">Pilotée par la tuile des réglages rapides</string>
+    <string name="field_advanced">Réglages avancés</string>
+    <string name="field_broadcast">Adresse de broadcast</string>
+    <string name="field_broadcast_auto">Automatique : %1$s</string>
+    <string name="field_broadcast_auto_unknown">Automatique</string>
+    <string name="field_wol_port">Port Wake-on-LAN</string>
+
+    <string name="error_required">Obligatoire</string>
+    <string name="error_mac_incomplete">Une adresse MAC compte 12 chiffres hexadécimaux</string>
+    <string name="error_mac_invalid_character">Uniquement 0–9, A–F, deux-points et tirets</string>
+    <string name="error_mac_too_long">Trop de chiffres : une adresse MAC en compte 12</string>
+    <string name="error_ipv4">Adresse IPv4 attendue, par exemple 192.168.1.42</string>
+    <string name="error_port">Port entre 1 et 65535</string>
+
+    <string name="type_desktop">PC fixe</string>
+    <string name="type_laptop">Portable</string>
+    <string name="type_server">Serveur</string>
+    <string name="type_nas">NAS</string>
+    <string name="type_mac">Mac</string>
+    <string name="type_other">Autre</string>
+
+    <string name="mac_help_button">Où trouver ma MAC ?</string>
+    <string name="mac_help_title">Trouver l’adresse MAC</string>
+    <string name="mac_help_windows">Windows : dans un terminal, lance getmac /v et copie l’« Adresse physique » de la carte Ethernet.</string>
+    <string name="mac_help_macos">macOS : Réglages Système → Réseau → ta connexion → Détails → Matériel.</string>
+    <string name="mac_help_linux">Linux : lance ip link et copie l’adresse link/ether de l’interface filaire.</string>
+    <string name="mac_help_tip">Choisis la carte filaire (Ethernet) : le Wake-on-LAN marche rarement en Wi-Fi.</string>
+</resources>

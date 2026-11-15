@@ -1,3 +1,52 @@
 <resources>
     <string name="app_name" translatable="false">Debout</string>
+
+    <string name="navigate_back">Back</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+    <string name="close">Close</string>
+
+    <string name="home_empty_title">No machines yet</string>
+    <string name="home_add_manually">Enter manually</string>
+    <string name="home_add_machine">Add a machine</string>
+    <string name="home_favorite">Favorite</string>
+    <string name="home_machine_deleted">Deleted %1$s</string>
+
+    <string name="edit_title_add">Add a machine</string>
+    <string name="edit_title_edit">Edit machine</string>
+    <string name="field_name">Name</string>
+    <string name="field_type">Type</string>
+    <string name="field_mac">MAC address</string>
+    <string name="field_mac_placeholder" translatable="false">AA:BB:CC:DD:EE:FF</string>
+    <string name="field_ip">IP address (optional)</string>
+    <string name="field_hostname">Hostname (optional)</string>
+    <string name="field_favorite">Favorite</string>
+    <string name="field_favorite_summary">Controlled by the Quick Settings tile</string>
+    <string name="field_advanced">Advanced settings</string>
+    <string name="field_broadcast">Broadcast address</string>
+    <string name="field_broadcast_auto">Automatic: %1$s</string>
+    <string name="field_broadcast_auto_unknown">Automatic</string>
+    <string name="field_wol_port">Wake-on-LAN port</string>
+
+    <string name="error_required">Required</string>
+    <string name="error_mac_incomplete">A MAC address has 12 hexadecimal digits</string>
+    <string name="error_mac_invalid_character">Only 0–9, A–F, colons and dashes</string>
+    <string name="error_mac_too_long">Too many digits: a MAC address has 12</string>
+    <string name="error_ipv4">Expected an IPv4 address such as 192.168.1.42</string>
+    <string name="error_port">Port between 1 and 65535</string>
+
+    <string name="type_desktop">Desktop</string>
+    <string name="type_laptop">Laptop</string>
+    <string name="type_server">Server</string>
+    <string name="type_nas">NAS</string>
+    <string name="type_mac">Mac</string>
+    <string name="type_other">Other</string>
+
+    <string name="mac_help_button">Where do I find the MAC?</string>
+    <string name="mac_help_title">Find the MAC address</string>
+    <string name="mac_help_windows">Windows: in a terminal, run getmac /v and copy the “Physical Address” of the Ethernet adapter.</string>
+    <string name="mac_help_macos">macOS: System Settings → Network → your connection → Details → Hardware.</string>
+    <string name="mac_help_linux">Linux: run ip link and copy the link/ether address of the wired interface.</string>
+    <string name="mac_help_tip">Pick the wired (Ethernet) adapter: Wake-on-LAN rarely works over Wi-Fi.</string>
 </resources>
