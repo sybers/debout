@@ -51,6 +51,7 @@ fun MachineCarousel(
     onOpenGrid: () -> Unit,
     onAddMachine: () -> Unit,
     onEditMachine: (Long) -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     val currentMachines by rememberUpdatedState(machines)
     val currentOnMachineViewed by rememberUpdatedState(onMachineViewed)
@@ -111,6 +112,9 @@ fun MachineCarousel(
             }
             IconButton(onClick = { onEditMachine(current.id) }) {
                 Icon(painterResource(R.drawable.ic_edit), stringResource(R.string.edit_machine), tint = foreground)
+            }
+            IconButton(onClick = onOpenSettings) {
+                Icon(painterResource(R.drawable.ic_settings), stringResource(R.string.settings_title), tint = foreground)
             }
         }
         if (machines.size > 1) {

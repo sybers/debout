@@ -18,12 +18,14 @@ import fr.sybers.debout.ui.home.HomeScreen
 import fr.sybers.debout.ui.home.HomeViewModel
 import fr.sybers.debout.ui.machine.MachineEditScreen
 import fr.sybers.debout.ui.machine.MachineEditViewModel
+import fr.sybers.debout.ui.settings.SettingsScreen
 
 private object Routes {
     const val HOME = "home"
     const val GRID = "machines"
     const val ADD = "machines/new"
     const val EDIT = "machines/{id}/edit"
+    const val SETTINGS = "settings"
     fun edit(id: Long) = "machines/$id/edit"
 }
 
@@ -66,6 +68,7 @@ fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
                 onAddMachine = { navController.navigate(Routes.ADD) },
                 onOpenGrid = { navController.navigate(Routes.GRID) },
                 onEditMachine = { navController.navigate(Routes.edit(it)) },
+                onOpenSettings = { navController.navigate(Routes.SETTINGS) },
             )
         }
         composable(Routes.GRID) {
@@ -96,6 +99,9 @@ fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
                     navController.popBackStack(Routes.HOME, inclusive = false)
                 },
             )
+        }
+        composable(Routes.SETTINGS) {
+            SettingsScreen(preferences = container.preferences, onBack = { navController.popBackStack() })
         }
     }
 }

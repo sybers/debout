@@ -1,6 +1,7 @@
 package fr.sybers.debout.data
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
@@ -18,15 +19,23 @@ private val Context.dataStore by preferencesDataStore(name = "preferences")
 class UserPreferences(context: Context, private val scope: CoroutineScope) {
     private val dataStore = context.dataStore
 
-    val lastViewedMachineId: Flow<Long?> = dataStore.data
+    private val preferences = dataStore.data
         .catch { if (it is IOException) emit(emptyPreferences()) else throw it }
-        .map { it[LAST_VIEWED_MACHINE] }
+
+    val lastViewedMachineId: Flow<Long?> = preferences.map { it[LAST_VIEWED_MACHINE] }
+
+    val wakeNotificationsEnabled: Flow<Boolean> = preferences.map { it[WAKE_NOTIFICATIONS] ?: true }
 
     fun setLastViewedMachine(id: Long) {
         scope.launch { dataStore.edit { it[LAST_VIEWED_MACHINE] = id } }
     }
 
+    fun setWakeNotificationsEnabled(enabled: Boolean) {
+        scope.launch { dataStore.edit { it[WAKE_NOTIFICATIONS] = enabled } }
+    }
+
     private companion object {
         val LAST_VIEWED_MACHINE = longPreferencesKey("last_viewed_machine")
+        val WAKE_NOTIFICATIONS = booleanPreferencesKey("wake_notifications")
     }
 }

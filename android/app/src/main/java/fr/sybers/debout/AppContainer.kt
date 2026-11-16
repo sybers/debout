@@ -11,9 +11,11 @@ import fr.sybers.debout.network.UdpMagicPacketSender
 import fr.sybers.debout.network.WakeCoordinator
 import fr.sybers.debout.network.hasLocalNetworkAccess
 import fr.sybers.debout.tile.QuickAccessShortcuts
+import fr.sybers.debout.tracking.WakeTrackingWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AppContainer(context: Context) {
@@ -30,6 +32,11 @@ class AppContainer(context: Context) {
         probe = TcpProbe(),
         hasLocalNetworkAccess = { context.applicationContext.hasLocalNetworkAccess() },
         scope = applicationScope,
+        onWakeStarted = { machineId ->
+            applicationScope.launch {
+                if (preferences.wakeNotificationsEnabled.first()) WakeTrackingWorker.enqueue(context, machineId)
+            }
+        },
     )
 
     init {

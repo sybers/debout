@@ -42,6 +42,7 @@ fun HomeScreen(
     onAddMachine: () -> Unit,
     onOpenGrid: () -> Unit,
     onEditMachine: (Long) -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val recentlyDeleted by viewModel.recentlyDeleted.collectAsStateWithLifecycle()
@@ -71,6 +72,7 @@ fun HomeScreen(
                 onOpenGrid = onOpenGrid,
                 onAddMachine = onAddMachine,
                 onEditMachine = onEditMachine,
+                onOpenSettings = onOpenSettings,
             )
         }
         SnackbarHost(snackbarHostState, Modifier.align(Alignment.BottomCenter).safeDrawingPadding())

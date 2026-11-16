@@ -108,7 +108,7 @@ Les widgets (V1.1) choisissent leur machine à la pose et ne portent pas de badg
 - La vue héros plein écran est l'accueil, quel que soit le nombre de machines. Tout l'écran est le bouton ; le badge d'accès rapide et le nom de la machine s'affichent en petit, l'état en très gros mot, et une ligne d'indication en dessous (« Maintiens n'importe où », temps écoulé, aide).
 - Avec plusieurs machines, on passe de l'une à l'autre en swipant horizontalement (carousel). Des points en bas de l'écran indiquent la page ; au-delà de 7 machines, les points des extrémités rétrécissent et défilent. Pas de retour haptique au changement de page.
 - L'app s'ouvre sur la dernière machine consultée, ou sur la première si celle-ci a été supprimée.
-- Barre du haut : la grille à gauche (dès 2 machines), l'ajout et la modification de la machine affichée à droite.
+- Barre du haut : la grille à gauche (dès 2 machines), l'ajout, la modification de la machine affichée et les réglages à droite.
 - La machine affichée et ses voisines immédiates sont sondées, pour que leur état soit prêt au swipe.
 - Après un ajout ou une modification, l'accueil montre la machine concernée ; après une suppression, sa voisine.
 
@@ -117,6 +117,10 @@ Les widgets (V1.1) choisissent leur machine à la pose et ne portent pas de badg
 - Sommaire de toutes les machines, ouvert depuis l'accueil. Chaque carte affiche le nom, l'icône de type, le badge d'accès rapide et l'état en direct, sans bouton de réveil.
 - Un tap sur une carte affiche cette machine dans le carousel. Un appui long la saisit pour la réordonner par glisser-déposer.
 - Barre du haut : retour et ajout. La suppression reste dans l'écran de modification.
+
+### Réglages
+
+- Notification de réveil, activée par défaut. Si les notifications sont bloquées pour l'app, l'écran le signale et renvoie vers les réglages système.
 
 ### Premier lancement
 

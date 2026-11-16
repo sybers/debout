@@ -89,4 +89,15 @@
     <string name="tile_third">Quick access 3</string>
     <string name="tile_no_machine">No machine</string>
     <string name="shortcut_wake">Wake %1$s</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_wake_notifications">Wake notification</string>
+    <string name="settings_wake_notifications_summary">Follows the machine’s startup after a wake</string>
+    <string name="settings_wake_notifications_blocked">Notifications are blocked for Debout</string>
+    <string name="settings_open_system_notifications">Allow in system settings</string>
+
+    <string name="notification_channel_wake">Wake tracking</string>
+    <string name="notification_booting">%1$s is starting…</string>
+    <string name="notification_online">%1$s is on ✓</string>
+    <string name="notification_no_response">No response from %1$s</string>
 </resources>

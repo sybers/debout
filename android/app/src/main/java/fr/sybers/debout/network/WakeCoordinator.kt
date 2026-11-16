@@ -44,6 +44,7 @@ class WakeCoordinator(
     private val probe: TcpProbe,
     private val hasLocalNetworkAccess: () -> Boolean,
     private val scope: CoroutineScope,
+    private val onWakeStarted: (machineId: Long) -> Unit = {},
     private val timeSource: TimeSource = TimeSource.Monotonic,
 ) {
     val localNetwork: StateFlow<LocalNetwork?> =
@@ -92,6 +93,7 @@ class WakeCoordinator(
         val tracked = track(machineId)
         withTimeoutOrNull(FIRST_PROBE_TIMEOUT) { tracked.watched.first { it.state != WakeState.Unknown } }
         return tracked.stateMachine.requestWake()
+            .also { if (it == WakeRequestResult.Started) onWakeStarted(machineId) }
     }
 
     private fun track(machineId: Long): Tracked = tracked.getOrPut(machineId) { Tracked(machineId) }

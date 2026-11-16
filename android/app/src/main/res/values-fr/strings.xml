@@ -86,4 +86,15 @@
     <string name="tile_third">Accès rapide 3</string>
     <string name="tile_no_machine">Aucune machine</string>
     <string name="shortcut_wake">Réveiller %1$s</string>
+
+    <string name="settings_title">Réglages</string>
+    <string name="settings_wake_notifications">Notification de réveil</string>
+    <string name="settings_wake_notifications_summary">Suit le démarrage de la machine après un réveil</string>
+    <string name="settings_wake_notifications_blocked">Les notifications sont bloquées pour Debout</string>
+    <string name="settings_open_system_notifications">Autoriser dans les réglages système</string>
+
+    <string name="notification_channel_wake">Suivi du réveil</string>
+    <string name="notification_booting">%1$s démarre…</string>
+    <string name="notification_online">%1$s est allumé ✓</string>
+    <string name="notification_no_response">Pas de réponse de %1$s</string>
 </resources>

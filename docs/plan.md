@@ -15,7 +15,8 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 | `network` | Envoi UDP, sonde TCP, résolution de hostname, état de la connexion du téléphone | Oui |
 | `data` | Room (machines), DataStore (préférences), repository | Oui |
 | `ui` | Écrans Compose, ViewModels, thème | Oui |
-| `tile` | `TileService` Quick Settings | Oui |
+| `tile` | `TileService` Quick Settings, raccourcis d'app | Oui |
+| `tracking` | Suivi d'un réveil (WorkManager) et sa notification | Oui |
 
 - **Injection de dépendances manuelle**, via un conteneur créé dans une classe `Application`. Pas de Hilt : le graphe est petit.
 - **Temps injecté** (horloge et délais passés en paramètre) dans la machine à états, pour la tester en temps virtuel avec `kotlinx-coroutines-test`.

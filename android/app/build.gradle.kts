@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.reorderable)
+    implementation(libs.androidx.work.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

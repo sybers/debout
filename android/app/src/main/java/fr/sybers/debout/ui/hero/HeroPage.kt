@@ -46,6 +46,7 @@ import fr.sybers.debout.ui.wake.heroWord
 import fr.sybers.debout.ui.wake.isChecking
 import fr.sybers.debout.ui.wake.rememberHoldToWake
 import fr.sybers.debout.ui.wake.rememberLocalNetworkAccess
+import fr.sybers.debout.ui.wake.rememberWakeNotificationsPermission
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -75,10 +76,17 @@ fun HeroPage(
         }
     }
     val withLocalNetwork = rememberLocalNetworkAccess(onDenied = { notice = R.string.local_network_denied })
+    val askForNotifications = rememberWakeNotificationsPermission()
     val scope = rememberCoroutineScope()
     val wake = {
         withLocalNetwork {
-            scope.launch { if (onWake() == WakeRequestResult.AlreadyOnline) notice = R.string.already_on }
+            scope.launch {
+                when (onWake()) {
+                    WakeRequestResult.Started -> askForNotifications()
+                    WakeRequestResult.AlreadyOnline -> notice = R.string.already_on
+                    WakeRequestResult.NotAllowed -> Unit
+                }
+            }
         }
     }
     val hold = rememberHoldToWake(enabled = state.acceptsHold, onWake = wake)
