@@ -1,7 +1,6 @@
 package fr.sybers.debout.ui.wake
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,14 +9,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
+import fr.sybers.debout.network.LOCAL_NETWORK_PROTECTION_SDK
+import fr.sybers.debout.network.hasLocalNetworkAccess
 
-private const val LOCAL_NETWORK_PROTECTION_SDK = 37
-
-/**
- * Runs an action that needs the local network. From Android 17, apps targeting it must hold
- * ACCESS_LOCAL_NETWORK, or every LAN packet fails with EPERM; the first call asks for it.
- */
+/** Runs an action that needs the local network, asking for ACCESS_LOCAL_NETWORK first if needed. */
 @Composable
 fun rememberLocalNetworkAccess(onDenied: () -> Unit): (action: () -> Unit) -> Unit {
     if (Build.VERSION.SDK_INT < LOCAL_NETWORK_PROTECTION_SDK) return remember { { action -> action() } }
@@ -32,9 +27,7 @@ fun rememberLocalNetworkAccess(onDenied: () -> Unit): (action: () -> Unit) -> Un
     }
     return remember(context, launcher) {
         { action ->
-            val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_LOCAL_NETWORK) ==
-                PackageManager.PERMISSION_GRANTED
-            if (granted) {
+            if (context.hasLocalNetworkAccess()) {
                 action()
             } else {
                 pending[0] = action

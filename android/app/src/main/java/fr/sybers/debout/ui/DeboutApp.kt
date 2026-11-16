@@ -17,6 +17,7 @@ import fr.sybers.debout.ui.home.HomeScreen
 import fr.sybers.debout.ui.home.HomeViewModel
 import fr.sybers.debout.ui.machine.MachineEditScreen
 import fr.sybers.debout.ui.machine.MachineEditViewModel
+import fr.sybers.debout.ui.wake.watchedStatus
 
 private object Routes {
     const val HOME = "home"
@@ -61,10 +62,12 @@ fun DeboutApp() {
             val id = entry.arguments!!.getLong("id")
             val machines by container.machines.machines.collectAsStateWithLifecycle(initialValue = null)
             val machine = machines?.find { it.id == id } ?: return@composable
-            val status by container.wakeCoordinator.status(id).collectAsStateWithLifecycle()
+            val status by container.wakeCoordinator.watchedStatus(id)
+            val localNetwork by container.wakeCoordinator.localNetwork.collectAsStateWithLifecycle()
             HeroScreen(
                 machine = machine,
                 status = status,
+                localNetwork = localNetwork,
                 onWake = { container.wakeCoordinator.wake(id) },
                 onEdit = { navController.navigate(Routes.edit(id)) },
                 onBack = { navController.popBackStack() },

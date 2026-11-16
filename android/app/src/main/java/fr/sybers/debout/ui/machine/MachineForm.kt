@@ -21,6 +21,8 @@ data class MachineForm(
     val hostname: String = "",
     val broadcast: String = "",
     val wolPort: String = Machine.DEFAULT_WOL_PORT.toString(),
+    /** Blank means "detect it". */
+    val probePort: String = "",
     val favorite: Boolean = false,
     val submitAttempted: Boolean = false,
 ) {
@@ -45,16 +47,19 @@ data class MachineForm(
         get() = optionalIpv4Error(broadcast)
 
     val wolPortError: FormError?
-        get() = if (submitAttempted && parsedWolPort() == null) FormError.InvalidPort else null
+        get() = if (submitAttempted && parsePort(wolPort) == null) FormError.InvalidPort else null
+
+    val probePortError: FormError?
+        get() = if (submitAttempted && probePort.isNotBlank() && parsePort(probePort) == null) FormError.InvalidPort else null
 
     private fun optionalIpv4Error(value: String): FormError? =
         if (submitAttempted && value.isNotBlank() && Ipv4.parse(value) == null) FormError.InvalidIpv4 else null
 
-    private fun parsedWolPort(): Int? = wolPort.trim().toIntOrNull()?.takeIf { it in 1..65535 }
+    private fun parsePort(value: String): Int? = value.trim().toIntOrNull()?.takeIf { it in 1..65535 }
 
     fun submitted() = copy(submitAttempted = true)
 
-    /** [base] carries what the form does not edit: id, order and the detected probe port. */
+    /** [base] carries what the form does not edit: id and order. */
     fun toMachine(base: Machine? = null): Machine? {
         val validated = submitted()
         val errors = listOf(
@@ -63,6 +68,7 @@ data class MachineForm(
             validated.ipError,
             validated.broadcastError,
             validated.wolPortError,
+            validated.probePortError,
         )
         if (errors.any { it != null }) return null
         val fields = Machine(
@@ -72,10 +78,11 @@ data class MachineForm(
             ip = ip.trim().ifEmpty { null },
             hostname = hostname.trim().ifEmpty { null },
             broadcast = broadcast.trim().ifEmpty { null },
-            wolPort = parsedWolPort()!!,
+            wolPort = parsePort(wolPort)!!,
+            probePort = parsePort(probePort),
             favorite = favorite,
         )
-        return base?.let { fields.copy(id = it.id, order = it.order, probePort = it.probePort) } ?: fields
+        return base?.let { fields.copy(id = it.id, order = it.order) } ?: fields
     }
 
     companion object {
@@ -87,6 +94,7 @@ data class MachineForm(
             hostname = machine.hostname.orEmpty(),
             broadcast = machine.broadcast.orEmpty(),
             wolPort = machine.wolPort.toString(),
+            probePort = machine.probePort?.toString().orEmpty(),
             favorite = machine.favorite,
         )
     }

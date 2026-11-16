@@ -31,6 +31,12 @@
     <string name="hero_hint_online">Prêt.</string>
     <string name="hero_hint_retry">Maintiens pour réessayer</string>
 
+    <string name="hero_word_checking">Voyons…</string>
+    <string name="hero_hint_checking">Vérification de l’état…</string>
+    <string name="hero_other_network">Cette machine semble être sur un autre réseau</string>
+    <string name="status_checking">Vérification…</string>
+    <string name="field_probe_port">Port de vérification de l’état</string>
+    <string name="field_probe_port_auto">Automatique</string>
     <string name="status_unknown">Hors réseau</string>
     <string name="status_offline">Hors ligne</string>
     <string name="status_sending">Envoi…</string>

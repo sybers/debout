@@ -38,15 +38,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import fr.sybers.debout.R
+import fr.sybers.debout.domain.Ipv4
 import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.WakeRequestResult
 import fr.sybers.debout.domain.WakeState
+import fr.sybers.debout.network.LocalNetwork
 import fr.sybers.debout.network.WakeStatus
 import fr.sybers.debout.ui.theme.HeroColors
 import fr.sybers.debout.ui.wake.WakeStateHaptics
 import fr.sybers.debout.ui.wake.acceptsHold
 import fr.sybers.debout.ui.wake.breathing
 import fr.sybers.debout.ui.wake.heroWord
+import fr.sybers.debout.ui.wake.isChecking
 import fr.sybers.debout.ui.wake.rememberLocalNetworkAccess
 import fr.sybers.debout.ui.wake.rememberHoldToWake
 import kotlinx.coroutines.delay
@@ -58,12 +61,14 @@ import kotlin.time.TimeMark
 fun HeroScreen(
     machine: Machine,
     status: WakeStatus,
+    localNetwork: LocalNetwork?,
     onWake: () -> WakeRequestResult,
     onEdit: () -> Unit,
     onBack: (() -> Unit)? = null,
     onAddMachine: (() -> Unit)? = null,
 ) {
     val state = status.state
+    val onLocalNetwork = localNetwork != null
     var notice by remember { mutableStateOf<Int?>(null) }
     LaunchedEffect(notice) {
         if (notice != null) {
@@ -118,7 +123,7 @@ fun HeroScreen(
                     letterSpacing = 3.sp,
                 )
                 Text(
-                    stringResource(state.heroWord),
+                    stringResource(state.heroWord(onLocalNetwork)),
                     color = foreground,
                     fontSize = 72.sp,
                     lineHeight = 72.sp,
@@ -126,10 +131,18 @@ fun HeroScreen(
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    notice?.let { stringResource(it) } ?: hint(status),
+                    notice?.let { stringResource(it) } ?: hint(status, onLocalNetwork),
                     color = foreground.copy(alpha = 0.7f),
                     style = MaterialTheme.typography.titleMedium,
                 )
+                if (localNetwork != null && machine.seemsOutside(localNetwork)) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        stringResource(R.string.hero_other_network),
+                        color = foreground.copy(alpha = 0.5f),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
         }
         Row(
@@ -158,13 +171,19 @@ fun HeroScreen(
 }
 
 @Composable
-private fun hint(status: WakeStatus): String = when (status.state) {
-    WakeState.Unknown -> stringResource(R.string.hero_hint_not_local)
+private fun hint(status: WakeStatus, onLocalNetwork: Boolean): String = when (status.state) {
+    WakeState.Unknown ->
+        stringResource(if (status.state.isChecking(onLocalNetwork)) R.string.hero_hint_checking else R.string.hero_hint_not_local)
     WakeState.Offline -> stringResource(R.string.hero_hint_hold)
     WakeState.Sending -> stringResource(R.string.hero_hint_sending)
     WakeState.Booting -> stringResource(R.string.hero_hint_elapsed, elapsedSeconds(status.since))
     WakeState.Online -> stringResource(R.string.hero_hint_online)
     WakeState.NoResponse -> stringResource(R.string.hero_hint_retry)
+}
+
+private fun Machine.seemsOutside(network: LocalNetwork): Boolean {
+    val address = ip?.let(Ipv4::parse) ?: return false
+    return !Ipv4.sameSubnet(address, network.address, network.prefixLength)
 }
 
 @Composable

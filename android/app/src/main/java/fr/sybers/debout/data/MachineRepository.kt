@@ -12,5 +12,7 @@ class MachineRepository(private val dao: MachineDao) {
 
     suspend fun save(machine: Machine): Long = dao.save(machine.toEntity())
 
+    suspend fun rememberProbeResult(id: Long, ip: String?, probePort: Int?) = dao.updateProbeResult(id, ip, probePort)
+
     suspend fun delete(machine: Machine) = dao.delete(machine.toEntity())
 }

@@ -30,8 +30,9 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 ## Statut des machines
 
 - Le statut en ligne/hors ligne est vérifié en continu tant que l'app ou la tuile est visible. Aucun service ne tourne en arrière-plan en dehors du suivi d'un réveil.
-- Le check se fait par connexion TCP. L'app essaie une liste de ports courants (445, 3389, 22, 5900, 548) et mémorise celui qui répond pour chaque machine. Le port reste modifiable dans les réglages avancés. `InetAddress.isReachable` sert de repli.
+- Le check se fait par connexion TCP. L'app essaie une liste de ports courants (445, 3389, 22, 5900, 548) et mémorise celui qui répond pour chaque machine. Une connexion refusée compte comme une réponse : la machine est allumée, même si rien n'écoute sur ce port. Le port reste modifiable dans les réglages avancés. `InetAddress.isReachable` sert de repli.
 - La machine est résolue par son hostname en priorité (NetBIOS/mDNS), puis par l'IP mémorisée, pour supporter le DHCP.
+- Une machine sans IP ni hostname ne peut pas être sondée : elle reste « Hors ligne » et se réveille quand même, le broadcast n'ayant besoin que de la MAC.
 
 ### États
 
@@ -42,7 +43,7 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 | Démarrage… | Paquets envoyés, en attente de réponse | « Réveil… » | Fond ambre sombre qui respire, temps écoulé discret |
 | En ligne | La machine répond | « Debout ! » | Fond ambre plein, haptique double tick |
 | Pas de réponse | Aucune réponse après ~90 s | « Silence radio » | Fond éteint, haptique de rejet, maintien pour réessayer, accès à l'aide |
-| Inconnu | Statut impossible à déterminer (pas d'IP, hors réseau local) | « Hors réseau » | Fond neutre, distinct de « Hors ligne », maintien désactivé |
+| Inconnu | Statut impossible à déterminer : hors réseau local, ou première sonde en cours (« Voyons… ») | « Hors réseau » | Fond neutre, distinct de « Hors ligne », maintien désactivé |
 
 Une demande de réveil sur une machine déjà en ligne n'envoie rien et affiche « Déjà allumé ».
 

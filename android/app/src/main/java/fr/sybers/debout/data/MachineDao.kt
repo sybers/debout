@@ -22,6 +22,10 @@ abstract class MachineDao {
     @Query("SELECT COALESCE(MAX(sort_order), -1) FROM machines")
     protected abstract suspend fun maxOrder(): Int
 
+    /** Leaves a deleted machine deleted, unlike [save]. */
+    @Query("UPDATE machines SET ip = :ip, probe_port = :probePort WHERE id = :id")
+    abstract suspend fun updateProbeResult(id: Long, ip: String?, probePort: Int?)
+
     @Upsert
     protected abstract suspend fun upsert(machine: MachineEntity): Long
 

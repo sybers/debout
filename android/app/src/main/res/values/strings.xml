@@ -33,6 +33,12 @@
     <string name="hero_hint_online">Ready.</string>
     <string name="hero_hint_retry">Hold to try again</string>
 
+    <string name="hero_word_checking">Let’s see…</string>
+    <string name="hero_hint_checking">Checking status…</string>
+    <string name="hero_other_network">This machine seems to be on another network</string>
+    <string name="status_checking">Checking…</string>
+    <string name="field_probe_port">Status check port</string>
+    <string name="field_probe_port_auto">Automatic</string>
     <string name="status_unknown">Off network</string>
     <string name="status_offline">Offline</string>
     <string name="status_sending">Sending…</string>

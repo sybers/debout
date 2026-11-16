@@ -69,6 +69,21 @@ class MachineFormTest {
     }
 
     @Test
+    fun `status port is optional but must be in 1-65535 when given`() {
+        assertNull(MachineForm().submitted().probePortError)
+        listOf("0", "65536", "ssh").forEach {
+            assertEquals(it, FormError.InvalidPort, MachineForm(probePort = it).submitted().probePortError)
+        }
+    }
+
+    @Test
+    fun `a status port typed by the user is kept`() {
+        val machine = MachineForm(name = "NAS", mac = "001122334455", probePort = " 8080 ").toMachine()
+
+        assertEquals(8080, machine?.probePort)
+    }
+
+    @Test
     fun `a valid form becomes a machine with blanks as absent values`() {
         val form = MachineForm(
             name = "  PC du salon ",

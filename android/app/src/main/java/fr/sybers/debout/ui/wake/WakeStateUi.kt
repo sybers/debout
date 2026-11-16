@@ -9,22 +9,34 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.sybers.debout.R
 import fr.sybers.debout.domain.WakeState
+import fr.sybers.debout.network.WakeCoordinator
+import fr.sybers.debout.network.WakeStatus
 import kotlinx.coroutines.delay
 
 /** Online stays holdable so the user gets "Already on" rather than a dead button. */
 val WakeState.acceptsHold: Boolean
     get() = this == WakeState.Offline || this == WakeState.NoResponse || this == WakeState.Online
 
-@get:StringRes
-val WakeState.heroWord: Int
-    get() = when (this) {
-        WakeState.Unknown -> R.string.hero_word_unknown
+/** Unknown on a local network only means the first probe has not answered yet. */
+fun WakeState.isChecking(onLocalNetwork: Boolean): Boolean = this == WakeState.Unknown && onLocalNetwork
+
+/** Probes the machine while the calling screen is visible. */
+@Composable
+fun WakeCoordinator.watchedStatus(machineId: Long): State<WakeStatus> =
+    watch(machineId).collectAsStateWithLifecycle(initialValue = currentStatus(machineId))
+
+@StringRes
+fun WakeState.heroWord(onLocalNetwork: Boolean): Int =
+    when (this) {
+        WakeState.Unknown -> if (onLocalNetwork) R.string.hero_word_checking else R.string.hero_word_unknown
         WakeState.Offline -> R.string.hero_word_offline
         WakeState.Sending -> R.string.hero_word_sending
         WakeState.Booting -> R.string.hero_word_booting
@@ -32,10 +44,10 @@ val WakeState.heroWord: Int
         WakeState.NoResponse -> R.string.hero_word_no_response
     }
 
-@get:StringRes
-val WakeState.statusLabel: Int
-    get() = when (this) {
-        WakeState.Unknown -> R.string.status_unknown
+@StringRes
+fun WakeState.statusLabel(onLocalNetwork: Boolean): Int =
+    when (this) {
+        WakeState.Unknown -> if (onLocalNetwork) R.string.status_checking else R.string.status_unknown
         WakeState.Offline -> R.string.status_offline
         WakeState.Sending -> R.string.status_sending
         WakeState.Booting -> R.string.status_booting
@@ -43,23 +55,27 @@ val WakeState.statusLabel: Int
         WakeState.NoResponse -> R.string.status_no_response
     }
 
-/** Double confirmation when the machine comes online, rejection when it stays silent. */
+/**
+ * Double confirmation when a wake succeeds, rejection when it times out. A machine merely
+ * found online or offline by the probe stays silent.
+ */
 @Composable
 fun WakeStateHaptics(state: WakeState) {
     val haptics = LocalHapticFeedback.current
     // Starts at the current state so opening a screen never replays a past outcome.
     val previous = remember { arrayOf(state) }
     LaunchedEffect(state) {
-        if (state == previous[0]) return@LaunchedEffect
+        val from = previous[0]
+        if (state == from) return@LaunchedEffect
         previous[0] = state
-        when (state) {
-            WakeState.Online -> {
+        val waking = from == WakeState.Sending || from == WakeState.Booting
+        when {
+            state == WakeState.Online && waking -> {
                 haptics.performHapticFeedback(HapticFeedbackType.Confirm)
                 delay(110)
                 haptics.performHapticFeedback(HapticFeedbackType.Confirm)
             }
-            WakeState.NoResponse -> haptics.performHapticFeedback(HapticFeedbackType.Reject)
-            else -> Unit
+            state == WakeState.NoResponse && waking -> haptics.performHapticFeedback(HapticFeedbackType.Reject)
         }
     }
 }

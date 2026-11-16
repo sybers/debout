@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.sybers.debout.R
 import fr.sybers.debout.network.WakeCoordinator
 import fr.sybers.debout.ui.hero.HeroScreen
+import fr.sybers.debout.ui.wake.watchedStatus
 
 /** No machine: guide to pairing. One machine: its hero view. More: a grid of cards. */
 @Composable
@@ -62,10 +63,12 @@ fun HomeScreen(
         }
         1 -> Box(Modifier.fillMaxSize()) {
             val machine = list.single()
-            val status by wakeCoordinator.status(machine.id).collectAsStateWithLifecycle()
+            val status by wakeCoordinator.watchedStatus(machine.id)
+            val localNetwork by wakeCoordinator.localNetwork.collectAsStateWithLifecycle()
             HeroScreen(
                 machine = machine,
                 status = status,
+                localNetwork = localNetwork,
                 onWake = { wakeCoordinator.wake(machine.id) },
                 onEdit = { onEditMachine(machine.id) },
                 onAddMachine = onAddMachine,

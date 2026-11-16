@@ -140,7 +140,8 @@ fun MachineEditScreen(
                     contentDescription = null,
                 )
             }
-            AnimatedVisibility(visible = showAdvanced || form.broadcastError != null || form.wolPortError != null) {
+            val advancedError = form.broadcastError ?: form.wolPortError ?: form.probePortError
+            AnimatedVisibility(visible = showAdvanced || advancedError != null) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     FormField(
                         value = form.broadcast,
@@ -157,6 +158,14 @@ fun MachineEditScreen(
                         onValueChange = { value -> viewModel.update { it.copy(wolPort = value) } },
                         label = R.string.field_wol_port,
                         error = form.wolPortError,
+                        keyboardType = KeyboardType.Number,
+                    )
+                    FormField(
+                        value = form.probePort,
+                        onValueChange = { value -> viewModel.update { it.copy(probePort = value) } },
+                        label = R.string.field_probe_port,
+                        placeholder = stringResource(R.string.field_probe_port_auto),
+                        error = form.probePortError,
                         keyboardType = KeyboardType.Number,
                     )
                 }

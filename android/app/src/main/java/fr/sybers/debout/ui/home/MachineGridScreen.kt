@@ -49,6 +49,7 @@ import fr.sybers.debout.ui.wake.breathing
 import fr.sybers.debout.ui.wake.rememberHoldToWake
 import fr.sybers.debout.ui.wake.rememberLocalNetworkAccess
 import fr.sybers.debout.ui.wake.statusLabel
+import fr.sybers.debout.ui.wake.watchedStatus
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +62,7 @@ fun MachineGridScreen(
     onOpenMachine: (Long) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val localNetwork by wakeCoordinator.localNetwork.collectAsStateWithLifecycle()
     val alreadyOn = stringResource(R.string.already_on)
     val denied = stringResource(R.string.local_network_denied)
     val withLocalNetwork = rememberLocalNetworkAccess(
@@ -88,10 +90,11 @@ fun MachineGridScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(machines, key = { it.id }) { machine ->
-                val status by wakeCoordinator.status(machine.id).collectAsStateWithLifecycle()
+                val status by wakeCoordinator.watchedStatus(machine.id)
                 MachineCard(
                     machine = machine,
                     state = status.state,
+                    onLocalNetwork = localNetwork != null,
                     onOpen = { onOpenMachine(machine.id) },
                     onWake = {
                         withLocalNetwork {
@@ -107,7 +110,13 @@ fun MachineGridScreen(
 }
 
 @Composable
-private fun MachineCard(machine: Machine, state: WakeState, onOpen: () -> Unit, onWake: () -> Unit) {
+private fun MachineCard(
+    machine: Machine,
+    state: WakeState,
+    onLocalNetwork: Boolean,
+    onOpen: () -> Unit,
+    onWake: () -> Unit,
+) {
     WakeStateHaptics(state)
     ElevatedCard(onClick = onOpen) {
         Column(Modifier.padding(16.dp)) {
@@ -136,7 +145,7 @@ private fun MachineCard(machine: Machine, state: WakeState, onOpen: () -> Unit, 
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                stringResource(state.statusLabel),
+                stringResource(state.statusLabel(onLocalNetwork)),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (state == WakeState.Online) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             )
