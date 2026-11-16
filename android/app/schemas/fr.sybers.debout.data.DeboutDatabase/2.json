@@ -1,0 +1,81 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "9868d782d2a1e717e32b79e5cc9604eb",
+    "entities": [
+      {
+        "tableName": "machines",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `mac` TEXT NOT NULL, `ip` TEXT, `hostname` TEXT, `broadcast` TEXT, `wol_port` INTEGER NOT NULL, `probe_port` INTEGER, `sort_order` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mac",
+            "columnName": "mac",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ip",
+            "columnName": "ip",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "hostname",
+            "columnName": "hostname",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "broadcast",
+            "columnName": "broadcast",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "wolPort",
+            "columnName": "wol_port",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "probePort",
+            "columnName": "probe_port",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "sort_order",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9868d782d2a1e717e32b79e5cc9604eb')"
+    ]
+  }
+}

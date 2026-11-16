@@ -92,8 +92,7 @@ class WakeCoordinator(
             if (network == null) return@collectLatest
             while (true) {
                 tracked.stateMachine.onProbeResult(responds = isUp(tracked.machineId, network))
-                val waking = tracked.stateMachine.state.value.let { it == WakeState.Sending || it == WakeState.Booting }
-                delay(if (waking) WAKING_PROBE_INTERVAL else PROBE_INTERVAL)
+                delay(PROBE_INTERVAL)
             }
         }
     }
@@ -156,8 +155,7 @@ class WakeCoordinator(
 
     private companion object {
         const val TAG = "WakeCoordinator"
-        val PROBE_INTERVAL = 5.seconds
-        val WAKING_PROBE_INTERVAL = 2.seconds
+        val PROBE_INTERVAL = 2.seconds
         val RESOLVE_TIMEOUT = 2.seconds
     }
 }

@@ -23,7 +23,6 @@ data class MachineForm(
     val wolPort: String = Machine.DEFAULT_WOL_PORT.toString(),
     /** Blank means "detect it". */
     val probePort: String = "",
-    val favorite: Boolean = false,
     val submitAttempted: Boolean = false,
 ) {
     val nameError: FormError?
@@ -80,7 +79,6 @@ data class MachineForm(
             broadcast = broadcast.trim().ifEmpty { null },
             wolPort = parsePort(wolPort)!!,
             probePort = parsePort(probePort),
-            favorite = favorite,
         )
         return base?.let { fields.copy(id = it.id, order = it.order) } ?: fields
     }
@@ -95,7 +93,6 @@ data class MachineForm(
             broadcast = machine.broadcast.orEmpty(),
             wolPort = machine.wolPort.toString(),
             probePort = machine.probePort?.toString().orEmpty(),
-            favorite = machine.favorite,
         )
     }
 }

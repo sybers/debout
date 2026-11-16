@@ -19,7 +19,6 @@ data class MachineEntity(
     val broadcast: String?,
     @ColumnInfo(name = "wol_port") val wolPort: Int,
     @ColumnInfo(name = "probe_port") val probePort: Int?,
-    val favorite: Boolean,
     @ColumnInfo(name = "sort_order") val order: Int,
 )
 
@@ -33,7 +32,6 @@ fun MachineEntity.toDomain() = Machine(
     broadcast = broadcast,
     wolPort = wolPort,
     probePort = probePort,
-    favorite = favorite,
     order = order,
 )
 
@@ -47,6 +45,5 @@ fun Machine.toEntity() = MachineEntity(
     broadcast = broadcast,
     wolPort = wolPort,
     probePort = probePort,
-    favorite = favorite,
     order = order,
 )

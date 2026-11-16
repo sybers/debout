@@ -55,7 +55,7 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
   - envoi UDP en broadcast (port 9 par défaut) ;
   - détection de la connexion Wi-Fi/Ethernet du téléphone via `ConnectivityManager` ;
   - lecture du sous-réseau du téléphone, sans permission de localisation.
-- Entité Room `Machine`, avec les champs de la spec : nom, type, MAC, IP, hostname, broadcast, port WoL, port de sonde, favori, ordre.
+- Entité Room `Machine`, avec les champs de la spec : nom, type, MAC, IP, hostname, broadcast, port WoL, port de sonde, ordre.
 - Repository exposant un `Flow<List<Machine>>`.
 - Écran de saisie manuelle :
   - champ MAC tolérant avec validation en direct ;
@@ -85,8 +85,7 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 - Mots d'état et couleurs : voir le tableau des états de la spec.
 - Action TalkBack « Réveiller ».
 - Permission `ACCESS_LOCAL_NETWORK` déclarée et demandée au premier réveil (Android 17+ : sans elle, chaque paquet échoue en `EPERM`).
-- Accueil : vue héros directe s'il y a 1 machine, grille de cartes sinon. Chaque carte porte un bouton maintenu compact, et un tap sur la carte ouvre la vue héros.
-- État vide : « Scanner un QR code » (désactivé jusqu'à l'étape 8) et « Saisir manuellement ».
+- État vide : « Scanner un QR code » (désactivé jusqu'à l'étape 9) et « Saisir manuellement ».
 - Test UI Compose, exécuté en JVM avec Robolectric : un relâchement avant 0,5 s n'envoie rien.
 - La sonde TCP n'existe pas encore : après l'envoi, l'état reste `Booting` puis passe à `NoResponse`. Ça suffit à valider le réveil réel.
 
@@ -94,25 +93,36 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 
 ### 5. Statut réel — `network`
 
-- Sonde TCP sur les ports courants (445, 3389, 22, 5900, 548), port mémorisé par machine dès qu'il répond. Repli sur `InetAddress.isReachable`.
+- Sonde TCP sur les ports courants (445, 3389, 22, 5900, 548, plus 47989 et 47984 pour Sunshine/Moonlight), port mémorisé par machine dès qu'il répond. Repli sur `InetAddress.isReachable`.
 - Résolution par hostname en priorité, puis par l'IP mémorisée.
 - Sonde active uniquement quand un écran ou la tuile est visible.
 - Avertissement léger si le sous-réseau du téléphone diffère de celui de la machine.
 - État `Unknown` quand le téléphone n'est pas sur un réseau local.
 
-### 6. Tuile Quick Settings et raccourcis d'app — `tile`
+### 6. Carousel et grille — `ui` + `data`
 
-- Tuile pilotant la machine favorite. Un tap réveille la machine, et la tuile affiche l'état.
-- Raccourcis dynamiques d'app (appui long sur l'icône), un par machine, qui réveillent la machine d'un tap.
+- Accueil en vue héros plein écran quel que soit le nombre de machines, en carousel horizontal avec des points en bas.
+- Un doigt qui glisse annule le maintien : le réveil exige un doigt immobile pendant ~0,5 s. Test UI Compose : un swipe n'envoie rien.
+- Ouverture sur la dernière machine consultée, mémorisée dans DataStore.
+- Grille secondaire (sommaire) : états en direct, tap pour afficher la machine, appui long pour réordonner.
+- Badges d'accès rapide (rond, triangle, carré arrondis via `graphics-shapes`) sur les 3 premières positions.
+- Suppression du favori : l'ordre de la liste décide des accès rapides. Migration Room automatique (v2).
+- Sonde toutes les 2 s, pour voir rapidement une machine qui s'éteint.
 
-### 7. Notification de suivi
+### 7. Tuiles Quick Settings et raccourcis d'app — `tile`
+
+- 3 tuiles, pour les 3 premières machines de la liste. Un tap réveille la machine ; la tuile affiche le nom de la machine, son état en sous-titre et la forme de son badge comme icône.
+- Raccourcis dynamiques d'app (appui long sur l'icône) pour les 3 premières machines, avec la forme et la couleur de leur badge, qui réveillent la machine d'un tap.
+- Tuiles et raccourcis suivent l'ordre de la liste quand il change.
+
+### 8. Notification de suivi
 
 - Travail court (90 s max) via WorkManager expedited, ou un foreground service court si WorkManager ne suffit pas.
 - Notification « démarre… » puis « allumé ✓ » ou « pas de réponse », qui disparaît seule.
 - Permission `POST_NOTIFICATIONS` demandée au premier réveil ; repli silencieux si elle est refusée.
 - Réglage pour désactiver la notification (DataStore).
 
-### 8. Appairage par QR code
+### 9. Appairage par QR code
 
 - **Côté PC**, script PowerShell `scripts/windows/pair.ps1`, servi en `debout.sybers.fr/win` :
   - détection de l'interface active (Ethernet en priorité) ;
@@ -123,11 +133,11 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 - **Site** : page `/pair` qui génère le QR côté client à partir du fragment, et page d'accueil avec le choix de l'OS, la commande à copier et le lien vers la release. Le site est en anglais et en français.
 - **App** : scan avec CameraX + ZXing (permission caméra au moment du scan), parsing de `debout://v1?…`, rejet propre des versions inconnues.
 
-### 9. Aide au dépannage
+### 10. Aide au dépannage
 
 - Checklist par OS affichée après un `NoResponse`, avec un lien vers la page d'aide équivalente du site.
 
-### 10. Identité visuelle et première release
+### 11. Identité visuelle et première release
 
 - Palette, typographie et icône définitives (remplacer le `TODO` de `ui/theme/Color.kt`).
 - Couleurs dynamiques en option dans les réglages.

@@ -53,15 +53,14 @@ class MachineEditViewModel(
         form = transform(form)
     }
 
-    fun save(onSaved: () -> Unit) {
+    fun save(onSaved: (machineId: Long) -> Unit) {
         val machine = form.toMachine(base = original)
         if (machine == null) {
             form = form.submitted()
             return
         }
         viewModelScope.launch {
-            repository.save(machine)
-            onSaved()
+            onSaved(repository.save(machine))
         }
     }
 }

@@ -6,8 +6,11 @@
     <string name="close">Fermer</string>
 
     <string name="home_add_manually">Saisir manuellement</string>
+    <string name="open_grid">Toutes les machines</string>
+    <string name="grid_title">Machines</string>
+    <string name="quick_access_slot">Accès rapide %1$d</string>
+    <string name="page_indicator">Machine %1$d sur %2$d</string>
     <string name="home_add_machine">Ajouter une machine</string>
-    <string name="home_favorite">Favorite</string>
     <string name="home_machine_deleted">%1$s supprimée</string>
 
     <string name="action_wake">Réveiller</string>
@@ -51,8 +54,6 @@
     <string name="field_mac">Adresse MAC</string>
     <string name="field_ip">Adresse IP (facultative)</string>
     <string name="field_hostname">Nom d’hôte (facultatif)</string>
-    <string name="field_favorite">Favorite</string>
-    <string name="field_favorite_summary">Pilotée par la tuile des réglages rapides</string>
     <string name="field_advanced">Réglages avancés</string>
     <string name="field_broadcast">Adresse de broadcast</string>
     <string name="field_broadcast_auto">Automatique : %1$s</string>

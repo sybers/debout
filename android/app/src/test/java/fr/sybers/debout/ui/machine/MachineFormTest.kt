@@ -93,7 +93,6 @@ class MachineFormTest {
             hostname = " ",
             broadcast = "",
             wolPort = "7",
-            favorite = true,
         )
 
         assertEquals(
@@ -105,8 +104,7 @@ class MachineFormTest {
                 hostname = null,
                 broadcast = null,
                 wolPort = 7,
-                favorite = true,
-            ),
+                ),
             form.toMachine(),
         )
     }
@@ -128,7 +126,6 @@ class MachineFormTest {
             broadcast = "10.0.0.255",
             wolPort = 9,
             probePort = 445,
-            favorite = false,
             order = 3,
         )
 

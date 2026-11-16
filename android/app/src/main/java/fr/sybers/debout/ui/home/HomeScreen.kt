@@ -30,19 +30,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.sybers.debout.R
 import fr.sybers.debout.network.WakeCoordinator
-import fr.sybers.debout.ui.hero.HeroScreen
-import fr.sybers.debout.ui.wake.watchedStatus
+import fr.sybers.debout.ui.hero.MachineCarousel
 
-/** No machine: guide to pairing. One machine: its hero view. More: a grid of cards. */
+/** No machine: guide to pairing. Otherwise: the full-screen carousel. */
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
     wakeCoordinator: WakeCoordinator,
     onAddMachine: () -> Unit,
-    onOpenMachine: (Long) -> Unit,
+    onOpenGrid: () -> Unit,
     onEditMachine: (Long) -> Unit,
 ) {
-    val machines by viewModel.machines.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val recentlyDeleted by viewModel.recentlyDeleted.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,33 +54,22 @@ fun HomeScreen(
         }
     }
 
-    val list = machines ?: return
-    when (list.size) {
-        0 -> Box(Modifier.fillMaxSize()) {
+    val home = state ?: return
+    Box(Modifier.fillMaxSize()) {
+        if (home.machines.isEmpty()) {
             EmptyState(onAddMachine)
-            SnackbarHost(snackbarHostState, Modifier.align(Alignment.BottomCenter).safeDrawingPadding())
-        }
-        1 -> Box(Modifier.fillMaxSize()) {
-            val machine = list.single()
-            val status by wakeCoordinator.watchedStatus(machine.id)
-            val localNetwork by wakeCoordinator.localNetwork.collectAsStateWithLifecycle()
-            HeroScreen(
-                machine = machine,
-                status = status,
-                localNetwork = localNetwork,
-                onWake = { wakeCoordinator.wake(machine.id) },
-                onEdit = { onEditMachine(machine.id) },
+        } else {
+            MachineCarousel(
+                machines = home.machines,
+                currentMachineId = home.currentMachineId,
+                wakeCoordinator = wakeCoordinator,
+                onMachineViewed = viewModel::onMachineViewed,
+                onOpenGrid = onOpenGrid,
                 onAddMachine = onAddMachine,
+                onEditMachine = onEditMachine,
             )
-            SnackbarHost(snackbarHostState, Modifier.align(Alignment.BottomCenter).safeDrawingPadding())
         }
-        else -> MachineGridScreen(
-            machines = list,
-            wakeCoordinator = wakeCoordinator,
-            snackbarHostState = snackbarHostState,
-            onAddMachine = onAddMachine,
-            onOpenMachine = onOpenMachine,
-        )
+        SnackbarHost(snackbarHostState, Modifier.align(Alignment.BottomCenter).safeDrawingPadding())
     }
 }
 
@@ -101,7 +89,7 @@ private fun EmptyState(onAddMachine: () -> Unit) {
                 modifier = Modifier.size(96.dp),
                 tint = MaterialTheme.colorScheme.primary,
             )
-            // TODO: enable once QR pairing exists (plan step 8).
+            // TODO: enable once QR pairing exists (plan step 9).
             Button(onClick = {}, enabled = false) { Text(stringResource(R.string.home_scan_qr)) }
             Text(
                 stringResource(R.string.home_scan_hint),

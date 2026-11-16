@@ -16,7 +16,6 @@ data class Machine(
     val broadcast: String? = null,
     val wolPort: Int = DEFAULT_WOL_PORT,
     val probePort: Int? = null,
-    val favorite: Boolean = false,
     val order: Int = 0,
 ) {
     companion object {

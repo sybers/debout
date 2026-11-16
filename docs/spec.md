@@ -30,7 +30,7 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 ## Statut des machines
 
 - Le statut en ligne/hors ligne est vérifié en continu tant que l'app ou la tuile est visible. Aucun service ne tourne en arrière-plan en dehors du suivi d'un réveil.
-- Le check se fait par connexion TCP. L'app essaie une liste de ports courants (445, 3389, 22, 5900, 548) et mémorise celui qui répond pour chaque machine. Une connexion refusée compte comme une réponse : la machine est allumée, même si rien n'écoute sur ce port. Le port reste modifiable dans les réglages avancés. `InetAddress.isReachable` sert de repli.
+- Le check se fait par connexion TCP. L'app essaie une liste de ports courants (445, 3389, 22, 5900, 548, plus 47989 et 47984 pour Sunshine/Moonlight) et mémorise celui qui répond pour chaque machine. Une connexion refusée compte comme une réponse : la machine est allumée, même si rien n'écoute sur ce port. Le port reste modifiable dans les réglages avancés. `InetAddress.isReachable` sert de repli.
 - La machine est résolue par son hostname en priorité (NetBIOS/mDNS), puis par l'IP mémorisée, pour supporter le DHCP.
 - Une machine sans IP ni hostname ne peut pas être sondée : elle reste « Hors ligne » et se réveille quand même, le broadcast n'ayant besoin que de la MAC.
 
@@ -73,26 +73,50 @@ Après un réveil, une notification temporaire suit la progression (« Mon-PC d�
 | Point d'entrée | Geste | Cible |
 |---|---|---|
 | App | Appui maintenu ~0,5 s | La machine choisie |
-| Tuile Quick Settings | Tap | La machine favorite |
-| Raccourci d'app (appui long sur l'icône) | Tap | Une machine |
+| Tuiles Quick Settings (jusqu'à 3) | Tap | Une des 3 premières machines de la liste |
+| Raccourcis d'app (appui long sur l'icône) | Tap | Une des 3 premières machines de la liste |
 
 ### Appui maintenu dans l'app
 
 - Dans la vue héros, tout l'écran est la zone de maintien. Pendant l'appui, la couleur se répand en cercle depuis le doigt. Au terme des ~0,5 s, le réveil part avec un retour haptique.
-- Sur une carte de la grille, le bouton de la carte se remplit de la même manière, en format compact.
 - Si l'utilisateur relâche avant, la couleur se retire en douceur et rien n'est envoyé.
-- Le geste évite les déclenchements accidentels, notamment en faisant défiler la grille.
-- Les éléments de navigation (retour, réglages) restent au-dessus de la zone de maintien et ne la déclenchent pas.
+- Le maintien n'aboutit que si le doigt reste immobile : dès qu'il glisse au-delà du seuil système, le maintien est annulé et le carousel suit le doigt. Le geste évite ainsi les déclenchements accidentels en passant d'une machine à l'autre.
+- Les éléments de navigation (grille, ajout, modification) restent au-dessus de la zone de maintien et ne la déclenchent pas.
 - TalkBack expose une action « Réveiller » standard.
 
-La tuile et le raccourci gardent un tap simple : ce sont déjà des actions délibérées en deux temps, et Android réserve l'appui long sur une tuile à l'ouverture de l'app. La tuile affiche les états de la machine favorite.
+Les tuiles et les raccourcis gardent un tap simple : ce sont déjà des actions délibérées en deux temps, et Android réserve l'appui long sur une tuile à l'ouverture de l'app. Chaque tuile affiche le nom de sa machine en libellé et son état en sous-titre.
+
+### Accès rapides
+
+L'ordre de la liste décide des accès rapides : la 1re machine pilote la tuile 1 et le 1er raccourci, et ainsi de suite jusqu'à la 3e. Pour changer de machine, on réordonne.
+
+Chaque position porte un badge arrondi dans le style Material 3, qui fait le lien entre la machine et ses accès rapides : rond (1), triangle (2), carré (3), chacun avec sa couleur. Le badge suit la position, pas la machine.
+
+| Où | Rendu du badge |
+|---|---|
+| Vue héros | ~40 dp, au-dessus du nom de la machine |
+| Grille | Forme et couleur, sur la carte |
+| Tuile | Forme seule, comme icône (le système impose une icône monochrome) |
+| Raccourci d'app | Forme et couleur |
+
+Les widgets (V1.1) choisissent leur machine à la pose et ne portent pas de badge.
 
 ## Écrans
 
 ### Accueil
 
-- **1 machine** : vue héros plein écran. Tout l'écran est le bouton ; le nom de la machine s'affiche en petit, l'état en très gros mot, et une ligne d'indication en dessous (« Maintiens n'importe où », temps écoulé, aide).
-- **2 machines ou plus** : grille de cartes. Chaque carte affiche le nom, l'icône de type, le statut et son propre bouton de réveil, actionnable directement. Un tap sur le reste de la carte ouvre la vue héros plein écran de la machine.
+- La vue héros plein écran est l'accueil, quel que soit le nombre de machines. Tout l'écran est le bouton ; le badge d'accès rapide et le nom de la machine s'affichent en petit, l'état en très gros mot, et une ligne d'indication en dessous (« Maintiens n'importe où », temps écoulé, aide).
+- Avec plusieurs machines, on passe de l'une à l'autre en swipant horizontalement (carousel). Des points en bas de l'écran indiquent la page ; au-delà de 7 machines, les points des extrémités rétrécissent et défilent. Pas de retour haptique au changement de page.
+- L'app s'ouvre sur la dernière machine consultée, ou sur la première si celle-ci a été supprimée.
+- Barre du haut : la grille à gauche (dès 2 machines), l'ajout et la modification de la machine affichée à droite.
+- La machine affichée et ses voisines immédiates sont sondées, pour que leur état soit prêt au swipe.
+- Après un ajout ou une modification, l'accueil montre la machine concernée ; après une suppression, sa voisine.
+
+### Grille
+
+- Sommaire de toutes les machines, ouvert depuis l'accueil. Chaque carte affiche le nom, l'icône de type, le badge d'accès rapide et l'état en direct, sans bouton de réveil.
+- Un tap sur une carte affiche cette machine dans le carousel. Un appui long la saisit pour la réordonner par glisser-déposer.
+- Barre du haut : retour et ajout. La suppression reste dans l'écran de modification.
 
 ### Premier lancement
 
@@ -126,7 +150,6 @@ La checklist renvoie vers la page d'aide équivalente du site.
 | Adresse MAC | Standard | Oui |
 | IP | Standard | Oui |
 | Hostname | Standard | Oui |
-| Favori (pilote la tuile) | Standard | Non (première machine par défaut) |
 | Adresse de broadcast | Avancé | Calculée |
 | Port WoL (9 par défaut) | Avancé | Non |
 | Port de check du statut | Avancé | Auto-détecté |
@@ -135,7 +158,7 @@ La checklist renvoie vers la page d'aide équivalente du site.
 
 - Modifier une machine.
 - Supprimer, avec annulation via un snackbar plutôt qu'une confirmation.
-- Réordonner par glisser-déposer.
+- Réordonner par glisser-déposer dans la grille. L'ordre décide des accès rapides.
 
 ### Ajout
 
@@ -239,7 +262,7 @@ APK signé sur GitHub Releases, installable directement ou mis à jour via Obtai
 
 | Version | Contenu |
 |---|---|
-| V1.1 | Widget écran d'accueil (Glance), export/import JSON, partage d'une machine par QR |
+| V1.1 | Widgets écran d'accueil (Glance), chacun lié à la machine choisie à la pose ; export/import JSON, partage d'une machine par QR |
 | V1.x | Scripts d'appairage macOS et Linux, découverte réseau (NetBIOS/mDNS), publication F-Droid et Play Store |
 | Plus tard | Réveil à distance (hôte public, VPN), traductions communautaires (Weblate) |
 

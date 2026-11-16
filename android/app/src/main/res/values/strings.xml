@@ -8,8 +8,11 @@
     <string name="close">Close</string>
 
     <string name="home_add_manually">Enter manually</string>
+    <string name="open_grid">All machines</string>
+    <string name="grid_title">Machines</string>
+    <string name="quick_access_slot">Quick access %1$d</string>
+    <string name="page_indicator">Machine %1$d of %2$d</string>
     <string name="home_add_machine">Add a machine</string>
-    <string name="home_favorite">Favorite</string>
     <string name="home_machine_deleted">Deleted %1$s</string>
 
     <string name="action_wake">Wake</string>
@@ -54,8 +57,6 @@
     <string name="field_mac_placeholder" translatable="false">AA:BB:CC:DD:EE:FF</string>
     <string name="field_ip">IP address (optional)</string>
     <string name="field_hostname">Hostname (optional)</string>
-    <string name="field_favorite">Favorite</string>
-    <string name="field_favorite_summary">Controlled by the Quick Settings tile</string>
     <string name="field_advanced">Advanced settings</string>
     <string name="field_broadcast">Broadcast address</string>
     <string name="field_broadcast_auto">Automatic: %1$s</string>

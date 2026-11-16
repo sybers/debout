@@ -3,7 +3,6 @@ package fr.sybers.debout.ui.machine
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -19,10 +18,8 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -31,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,6 +44,7 @@ import fr.sybers.debout.domain.MachineType
 fun MachineEditScreen(
     viewModel: MachineEditViewModel,
     onBack: () -> Unit,
+    onSaved: (machineId: Long) -> Unit,
     onDelete: () -> Unit,
 ) {
     val form = viewModel.form
@@ -119,20 +116,6 @@ fun MachineEditScreen(
                 label = R.string.field_hostname,
                 keyboardType = KeyboardType.Uri,
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.field_favorite), style = MaterialTheme.typography.bodyLarge)
-                    Text(
-                        stringResource(R.string.field_favorite_summary),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(
-                    checked = form.favorite,
-                    onCheckedChange = { checked -> viewModel.update { it.copy(favorite = checked) } },
-                )
-            }
             TextButton(onClick = { showAdvanced = !showAdvanced }) {
                 Text(stringResource(R.string.field_advanced))
                 Icon(
@@ -170,7 +153,7 @@ fun MachineEditScreen(
                     )
                 }
             }
-            Button(onClick = { viewModel.save(onSaved = onBack) }, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = { viewModel.save(onSaved) }, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.save))
             }
         }

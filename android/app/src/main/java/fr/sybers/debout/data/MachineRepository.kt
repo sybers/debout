@@ -14,5 +14,7 @@ class MachineRepository(private val dao: MachineDao) {
 
     suspend fun rememberProbeResult(id: Long, ip: String?, probePort: Int?) = dao.updateProbeResult(id, ip, probePort)
 
+    suspend fun reorder(ids: List<Long>) = dao.reorder(ids)
+
     suspend fun delete(machine: Machine) = dao.delete(machine.toEntity())
 }
