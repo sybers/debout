@@ -80,4 +80,10 @@
     <string name="mac_help_macos">macOS : Réglages Système → Réseau → ta connexion → Détails → Matériel.</string>
     <string name="mac_help_linux">Linux : lance ip link et copie l’adresse link/ether de l’interface filaire.</string>
     <string name="mac_help_tip">Choisis la carte filaire (Ethernet) : le Wake-on-LAN marche rarement en Wi-Fi.</string>
+
+    <string name="tile_first">Accès rapide 1</string>
+    <string name="tile_second">Accès rapide 2</string>
+    <string name="tile_third">Accès rapide 3</string>
+    <string name="tile_no_machine">Aucune machine</string>
+    <string name="shortcut_wake">Réveiller %1$s</string>
 </resources>

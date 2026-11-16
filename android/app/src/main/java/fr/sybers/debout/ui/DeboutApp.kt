@@ -30,10 +30,15 @@ private object Routes {
 /** Set on the home entry by the edit screen, so home deletes and offers the undo. */
 private const val DELETE_REQUEST = "delete_request"
 
+/** [wakeRequest] is a machine to show and wake, from an app shortcut or a tile. */
 @Composable
-fun DeboutApp() {
+fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
     val container = LocalContext.current.appContainer
     val navController = rememberNavController()
+
+    LaunchedEffect(wakeRequest) {
+        if (wakeRequest != null) navController.popBackStack(Routes.HOME, inclusive = false)
+    }
 
     // Home shows the last viewed machine, so pointing it at one and returning is enough.
     val showMachine = { id: Long ->
@@ -56,6 +61,8 @@ fun DeboutApp() {
             HomeScreen(
                 viewModel = viewModel,
                 wakeCoordinator = container.wakeCoordinator,
+                wakeRequest = wakeRequest,
+                onWakeRequestHandled = onWakeRequestHandled,
                 onAddMachine = { navController.navigate(Routes.ADD) },
                 onOpenGrid = { navController.navigate(Routes.GRID) },
                 onEditMachine = { navController.navigate(Routes.edit(it)) },

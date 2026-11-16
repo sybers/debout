@@ -37,6 +37,8 @@ import fr.sybers.debout.ui.hero.MachineCarousel
 fun HomeScreen(
     viewModel: HomeViewModel,
     wakeCoordinator: WakeCoordinator,
+    wakeRequest: Long?,
+    onWakeRequestHandled: () -> Unit,
     onAddMachine: () -> Unit,
     onOpenGrid: () -> Unit,
     onEditMachine: (Long) -> Unit,
@@ -63,6 +65,8 @@ fun HomeScreen(
                 machines = home.machines,
                 currentMachineId = home.currentMachineId,
                 wakeCoordinator = wakeCoordinator,
+                wakeRequest = wakeRequest,
+                onWakeRequestHandled = onWakeRequestHandled,
                 onMachineViewed = viewModel::onMachineViewed,
                 onOpenGrid = onOpenGrid,
                 onAddMachine = onAddMachine,

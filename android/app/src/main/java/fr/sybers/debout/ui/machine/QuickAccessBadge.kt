@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -27,14 +28,9 @@ import androidx.graphics.shapes.rectangle
 import androidx.graphics.shapes.toPath
 import fr.sybers.debout.R
 import fr.sybers.debout.domain.QuickAccessSlot
-import fr.sybers.debout.ui.theme.QuickAccessColors
 
 val QuickAccessSlot.color: Color
-    get() = when (this) {
-        QuickAccessSlot.First -> QuickAccessColors.First
-        QuickAccessSlot.Second -> QuickAccessColors.Second
-        QuickAccessSlot.Third -> QuickAccessColors.Third
-    }
+    @Composable get() = colorResource(colorRes)
 
 val QuickAccessSlot.shape: Shape
     get() = when (this) {
@@ -70,12 +66,13 @@ private class PolygonShape(polygon: RoundedPolygon) : Shape {
 fun QuickAccessBadge(slot: QuickAccessSlot, size: Dp, modifier: Modifier = Modifier, outline: Color? = null) {
     val shape = slot.shape
     val description = stringResource(R.string.quick_access_slot, slot.number)
+    val color = slot.color
     Box(
         modifier
             .size(size)
             .semantics { contentDescription = description }
             .clip(shape)
-            .background(slot.color)
+            .background(color)
             .then(if (outline != null) Modifier.border(2.dp, outline, shape) else Modifier),
     )
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -83,7 +84,15 @@ class WakeCoordinator(
 
     fun currentStatus(machineId: Long): WakeStatus = track(machineId).status.value
 
-    fun wake(machineId: Long): WakeRequestResult = track(machineId).stateMachine.requestWake()
+    /**
+     * A machine nobody watches yet is still [WakeState.Unknown], which refuses a wake: a wake
+     * from a tile or shortcut first waits for the first probe to settle the state.
+     */
+    suspend fun wake(machineId: Long): WakeRequestResult {
+        val tracked = track(machineId)
+        withTimeoutOrNull(FIRST_PROBE_TIMEOUT) { tracked.watched.first { it.state != WakeState.Unknown } }
+        return tracked.stateMachine.requestWake()
+    }
 
     private fun track(machineId: Long): Tracked = tracked.getOrPut(machineId) { Tracked(machineId) }
 
@@ -157,5 +166,6 @@ class WakeCoordinator(
         const val TAG = "WakeCoordinator"
         val PROBE_INTERVAL = 2.seconds
         val RESOLVE_TIMEOUT = 2.seconds
+        val FIRST_PROBE_TIMEOUT = 10.seconds
     }
 }

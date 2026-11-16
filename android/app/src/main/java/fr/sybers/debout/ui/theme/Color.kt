@@ -22,10 +22,3 @@ object HeroColors {
     val OffNetwork = Color(0xFF26272A)
     val OnNight = Color(0xFFEDE0D8)
 }
-
-/** Provisional: chosen to stay apart in light, dark and for colour-blind eyes; the shape carries the meaning. */
-object QuickAccessColors {
-    val First = Color(0xFF4C8DF6)
-    val Second = Color(0xFFE0559A)
-    val Third = Color(0xFF2BB39A)
-}

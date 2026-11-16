@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +47,7 @@ import fr.sybers.debout.ui.wake.isChecking
 import fr.sybers.debout.ui.wake.rememberHoldToWake
 import fr.sybers.debout.ui.wake.rememberLocalNetworkAccess
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeMark
 
@@ -59,7 +61,9 @@ fun HeroPage(
     slot: QuickAccessSlot?,
     status: WakeStatus,
     localNetwork: LocalNetwork?,
-    onWake: () -> WakeRequestResult,
+    onWake: suspend () -> WakeRequestResult,
+    wakeRequested: Boolean,
+    onWakeRequestHandled: () -> Unit,
 ) {
     val state = status.state
     val onLocalNetwork = localNetwork != null
@@ -71,9 +75,17 @@ fun HeroPage(
         }
     }
     val withLocalNetwork = rememberLocalNetworkAccess(onDenied = { notice = R.string.local_network_denied })
-    val hold = rememberHoldToWake(enabled = state.acceptsHold) {
+    val scope = rememberCoroutineScope()
+    val wake = {
         withLocalNetwork {
-            if (onWake() == WakeRequestResult.AlreadyOnline) notice = R.string.already_on
+            scope.launch { if (onWake() == WakeRequestResult.AlreadyOnline) notice = R.string.already_on }
+        }
+    }
+    val hold = rememberHoldToWake(enabled = state.acceptsHold, onWake = wake)
+    LaunchedEffect(wakeRequested) {
+        if (wakeRequested) {
+            onWakeRequestHandled()
+            wake()
         }
     }
     WakeStateHaptics(state)

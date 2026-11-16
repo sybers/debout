@@ -14,12 +14,49 @@
         android:theme="@style/Theme.Debout">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
         </activity>
+
+        <service
+            android:name=".tile.FirstMachineTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_slot_first"
+            android:label="@string/tile_first"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.SecondMachineTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_slot_second"
+            android:label="@string/tile_second"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.ThirdMachineTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_slot_third"
+            android:label="@string/tile_third"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

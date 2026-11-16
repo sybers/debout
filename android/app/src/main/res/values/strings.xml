@@ -83,4 +83,10 @@
     <string name="mac_help_macos">macOS: System Settings → Network → your connection → Details → Hardware.</string>
     <string name="mac_help_linux">Linux: run ip link and copy the link/ether address of the wired interface.</string>
     <string name="mac_help_tip">Pick the wired (Ethernet) adapter: Wake-on-LAN rarely works over Wi-Fi.</string>
+
+    <string name="tile_first">Quick access 1</string>
+    <string name="tile_second">Quick access 2</string>
+    <string name="tile_third">Quick access 3</string>
+    <string name="tile_no_machine">No machine</string>
+    <string name="shortcut_wake">Wake %1$s</string>
 </resources>

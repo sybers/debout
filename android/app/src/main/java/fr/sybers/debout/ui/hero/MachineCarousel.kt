@@ -36,14 +36,17 @@ import fr.sybers.debout.ui.wake.watchedStatus
 
 /**
  * One full-screen page per machine, swiped horizontally. Opens on [currentMachineId] and
- * follows it when it changes from elsewhere (grid, add, delete); reports each page the user
- * settles on through [onMachineViewed].
+ * follows it when it changes from elsewhere (grid, add, delete, shortcut); reports each page
+ * the user settles on through [onMachineViewed]. [wakeRequest] wakes its machine once the
+ * carousel has settled on it.
  */
 @Composable
 fun MachineCarousel(
     machines: List<Machine>,
     currentMachineId: Long?,
     wakeCoordinator: WakeCoordinator,
+    wakeRequest: Long?,
+    onWakeRequestHandled: () -> Unit,
     onMachineViewed: (Long) -> Unit,
     onOpenGrid: () -> Unit,
     onAddMachine: () -> Unit,
@@ -86,6 +89,8 @@ fun MachineCarousel(
                 status = status,
                 localNetwork = localNetwork,
                 onWake = { wakeCoordinator.wake(machine.id) },
+                wakeRequested = machine.id == wakeRequest && pagerState.settledPage == page,
+                onWakeRequestHandled = onWakeRequestHandled,
             )
         }
         Row(
