@@ -1,6 +1,6 @@
 # Debout
 
-Wake your computers from your Android phone. Beautiful, ergonomic, free and open source.
+Android Wake on LAN app. Beautiful, ergonomic, free and open source.
 
 ## Repository
 
