@@ -1,5 +1,7 @@
 package fr.sybers.debout.ui
 
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,35 +13,62 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import fr.sybers.debout.R
 import fr.sybers.debout.appContainer
+import fr.sybers.debout.domain.PairingParseResult
+import fr.sybers.debout.domain.PairingPayload
 import fr.sybers.debout.ui.grid.MachineGridScreen
 import fr.sybers.debout.ui.grid.MachineGridViewModel
 import fr.sybers.debout.ui.home.HomeScreen
 import fr.sybers.debout.ui.home.HomeViewModel
 import fr.sybers.debout.ui.machine.MachineEditScreen
 import fr.sybers.debout.ui.machine.MachineEditViewModel
+import fr.sybers.debout.ui.pairing.PairingScanScreen
 import fr.sybers.debout.ui.settings.SettingsScreen
 
 private object Routes {
     const val HOME = "home"
     const val GRID = "machines"
-    const val ADD = "machines/new"
+    const val ADD = "machines/new?pairing={pairing}"
     const val EDIT = "machines/{id}/edit"
     const val SETTINGS = "settings"
+    const val SCAN = "scan"
+    fun add(pairing: String? = null) = if (pairing == null) "machines/new" else "machines/new?pairing=${Uri.encode(pairing)}"
     fun edit(id: Long) = "machines/$id/edit"
 }
 
 /** Set on the home entry by the edit screen, so home deletes and offers the undo. */
 private const val DELETE_REQUEST = "delete_request"
 
-/** [wakeRequest] is a machine to show and wake, from an app shortcut or a tile. */
+/**
+ * [wakeRequest] is a machine to show and wake, from an app shortcut or a tile.
+ * [pairingRequest] is a pairing payload opened from outside the app, such as the system camera.
+ */
 @Composable
-fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
-    val container = LocalContext.current.appContainer
+fun DeboutApp(
+    wakeRequest: Long?,
+    onWakeRequestHandled: () -> Unit,
+    pairingRequest: String?,
+    onPairingRequestHandled: () -> Unit,
+) {
+    val context = LocalContext.current
+    val container = context.appContainer
     val navController = rememberNavController()
 
     LaunchedEffect(wakeRequest) {
         if (wakeRequest != null) navController.popBackStack(Routes.HOME, inclusive = false)
+    }
+
+    LaunchedEffect(pairingRequest) {
+        if (pairingRequest == null) return@LaunchedEffect
+        when (PairingPayload.parse(pairingRequest)) {
+            is PairingParseResult.Valid -> navController.navigate(Routes.add(pairingRequest)) {
+                popUpTo(Routes.HOME)
+            }
+            PairingParseResult.UnsupportedVersion -> Toast.makeText(context, R.string.scan_update_app, Toast.LENGTH_LONG).show()
+            PairingParseResult.Invalid -> Toast.makeText(context, R.string.scan_not_debout, Toast.LENGTH_LONG).show()
+        }
+        onPairingRequestHandled()
     }
 
     // Home shows the last viewed machine, so pointing it at one and returning is enough.
@@ -65,7 +94,8 @@ fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
                 wakeCoordinator = container.wakeCoordinator,
                 wakeRequest = wakeRequest,
                 onWakeRequestHandled = onWakeRequestHandled,
-                onAddMachine = { navController.navigate(Routes.ADD) },
+                onAddMachine = { navController.navigate(Routes.add()) },
+                onScanQrCode = { navController.navigate(Routes.SCAN) },
                 onOpenGrid = { navController.navigate(Routes.GRID) },
                 onEditMachine = { navController.navigate(Routes.edit(it)) },
                 onOpenSettings = { navController.navigate(Routes.SETTINGS) },
@@ -76,16 +106,33 @@ fun DeboutApp(wakeRequest: Long?, onWakeRequestHandled: () -> Unit) {
                 viewModel = viewModel { MachineGridViewModel(container.machines, container.preferences) },
                 wakeCoordinator = container.wakeCoordinator,
                 onBack = { navController.popBackStack() },
-                onAddMachine = { navController.navigate(Routes.ADD) },
+                onAddMachine = { navController.navigate(Routes.add()) },
                 onMachineSelected = { navController.popBackStack(Routes.HOME, inclusive = false) },
             )
         }
-        composable(Routes.ADD) {
+        composable(Routes.SCAN) {
+            PairingScanScreen(
+                onBack = { navController.popBackStack() },
+                onPaired = { payload ->
+                    navController.navigate(Routes.add(payload)) { popUpTo(Routes.HOME) }
+                },
+            )
+        }
+        composable(
+            Routes.ADD,
+            arguments = listOf(navArgument("pairing") { type = NavType.StringType; nullable = true }),
+        ) { entry ->
+            val pairing = entry.arguments?.getString("pairing")
+                ?.let { PairingPayload.parse(it) as? PairingParseResult.Valid }
+                ?.payload
             MachineEditScreen(
-                viewModel = viewModel { MachineEditViewModel(container.machines, null, container.localNetworkMonitor.localNetwork) },
+                viewModel = viewModel {
+                    MachineEditViewModel(container.machines, null, container.localNetworkMonitor.localNetwork, pairing)
+                },
                 onBack = { navController.popBackStack() },
                 onSaved = { showMachine(it) },
                 onDelete = {},
+                onScanQrCode = { navController.navigate(Routes.SCAN) }.takeIf { pairing == null },
             )
         }
         composable(Routes.EDIT, arguments = listOf(navArgument("id") { type = NavType.LongType })) { entry ->

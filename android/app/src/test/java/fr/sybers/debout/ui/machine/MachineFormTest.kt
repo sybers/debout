@@ -3,6 +3,7 @@ package fr.sybers.debout.ui.machine
 import fr.sybers.debout.domain.MacAddress
 import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.MachineType
+import fr.sybers.debout.domain.PairingPayload
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -130,5 +131,28 @@ class MachineFormTest {
         )
 
         assertEquals(machine, MachineForm.from(machine).toMachine(base = machine))
+    }
+
+    @Test
+    fun `a pairing names the machine after its hostname and leaves the rest automatic`() {
+        val pairing = PairingPayload(MacAddress(0xAABBCCDDEEFF), ip = "192.168.1.42", name = "SALON-PC", type = MachineType.Desktop)
+
+        assertEquals(
+            Machine(
+                name = "SALON-PC",
+                type = MachineType.Desktop,
+                mac = MacAddress(0xAABBCCDDEEFF),
+                ip = "192.168.1.42",
+                hostname = "SALON-PC",
+            ),
+            MachineForm.from(pairing).toMachine(),
+        )
+    }
+
+    @Test
+    fun `a pairing without a name asks for one`() {
+        val pairing = PairingPayload(MacAddress(0xAABBCCDDEEFF), ip = null, name = null, type = MachineType.Other)
+
+        assertNull(MachineForm.from(pairing).toMachine())
     }
 }

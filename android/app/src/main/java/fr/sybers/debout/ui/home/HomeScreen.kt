@@ -40,6 +40,7 @@ fun HomeScreen(
     wakeRequest: Long?,
     onWakeRequestHandled: () -> Unit,
     onAddMachine: () -> Unit,
+    onScanQrCode: () -> Unit,
     onOpenGrid: () -> Unit,
     onEditMachine: (Long) -> Unit,
     onOpenSettings: () -> Unit,
@@ -60,7 +61,7 @@ fun HomeScreen(
     val home = state ?: return
     Box(Modifier.fillMaxSize()) {
         if (home.machines.isEmpty()) {
-            EmptyState(onAddMachine)
+            EmptyState(onScanQrCode = onScanQrCode, onAddMachine = onAddMachine)
         } else {
             MachineCarousel(
                 machines = home.machines,
@@ -80,7 +81,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun EmptyState(onAddMachine: () -> Unit) {
+private fun EmptyState(onScanQrCode: () -> Unit, onAddMachine: () -> Unit) {
     Surface(Modifier.fillMaxSize()) {
         Column(
             Modifier
@@ -95,8 +96,7 @@ private fun EmptyState(onAddMachine: () -> Unit) {
                 modifier = Modifier.size(96.dp),
                 tint = MaterialTheme.colorScheme.primary,
             )
-            // TODO: enable once QR pairing exists (plan step 9).
-            Button(onClick = {}, enabled = false) { Text(stringResource(R.string.home_scan_qr)) }
+            Button(onClick = onScanQrCode) { Text(stringResource(R.string.home_scan_qr)) }
             Text(
                 stringResource(R.string.home_scan_hint),
                 style = MaterialTheme.typography.bodyMedium,

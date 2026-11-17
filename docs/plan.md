@@ -125,12 +125,12 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 
 ### 9. Appairage par QR code
 
-- **Côté PC**, script PowerShell `scripts/windows/pair.ps1`, servi en `debout.sybers.fr/win` :
+- **Côté PC**, script PowerShell `scripts/windows/pair.ps1` :
   - détection de l'interface active (Ethernet en priorité) ;
   - diagnostic WoL (`Get-NetAdapterPowerManagement`, démarrage rapide, Wi-Fi) avec correction opt-in ;
-  - ouverture de `debout.sybers.fr/pair#…`.
-  - Tests Pester.
-  - À vérifier : le type MIME servi par GitHub Pages pour un fichier sans extension, à cause de `irm | iex`.
+  - ouverture de `debout.sybers.fr/pair/#…`.
+  - Tests Pester, exécutés en CI sous Windows PowerShell 5.1.
+  - `debout.sybers.fr/win` sert un petit chargeur ASCII (`web/win`) qui télécharge `pair.ps1` et le décode en UTF-8 : GitHub Pages sert un fichier sans extension sans charset, que Windows PowerShell décoderait en ISO-8859-1.
 - **Site** : page `/pair` qui génère le QR côté client à partir du fragment, et page d'accueil avec le choix de l'OS, la commande à copier et le lien vers la release. Le site est en anglais et en français.
 - **App** : scan avec CameraX + ZXing (permission caméra au moment du scan), parsing de `debout://v1?…`, rejet propre des versions inconnues.
 

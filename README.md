@@ -21,7 +21,13 @@ cd android
 ./gradlew lint testDebugUnitTest  # checks run by CI
 ```
 
-The site in `web/` is static: open `web/index.html` in a browser.
+The site in `web/` is static: serve the folder (for instance `python3 -m http.server -d web`) and open it in a browser.
+
+The pairing scripts have [Pester](https://pester.dev) tests, run by CI on Windows:
+
+```powershell
+Invoke-Pester -Path scripts
+```
 
 ## Releases
 

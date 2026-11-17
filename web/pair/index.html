@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debout: pair</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Debout</h1>
+      <div class="languages">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="fr">FR</button>
+      </div>
+    </header>
+
+    <section id="paired" hidden>
+      <p class="tagline" data-i18n="scan">In Debout, tap “Scan a QR code” and point your phone at this code.</p>
+      <div class="qr" id="qr"></div>
+      <dl class="machine">
+        <dt data-i18n="name">Name</dt><dd id="machine-name"></dd>
+        <dt data-i18n="mac">MAC</dt><dd id="machine-mac"></dd>
+        <dt data-i18n="ip">IP</dt><dd id="machine-ip"></dd>
+      </dl>
+      <p class="muted" data-i18n="private">These details stay in your browser: they are never sent to the server.</p>
+    </section>
+
+    <section id="empty" hidden>
+      <p class="tagline" data-i18n="empty">No machine to pair here. Run the pairing script on the computer to wake: it opens this page with its details.</p>
+      <p><a class="button" href="../" data-i18n="home">Pairing instructions</a></p>
+    </section>
+  </main>
+
+  <script>
+    window.STRINGS = {
+      en: {
+        title: "Debout: pair",
+        scan: "In Debout, tap “Scan a QR code” and point your phone at this code.",
+        name: "Name",
+        mac: "MAC",
+        ip: "IP",
+        private: "These details stay in your browser: they are never sent to the server.",
+        empty: "No machine to pair here. Run the pairing script on the computer to wake: it opens this page with its details.",
+        home: "Pairing instructions",
+        qrLabel: "Pairing QR code for %s",
+      },
+      fr: {
+        title: "Debout : appairage",
+        scan: "Dans Debout, touche « Scanner un QR code » et vise ce code avec ton téléphone.",
+        name: "Nom",
+        mac: "MAC",
+        ip: "IP",
+        private: "Ces informations restent dans ton navigateur : elles ne sont jamais envoyées au serveur.",
+        empty: "Aucune machine à appairer ici. Lance le script d’appairage sur l’ordinateur à réveiller : il ouvre cette page avec ses informations.",
+        home: "Instructions d’appairage",
+        qrLabel: "QR code d’appairage de %s",
+      },
+    };
+  </script>
+  <script src="../i18n.js"></script>
+  <script src="../vendor/qrcode-generator-2.0.4.js"></script>
+  <script>
+    (function () {
+      // The fragment is the payload without its scheme: v1?mac=…&ip=…&name=…&os=…
+      const fragment = location.hash.slice(1);
+      const match = /^v(\d+)\?(.*)$/.exec(fragment);
+      const params = match ? new URLSearchParams(match[2]) : null;
+
+      if (!params || !params.get("mac")) {
+        document.getElementById("empty").hidden = false;
+        return;
+      }
+
+      const payload = "debout://" + fragment;
+      const name = params.get("name") || "";
+      document.getElementById("machine-name").textContent = name;
+      document.getElementById("machine-mac").textContent = params.get("mac");
+      document.getElementById("machine-ip").textContent = params.get("ip") || "—";
+
+      const qr = qrcode(0, "M");
+      qr.addData(payload, "Byte");
+      qr.make();
+      const count = qr.getModuleCount();
+      const quietZone = 4;
+      let path = "";
+      for (let row = 0; row < count; row++) {
+        for (let col = 0; col < count; col++) {
+          if (qr.isDark(row, col)) path += "M" + (col + quietZone) + " " + (row + quietZone) + "h1v1h-1z";
+        }
+      }
+      const size = count + 2 * quietZone;
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 " + size + " " + size);
+      svg.setAttribute("shape-rendering", "crispEdges");
+      svg.setAttribute("role", "img");
+      const shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      shape.setAttribute("d", path);
+      shape.setAttribute("fill", "#000000");
+      svg.appendChild(shape);
+      document.getElementById("qr").appendChild(svg);
+
+      function label() {
+        svg.setAttribute("aria-label", window.currentStrings().qrLabel.replace("%s", name));
+      }
+      label();
+      document.addEventListener("languagechange", label);
+      document.getElementById("paired").hidden = false;
+    })();
+  </script>
+</body>
+</html>

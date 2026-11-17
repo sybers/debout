@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.sybers.debout.data.MachineRepository
 import fr.sybers.debout.domain.Machine
+import fr.sybers.debout.domain.PairingPayload
 import fr.sybers.debout.network.LocalNetwork
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,14 +16,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-/** [machineId] null means adding a new machine. */
+/** [machineId] null means adding a new machine, prefilled from [pairing] when it comes from a QR code. */
 class MachineEditViewModel(
     private val repository: MachineRepository,
     private val machineId: Long?,
     localNetwork: Flow<LocalNetwork?>,
+    pairing: PairingPayload? = null,
 ) : ViewModel() {
 
-    var form by mutableStateOf(MachineForm())
+    var form by mutableStateOf(pairing?.let(MachineForm::from) ?: MachineForm())
         private set
 
     var loaded by mutableStateOf(machineId == null)

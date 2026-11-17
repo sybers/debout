@@ -5,38 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Debout</title>
   <meta name="description" content="Wake your computers from your Android phone.">
-  <style>
-    :root {
-      --bg: #fffbf8;
-      --fg: #1c1410;
-      --accent: #944a15;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1c1410;
-        --fg: #f1dfd5;
-        --accent: #ffb68a;
-      }
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: system-ui, sans-serif;
-    }
-    h1 {
-      color: var(--accent);
-      font-size: clamp(3rem, 12vw, 6rem);
-      margin: 0;
-    }
-  </style>
+  <link rel="stylesheet" href="site.css">
 </head>
 <body>
   <main>
-    <h1>Debout</h1>
+    <header>
+      <h1>Debout</h1>
+      <div class="languages">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="fr">FR</button>
+      </div>
+    </header>
+    <p class="tagline" data-i18n="tagline">Wake your computers from your Android phone.</p>
+
+    <h2 data-i18n="appTitle">1. Get the app</h2>
+    <p><a class="button" href="https://github.com/sybers/debout/releases/latest" data-i18n="download">Download the APK</a></p>
+    <p class="muted" data-i18n="obtainium">Free and open source. Install it directly, or keep it up to date with Obtainium.</p>
+
+    <h2 data-i18n="pairTitle">2. Pair your computer</h2>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tab-windows" aria-controls="os-windows" data-os="windows">Windows</button>
+      <button type="button" role="tab" id="tab-macos" aria-controls="os-macos" data-os="macos">macOS</button>
+      <button type="button" role="tab" id="tab-linux" aria-controls="os-linux" data-os="linux">Linux</button>
+    </div>
+
+    <section class="panel" role="tabpanel" id="os-windows" aria-labelledby="tab-windows">
+      <p data-i18n="windowsRun">On the PC to wake, open PowerShell and run:</p>
+      <div class="command">
+        <code id="windows-command">irm debout.sybers.fr/win | iex</code>
+        <button type="button" data-copy="windows-command" data-i18n="copy">Copy</button>
+      </div>
+      <p data-i18n="windowsWhat">The script finds your network adapter, checks Wake-on-LAN and offers to fix what it can, with your confirmation. It then opens a page with a QR code: in Debout, tap “Scan a QR code”.</p>
+      <p><a href="https://github.com/sybers/debout/blob/main/scripts/windows/pair.ps1" data-i18n="readScript">Read the script</a></p>
+    </section>
+
+    <section class="panel" role="tabpanel" id="os-macos" aria-labelledby="tab-macos" hidden>
+      <p data-i18n="comingSoon">The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.</p>
+    </section>
+
+    <section class="panel" role="tabpanel" id="os-linux" aria-labelledby="tab-linux" hidden>
+      <p data-i18n="comingSoon">The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.</p>
+    </section>
+
+    <footer>
+      <a href="https://github.com/sybers/debout" data-i18n="source">Source code</a> · GPL-3.0
+    </footer>
   </main>
+
+  <script>
+    window.STRINGS = {
+      en: {
+        tagline: "Wake your computers from your Android phone.",
+        appTitle: "1. Get the app",
+        download: "Download the APK",
+        obtainium: "Free and open source. Install it directly, or keep it up to date with Obtainium.",
+        pairTitle: "2. Pair your computer",
+        windowsRun: "On the PC to wake, open PowerShell and run:",
+        copy: "Copy",
+        copied: "Copied",
+        windowsWhat: "The script finds your network adapter, checks Wake-on-LAN and offers to fix what it can, with your confirmation. It then opens a page with a QR code: in Debout, tap “Scan a QR code”.",
+        readScript: "Read the script",
+        comingSoon: "The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.",
+        source: "Source code",
+      },
+      fr: {
+        tagline: "Réveille tes ordinateurs depuis ton téléphone Android.",
+        appTitle: "1. Installe l’app",
+        download: "Télécharger l’APK",
+        obtainium: "Libre et gratuite. Installe-la directement, ou garde-la à jour avec Obtainium.",
+        pairTitle: "2. Appaire ton ordinateur",
+        windowsRun: "Sur le PC à réveiller, ouvre PowerShell et lance :",
+        copy: "Copier",
+        copied: "Copié",
+        windowsWhat: "Le script trouve ta carte réseau, vérifie le Wake-on-LAN et propose de corriger ce qu’il peut, avec ta confirmation. Il ouvre ensuite une page avec un QR code : dans Debout, touche « Scanner un QR code ».",
+        readScript: "Lire le script",
+        comingSoon: "Le script d’appairage pour ce système arrive bientôt. En attendant, ajoute la machine à la main dans Debout : l’app explique où trouver son adresse MAC.",
+        source: "Code source",
+      },
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script>
+    (function () {
+      const tabs = document.querySelectorAll("[data-os]");
+
+      function select(os) {
+        tabs.forEach((tab) => {
+          const selected = tab.dataset.os === os;
+          tab.setAttribute("aria-selected", String(selected));
+          document.getElementById(tab.getAttribute("aria-controls")).hidden = !selected;
+        });
+      }
+
+      function guessOs() {
+        const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent;
+        if (/mac/i.test(platform)) return "macos";
+        if (/linux|x11/i.test(platform) && !/android/i.test(platform)) return "linux";
+        return "windows";
+      }
+
+      tabs.forEach((tab) => tab.addEventListener("click", () => select(tab.dataset.os)));
+      select(guessOs());
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const text = document.getElementById(button.dataset.copy).textContent;
+          try {
+            await navigator.clipboard.writeText(text);
+            button.textContent = window.currentStrings().copied;
+            setTimeout(() => (button.textContent = window.currentStrings().copy), 2000);
+          } catch (e) {
+            window.getSelection().selectAllChildren(document.getElementById(button.dataset.copy));
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

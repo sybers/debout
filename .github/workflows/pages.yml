@@ -30,8 +30,7 @@ jobs:
       - name: Assemble site
         run: |
           cp -r web _site
-          mkdir -p _site/scripts
-          cp -r scripts/. _site/scripts/
+          rsync -a --exclude '*.Tests.ps1' scripts/ _site/scripts/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

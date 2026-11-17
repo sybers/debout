@@ -22,6 +22,11 @@
 
     <string name="home_scan_qr">Scan a QR code</string>
     <string name="home_scan_hint">On your PC, open debout.sybers.fr</string>
+    <string name="scan_hint">Point at the QR code shown on your PC</string>
+    <string name="scan_not_debout">This QR code isn’t from Debout. On your PC, open debout.sybers.fr</string>
+    <string name="scan_update_app">This QR code needs a newer version of Debout. Update the app.</string>
+    <string name="scan_camera_rationale">Debout uses the camera only to scan the QR code shown on your PC.</string>
+    <string name="scan_camera_allow">Allow the camera</string>
 
     <string name="hero_word_unknown">Off\nnetwork</string>
     <string name="hero_word_offline">Asleep</string>

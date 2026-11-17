@@ -13,3 +13,7 @@ indent_size = 2
 
 [*.{bat,cmd,ps1}]
 end_of_line = crlf
+
+# Windows PowerShell 5.1 reads a script without a BOM in the legacy code page.
+[*.ps1]
+charset = utf-8-bom

@@ -6,6 +6,7 @@ import fr.sybers.debout.domain.MacAddressError
 import fr.sybers.debout.domain.MacAddressParseResult
 import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.MachineType
+import fr.sybers.debout.domain.PairingPayload
 
 enum class FormError { Required, MacIncomplete, MacInvalidCharacter, MacTooLong, InvalidIpv4, InvalidPort }
 
@@ -93,6 +94,14 @@ data class MachineForm(
             broadcast = machine.broadcast.orEmpty(),
             wolPort = machine.wolPort.toString(),
             probePort = machine.probePort?.toString().orEmpty(),
+        )
+
+        fun from(pairing: PairingPayload) = MachineForm(
+            name = pairing.name.orEmpty(),
+            type = pairing.type,
+            mac = pairing.mac.toString(),
+            ip = pairing.ip.orEmpty(),
+            hostname = pairing.name.orEmpty(),
         )
     }
 }

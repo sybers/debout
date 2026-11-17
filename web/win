@@ -1,0 +1,11 @@
+# Debout: pair this PC. Run it with: irm debout.sybers.fr/win | iex
+# Source: https://github.com/sybers/debout/blob/main/scripts/windows/pair.ps1
+#
+# This loader stays ASCII: Windows PowerShell decodes a response without a charset
+# as ISO-8859-1, which would garble the accents of the real script.
+& {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+    $bytes = (New-Object Net.WebClient).DownloadData('https://debout.sybers.fr/scripts/windows/pair.ps1')
+    $script = [Text.Encoding]::UTF8.GetString($bytes).TrimStart([char]0xFEFF)
+    & ([scriptblock]::Create($script))
+}

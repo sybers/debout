@@ -20,6 +20,11 @@
 
     <string name="home_scan_qr">Scanner un QR code</string>
     <string name="home_scan_hint">Sur ton PC, ouvre debout.sybers.fr</string>
+    <string name="scan_hint">Vise le QR code affiché sur ton PC</string>
+    <string name="scan_not_debout">Ce QR code ne vient pas de Debout. Sur ton PC, ouvre debout.sybers.fr</string>
+    <string name="scan_update_app">Ce QR code demande une version plus récente de Debout. Mets l’app à jour.</string>
+    <string name="scan_camera_rationale">Debout utilise la caméra uniquement pour scanner le QR code affiché sur ton PC.</string>
+    <string name="scan_camera_allow">Autoriser la caméra</string>
 
     <string name="hero_word_unknown">Hors\nréseau</string>
     <string name="hero_word_offline">Endormi</string>

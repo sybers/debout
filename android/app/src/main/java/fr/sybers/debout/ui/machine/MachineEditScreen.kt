@@ -46,6 +46,7 @@ fun MachineEditScreen(
     onBack: () -> Unit,
     onSaved: (machineId: Long) -> Unit,
     onDelete: () -> Unit,
+    onScanQrCode: (() -> Unit)? = null,
 ) {
     val form = viewModel.form
     val automaticBroadcast by viewModel.automaticBroadcast.collectAsStateWithLifecycle()
@@ -64,6 +65,11 @@ fun MachineEditScreen(
                     }
                 },
                 actions = {
+                    if (onScanQrCode != null) {
+                        IconButton(onClick = onScanQrCode) {
+                            Icon(painterResource(R.drawable.ic_qr_code_scanner), stringResource(R.string.home_scan_qr))
+                        }
+                    }
                     if (viewModel.isEditing) {
                         IconButton(onClick = onDelete) {
                             Icon(painterResource(R.drawable.ic_delete), stringResource(R.string.delete))

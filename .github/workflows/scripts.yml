@@ -1,0 +1,27 @@
+name: Scripts
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "web/win"
+      - ".github/workflows/scripts.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "web/win"
+      - ".github/workflows/scripts.yml"
+
+jobs:
+  pester:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Windows PowerShell 5.1 is what `irm … | iex` runs in on a stock PC.
+      - name: Pester
+        shell: powershell
+        run: |
+          Install-Module Pester -MinimumVersion 5.0 -Force -SkipPublisherCheck -Scope CurrentUser
+          Import-Module Pester -MinimumVersion 5.0
+          Invoke-Pester -Path scripts -CI
