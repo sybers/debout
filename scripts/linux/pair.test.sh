@@ -98,7 +98,7 @@ HAVE='ethtool nmcli sudo qrencode'
 have() { case " $HAVE " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }
 
 ask() { echo o; }
-output=$(LANG=fr_FR.UTF-8 main 2>&1)
+output=$(LC_ALL='' LC_MESSAGES='' LANG=fr_FR.UTF-8 main 2>&1)
 check_contains 'speaks French' 'Le Wake-on-LAN par magic packet est désactivé sur enp3s0.' "$output"
 check_contains 'names the NetworkManager connection' '« Wired connection 1 »' "$output"
 check 'fixes now and permanently, then shows the QR code in the terminal' "sudo ethtool -s enp3s0 wol g

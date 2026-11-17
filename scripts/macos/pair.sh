@@ -8,6 +8,9 @@
 #
 # Run it with: curl -fsSL debout.sybers.fr/mac | sh
 
+# French messages use the typographic apostrophe on purpose.
+# shellcheck disable=SC1112
+
 DEBOUT_SITE_URL=${DEBOUT_SITE_URL:-https://debout.sybers.fr}
 
 # Prints "en" or "fr" for a locale such as "fr_FR.UTF-8" or "fr-CA".
@@ -141,7 +144,7 @@ pairing_url() {
 }
 
 is_yes() {
-    case $(echo "$1" | tr 'A-Z' 'a-z' | tr -d '[:space:]') in
+    case $(echo "$1" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]') in
         y | yes | o | oui) return 0 ;;
         *) return 1 ;;
     esac

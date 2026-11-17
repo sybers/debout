@@ -9,8 +9,9 @@
 #
 # Run it with: curl -fsSL debout.sybers.fr/linux | sh
 
-# Messages are printf formats, so each language places the interface name where it reads well.
-# shellcheck disable=SC2059
+# Messages are printf formats, so each language places the interface name where it reads well,
+# and French messages use the typographic apostrophe on purpose.
+# shellcheck disable=SC2059,SC1112
 
 DEBOUT_SITE_URL=${DEBOUT_SITE_URL:-https://debout.sybers.fr}
 DEBOUT_SYS_NET=${DEBOUT_SYS_NET:-/sys/class/net}
@@ -170,7 +171,7 @@ pairing_query() {
 }
 
 is_yes() {
-    case $(echo "$1" | tr 'A-Z' 'a-z' | tr -d '[:space:]') in
+    case $(echo "$1" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]') in
         y | yes | o | oui) return 0 ;;
         *) return 1 ;;
     esac
