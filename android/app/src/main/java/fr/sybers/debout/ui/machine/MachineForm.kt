@@ -101,7 +101,7 @@ data class MachineForm(
             type = pairing.type,
             mac = pairing.mac.toString(),
             ip = pairing.ip.orEmpty(),
-            hostname = pairing.name.orEmpty(),
+            hostname = (pairing.host ?: pairing.name).orEmpty(),
         )
     }
 }

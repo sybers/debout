@@ -150,6 +150,22 @@ class MachineFormTest {
     }
 
     @Test
+    fun `a pairing resolves the machine by its network name when it has one`() {
+        val pairing = PairingPayload(
+            MacAddress(0xAABBCCDDEEFF),
+            ip = "192.168.1.43",
+            name = "Mac mini de Stan",
+            type = MachineType.Mac,
+            host = "Mac-mini.local",
+        )
+
+        val form = MachineForm.from(pairing)
+
+        assertEquals("Mac mini de Stan", form.name)
+        assertEquals("Mac-mini.local", form.hostname)
+    }
+
+    @Test
     fun `a pairing without a name asks for one`() {
         val pairing = PairingPayload(MacAddress(0xAABBCCDDEEFF), ip = null, name = null, type = MachineType.Other)
 

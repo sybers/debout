@@ -2,12 +2,16 @@ package fr.sybers.debout.domain
 
 import java.net.URLDecoder
 
-/** What a pairing QR code carries: `debout://v1?mac=…&ip=…&name=…&os=…`. [name] is the machine's hostname. */
+/**
+ * What a pairing QR code carries: `debout://v1?mac=…&ip=…&name=…&os=…&host=…`.
+ * [host] is the name to resolve on the network, when it differs from the display [name].
+ */
 data class PairingPayload(
     val mac: MacAddress,
     val ip: String?,
     val name: String?,
     val type: MachineType,
+    val host: String? = null,
 ) {
     companion object {
         private const val PREFIX = "debout://"
@@ -35,6 +39,7 @@ data class PairingPayload(
                     ip = ip,
                     name = params["name"]?.trim()?.ifEmpty { null },
                     type = typeFor(params["os"]),
+                    host = params["host"]?.trim()?.ifEmpty { null },
                 ),
             )
         }

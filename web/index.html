@@ -40,11 +40,24 @@
     </section>
 
     <section class="panel" role="tabpanel" id="os-macos" aria-labelledby="tab-macos" hidden>
-      <p data-i18n="comingSoon">The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.</p>
+      <p data-i18n="macosRun">On the Mac to wake, open Terminal and run:</p>
+      <div class="command">
+        <code id="macos-command">curl -fsSL debout.sybers.fr/mac | sh</code>
+        <button type="button" data-copy="macos-command" data-i18n="copy">Copy</button>
+      </div>
+      <p data-i18n="macosWhat">The script finds your network interface, checks “Wake for network access” and offers to turn it on, with your confirmation. It then opens a page with a QR code: in Debout, tap “Scan a QR code”.</p>
+      <p class="muted" data-i18n="macosNote">A Mac wakes from sleep, not from a full shutdown, and waking is not always reliable on a Mac.</p>
+      <p><a href="https://github.com/sybers/debout/blob/main/scripts/macos/pair.sh" data-i18n="readScript">Read the script</a></p>
     </section>
 
     <section class="panel" role="tabpanel" id="os-linux" aria-labelledby="tab-linux" hidden>
-      <p data-i18n="comingSoon">The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.</p>
+      <p data-i18n="linuxRun">On the machine to wake, run:</p>
+      <div class="command">
+        <code id="linux-command">curl -fsSL debout.sybers.fr/linux | sh</code>
+        <button type="button" data-copy="linux-command" data-i18n="copy">Copy</button>
+      </div>
+      <p data-i18n="linuxWhat">The script finds your network interface, checks Wake-on-LAN with ethtool and offers to turn it on, with your confirmation. It then shows the QR code to scan in Debout: in the terminal if qrencode is installed, otherwise on a web page.</p>
+      <p><a href="https://github.com/sybers/debout/blob/main/scripts/linux/pair.sh" data-i18n="readScript">Read the script</a></p>
     </section>
 
     <footer>
@@ -65,7 +78,11 @@
         copied: "Copied",
         windowsWhat: "The script finds your network adapter, checks Wake-on-LAN and offers to fix what it can, with your confirmation. It then opens a page with a QR code: in Debout, tap “Scan a QR code”.",
         readScript: "Read the script",
-        comingSoon: "The pairing script for this system is coming soon. Meanwhile, add the machine manually in Debout: the app explains where to find its MAC address.",
+        macosRun: "On the Mac to wake, open Terminal and run:",
+        macosWhat: "The script finds your network interface, checks “Wake for network access” and offers to turn it on, with your confirmation. It then opens a page with a QR code: in Debout, tap “Scan a QR code”.",
+        macosNote: "A Mac wakes from sleep, not from a full shutdown, and waking is not always reliable on a Mac.",
+        linuxRun: "On the machine to wake, run:",
+        linuxWhat: "The script finds your network interface, checks Wake-on-LAN with ethtool and offers to turn it on, with your confirmation. It then shows the QR code to scan in Debout: in the terminal if qrencode is installed, otherwise on a web page.",
         help: "Troubleshooting",
         source: "Source code",
       },
@@ -80,7 +97,11 @@
         copied: "Copié",
         windowsWhat: "Le script trouve ta carte réseau, vérifie le Wake-on-LAN et propose de corriger ce qu’il peut, avec ta confirmation. Il ouvre ensuite une page avec un QR code : dans Debout, touche « Scanner un QR code ».",
         readScript: "Lire le script",
-        comingSoon: "Le script d’appairage pour ce système arrive bientôt. En attendant, ajoute la machine à la main dans Debout : l’app explique où trouver son adresse MAC.",
+        macosRun: "Sur le Mac à réveiller, ouvre le Terminal et lance :",
+        macosWhat: "Le script trouve ton interface réseau, vérifie « Réveiller pour l’accès au réseau » et propose de l’activer, avec ta confirmation. Il ouvre ensuite une page avec un QR code : dans Debout, touche « Scanner un QR code ».",
+        macosNote: "Un Mac se réveille depuis la veille, pas depuis un arrêt complet, et le réveil n’y est pas toujours fiable.",
+        linuxRun: "Sur la machine à réveiller, lance :",
+        linuxWhat: "Le script trouve ton interface réseau, vérifie le Wake-on-LAN avec ethtool et propose de l’activer, avec ta confirmation. Il affiche ensuite le QR code à scanner dans Debout : dans le terminal si qrencode est installé, sinon sur une page web.",
         help: "Dépannage",
         source: "Code source",
       },

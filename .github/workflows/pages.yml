@@ -30,7 +30,9 @@ jobs:
       - name: Assemble site
         run: |
           cp -r web _site
-          rsync -a --exclude '*.Tests.ps1' scripts/ _site/scripts/
+          rsync -a --exclude '*.Tests.ps1' --exclude '*.test.sh' --exclude tests --exclude test.sh scripts/ _site/scripts/
+          cp scripts/macos/pair.sh _site/mac
+          cp scripts/linux/pair.sh _site/linux
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

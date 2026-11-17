@@ -131,6 +131,11 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
   - ouverture de `debout.sybers.fr/pair/#…`.
   - Tests Pester, exécutés en CI sous Windows PowerShell 5.1.
   - `debout.sybers.fr/win` sert un petit chargeur ASCII (`web/win`) qui télécharge `pair.ps1` et le décode en UTF-8 : GitHub Pages sert un fichier sans extension sans charset, que Windows PowerShell décoderait en ISO-8859-1.
+- **Côté Mac et Linux**, scripts sh POSIX `scripts/macos/pair.sh` et `scripts/linux/pair.sh`, servis en `debout.sybers.fr/mac` et `/linux` pour `curl -fsSL … | sh` :
+  - macOS : interface via `networksetup`, diagnostic `pmset womp` avec correction opt-in, nom affiché (`ComputerName`) et nom réseau (`LocalHostName.local`) ;
+  - Linux : interface via `ip` et `/sys/class/net`, diagnostic `ethtool`, correction via NetworkManager si présent, sinon `ethtool -s` avec un avertissement sur la persistance ; QR dans le terminal avec `qrencode`, URL affichée sur un serveur sans navigateur ;
+  - toutes les questions passent par `/dev/tty`, l'entrée standard étant le script lui-même ;
+  - tests sh sans dépendance (`scripts/test.sh`), exécutés en CI sous `dash`, `bash` et le `sh` de macOS, plus ShellCheck.
 - **Site** : page `/pair` qui génère le QR côté client à partir du fragment, et page d'accueil avec le choix de l'OS, la commande à copier et le lien vers la release. Le site est en anglais et en français.
 - **App** : scan avec CameraX + ZXing (permission caméra au moment du scan), parsing de `debout://v1?…`, rejet propre des versions inconnues.
 

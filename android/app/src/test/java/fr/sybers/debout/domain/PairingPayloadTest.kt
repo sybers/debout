@@ -42,6 +42,18 @@ class PairingPayloadTest {
     }
 
     @Test
+    fun `reads the network name apart from the display name`() {
+        val result = PairingPayload.parse("debout://v1?mac=aabbccddeeff&name=Mac%20mini%20de%20Stan&os=macos&host=Mac-mini.local")
+
+        assertEquals(
+            PairingParseResult.Valid(
+                PairingPayload(mac, ip = null, name = "Mac mini de Stan", type = MachineType.Mac, host = "Mac-mini.local"),
+            ),
+            result,
+        )
+    }
+
+    @Test
     fun `ignores parameters it does not know, so v1 can grow`() {
         val result = PairingPayload.parse("debout://v1?mac=aabbccddeeff&chassis=laptop")
 

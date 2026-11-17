@@ -23,7 +23,11 @@ cd android
 
 The site in `web/` is static: serve the folder (for instance `python3 -m http.server -d web`) and open it in a browser.
 
-The pairing scripts have [Pester](https://pester.dev) tests, run by CI on Windows:
+The pairing scripts have tests, run by CI: [Pester](https://pester.dev) for Windows, plain sh for macOS and Linux.
+
+```sh
+scripts/test.sh          # macOS and Linux scripts, with sh (or: scripts/test.sh dash)
+```
 
 ```powershell
 Invoke-Pester -Path scripts

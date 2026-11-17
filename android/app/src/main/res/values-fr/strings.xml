@@ -49,8 +49,10 @@
     <string name="help_windows_adapter_detail">Gestionnaire de périphériques → ta carte réseau → Gestion de l’alimentation : coche « Autoriser ce périphérique à sortir l’ordinateur du mode veille » et « Autoriser uniquement un paquet magique à sortir l’ordinateur du mode veille ». Dans Avancé, active « Wake on Magic Packet ».</string>
     <string name="help_windows_fast_startup_title">Démarrage rapide désactivé</string>
     <string name="help_windows_fast_startup_detail">Panneau de configuration → Options d’alimentation → Choisir l’action des boutons d’alimentation → décoche « Activer le démarrage rapide ». Sinon, le PC ne peut pas se réveiller après un arrêt.</string>
-    <string name="help_windows_script_title">Laisse le script d’appairage vérifier</string>
+    <string name="help_script_title">Laisse le script d’appairage vérifier</string>
     <string name="help_windows_script_detail">Il vérifie la carte réseau et le démarrage rapide, et propose de les corriger. Sur le PC, ouvre PowerShell et lance : irm debout.sybers.fr/win | iex</string>
+    <string name="help_macos_script_detail">Il vérifie « Réveiller pour l’accès au réseau » et propose de l’activer. Sur le Mac, ouvre le Terminal et lance : curl -fsSL debout.sybers.fr/mac | sh</string>
+    <string name="help_linux_script_detail">Il vérifie l’interface avec ethtool et propose d’activer le Wake-on-LAN. Sur la machine, lance : curl -fsSL debout.sybers.fr/linux | sh</string>
     <string name="help_macos_network_access_title">« Réveiller pour l’accès au réseau » activé</string>
     <string name="help_macos_network_access_detail">Réglages Système → Énergie, ou Batterie → Options sur un portable.</string>
     <string name="help_macos_sleep_title">Mac en veille, pas éteint</string>

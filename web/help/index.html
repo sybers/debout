@@ -32,7 +32,7 @@
         <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
         <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
         <li>
-          <strong data-i18n="winScriptTitle"></strong><p data-i18n="winScriptDetail"></p>
+          <strong data-i18n="scriptTitle"></strong><p data-i18n="winScriptDetail"></p>
           <div class="command"><code>irm debout.sybers.fr/win | iex</code></div>
         </li>
       </ol>
@@ -45,6 +45,10 @@
         <li><strong data-i18n="macSleepTitle"></strong><p data-i18n="macSleepDetail"></p></li>
         <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
         <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
+        <li>
+          <strong data-i18n="scriptTitle"></strong><p data-i18n="macScriptDetail"></p>
+          <div class="command"><code>curl -fsSL debout.sybers.fr/mac | sh</code></div>
+        </li>
       </ol>
     </section>
 
@@ -60,6 +64,10 @@
         </li>
         <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
         <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
+        <li>
+          <strong data-i18n="scriptTitle"></strong><p data-i18n="linuxScriptDetail"></p>
+          <div class="command"><code>curl -fsSL debout.sybers.fr/linux | sh</code></div>
+        </li>
       </ol>
     </section>
 
@@ -79,8 +87,10 @@
         winAdapterDetail: "Device Manager → your network adapter → Power Management: tick “Allow this device to wake the computer” and “Only allow a magic packet to wake the computer”. In Advanced, enable “Wake on Magic Packet”.",
         winFastStartupTitle: "Fast startup turned off",
         winFastStartupDetail: "Control Panel → Power Options → Choose what the power buttons do → untick “Turn on fast startup”. With it, the PC cannot wake after a shutdown.",
-        winScriptTitle: "Let the pairing script check",
+        scriptTitle: "Let the pairing script check",
         winScriptDetail: "It checks the adapter and fast startup, and offers to fix them. On the PC, open PowerShell and run:",
+        macScriptDetail: "It checks “Wake for network access” and offers to turn it on. On the Mac, open Terminal and run:",
+        linuxScriptDetail: "It checks the interface with ethtool and offers to turn Wake-on-LAN on. On the machine, run:",
         macNetworkTitle: "“Wake for network access” turned on",
         macNetworkDetail: "System Settings → Energy, or Battery → Options on a laptop.",
         macSleepTitle: "Mac asleep, not shut down",
@@ -104,8 +114,10 @@
         winAdapterDetail: "Gestionnaire de périphériques → ta carte réseau → Gestion de l’alimentation : coche « Autoriser ce périphérique à sortir l’ordinateur du mode veille » et « Autoriser uniquement un paquet magique à sortir l’ordinateur du mode veille ». Dans Avancé, active « Wake on Magic Packet ».",
         winFastStartupTitle: "Démarrage rapide désactivé",
         winFastStartupDetail: "Panneau de configuration → Options d’alimentation → Choisir l’action des boutons d’alimentation → décoche « Activer le démarrage rapide ». Sinon, le PC ne peut pas se réveiller après un arrêt.",
-        winScriptTitle: "Laisse le script d’appairage vérifier",
+        scriptTitle: "Laisse le script d’appairage vérifier",
         winScriptDetail: "Il vérifie la carte réseau et le démarrage rapide, et propose de les corriger. Sur le PC, ouvre PowerShell et lance :",
+        macScriptDetail: "Il vérifie « Réveiller pour l’accès au réseau » et propose de l’activer. Sur le Mac, ouvre le Terminal et lance :",
+        linuxScriptDetail: "Il vérifie l’interface avec ethtool et propose d’activer le Wake-on-LAN. Sur la machine, lance :",
         macNetworkTitle: "« Réveiller pour l’accès au réseau » activé",
         macNetworkDetail: "Réglages Système → Énergie, ou Batterie → Options sur un portable.",
         macSleepTitle: "Mac en veille, pas éteint",

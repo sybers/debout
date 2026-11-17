@@ -176,21 +176,31 @@ Un site web ne peut pas lire la MAC de la machine qui le visite : un script loca
 
 ### Parcours
 
-1. Sur le PC, l'utilisateur ouvre `debout.sybers.fr`, choisit son OS et copie la commande (Windows : `irm debout.sybers.fr/win | iex`).
-2. Le script détecte l'interface réseau active, en privilégiant l'Ethernet, et récupère la MAC, l'IP et le hostname.
+1. Sur l'ordinateur, l'utilisateur ouvre `debout.sybers.fr`, choisit son OS et copie la commande :
+
+   | OS | Commande |
+   |---|---|
+   | Windows | `irm debout.sybers.fr/win \| iex` |
+   | macOS | `curl -fsSL debout.sybers.fr/mac \| sh` |
+   | Linux | `curl -fsSL debout.sybers.fr/linux \| sh` |
+
+2. Le script détecte l'interface réseau active, en privilégiant l'Ethernet, et récupère la MAC, l'IP et le nom de la machine.
 3. Le script vérifie la configuration WoL et signale ce qui cloche :
-   - options d'alimentation de la carte réseau (`Get-NetAdapterPowerManagement`) ;
-   - démarrage rapide de Windows ;
-   - interface Wi-Fi plutôt qu'Ethernet ;
-   - rappel d'activer le WoL dans le BIOS/UEFI, non détectable.
-4. Pour les points corrigeables, le script affiche ce qu'il va modifier et demande une confirmation explicite avant d'agir, avec élévation admin.
-5. Le script ouvre le navigateur sur `https://debout.sybers.fr/pair#…`. Les données sont dans le fragment : elles ne sont jamais envoyées au serveur.
+   - Windows : options d'alimentation de la carte réseau (`Get-NetAdapterPowerManagement`), démarrage rapide ;
+   - macOS : « Réveiller pour l'accès au réseau » (`pmset womp`), avec le rappel qu'un Mac se réveille depuis la veille et que le réveil y reste peu fiable ;
+   - Linux : Wake-on de l'interface (`ethtool`) ;
+   - partout : interface Wi-Fi plutôt qu'Ethernet, et rappel d'activer le WoL dans le BIOS/UEFI, non détectable.
+4. Pour les points corrigeables, le script affiche ce qu'il va modifier et demande une confirmation explicite avant d'agir, avec élévation admin (UAC sous Windows, `sudo` ailleurs). Sous Linux, la correction passe par NetworkManager quand il gère l'interface, pour survivre au redémarrage.
+5. Le script ouvre le navigateur sur `https://debout.sybers.fr/pair/#…`. Les données sont dans le fragment : elles ne sont jamais envoyées au serveur. Sous Linux, le script affiche le QR directement dans le terminal si `qrencode` est installé, et sinon l'URL à ouvrir ailleurs quand il n'y a pas de navigateur (serveur sans écran).
 6. La page génère le QR code côté client.
 7. Dans l'app : « Scanner un QR code » → la machine est ajoutée, tous les champs pré-remplis.
 
 ### Format du payload
 
-URI versionnée : `debout://v1?mac=…&ip=…&name=…&os=…`. L'app rejette proprement une version qu'elle ne connaît pas.
+URI versionnée : `debout://v1?mac=…&ip=…&name=…&os=…&host=…`. L'app rejette proprement une version qu'elle ne connaît pas et ignore les paramètres qu'elle ne connaît pas.
+
+- `name` : nom affiché de la machine.
+- `host` (optionnel) : nom à résoudre sur le réseau quand il diffère de `name`, par exemple `Mac-mini.local` pour « Mac mini ». À défaut, `name` sert de hostname.
 
 ### Site
 
@@ -256,7 +266,7 @@ Monorepo GitHub public, sous licence **GPL-3.0** :
 - Parsing et validation du payload QR, y compris les versions inconnues.
 - Machine à états du réveil : les 6 états, les timeouts, les transitions.
 - Tests UI Compose du bouton maintenu : un relâchement anticipé n'envoie rien.
-- Tests Pester du script Windows.
+- Tests Pester du script Windows, tests sh des scripts macOS et Linux (sous `sh` et `dash`), ShellCheck.
 
 ## Distribution
 
@@ -267,7 +277,7 @@ APK signé sur GitHub Releases, installable directement ou mis à jour via Obtai
 | Version | Contenu |
 |---|---|
 | V1.1 | Widgets écran d'accueil (Glance), chacun lié à la machine choisie à la pose ; export/import JSON, partage d'une machine par QR |
-| V1.x | Scripts d'appairage macOS et Linux, découverte réseau (NetBIOS/mDNS), publication F-Droid et Play Store |
+| V1.x | Découverte réseau (NetBIOS/mDNS), publication F-Droid et Play Store |
 | Plus tard | Réveil à distance (hôte public, VPN), traductions communautaires (Weblate) |
 
 Hors périmètre : assistant vocal, groupes et tags, couleur par machine, réveil de plusieurs machines d'un coup.

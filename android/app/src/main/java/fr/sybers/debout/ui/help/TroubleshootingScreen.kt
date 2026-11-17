@@ -48,19 +48,21 @@ private val HelpOs.checklist: List<CheckItem>
             CheckItem(R.string.help_windows_fast_startup_title, R.string.help_windows_fast_startup_detail),
             ethernet,
             sameNetwork,
-            CheckItem(R.string.help_windows_script_title, R.string.help_windows_script_detail),
+            CheckItem(R.string.help_script_title, R.string.help_windows_script_detail),
         )
         HelpOs.MacOs -> listOf(
             CheckItem(R.string.help_macos_network_access_title, R.string.help_macos_network_access_detail),
             CheckItem(R.string.help_macos_sleep_title, R.string.help_macos_sleep_detail),
             ethernet,
             sameNetwork,
+            CheckItem(R.string.help_script_title, R.string.help_macos_script_detail),
         )
         HelpOs.Linux -> listOf(
             bios,
             CheckItem(R.string.help_linux_interface_title, R.string.help_linux_interface_detail),
             ethernet,
             sameNetwork,
+            CheckItem(R.string.help_script_title, R.string.help_linux_script_detail),
         )
     }
 

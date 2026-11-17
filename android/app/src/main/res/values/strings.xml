@@ -54,8 +54,10 @@
     <string name="help_windows_adapter_detail">Device Manager → your network adapter → Power Management: tick “Allow this device to wake the computer” and “Only allow a magic packet to wake the computer”. In Advanced, enable “Wake on Magic Packet”.</string>
     <string name="help_windows_fast_startup_title">Fast startup turned off</string>
     <string name="help_windows_fast_startup_detail">Control Panel → Power Options → Choose what the power buttons do → untick “Turn on fast startup”. With it, the PC cannot wake after a shutdown.</string>
-    <string name="help_windows_script_title">Let the pairing script check</string>
+    <string name="help_script_title">Let the pairing script check</string>
     <string name="help_windows_script_detail">It checks the adapter and fast startup, and offers to fix them. On the PC, open PowerShell and run: irm debout.sybers.fr/win | iex</string>
+    <string name="help_macos_script_detail">It checks “Wake for network access” and offers to turn it on. On the Mac, open Terminal and run: curl -fsSL debout.sybers.fr/mac | sh</string>
+    <string name="help_linux_script_detail">It checks the interface with ethtool and offers to turn Wake-on-LAN on. On the machine, run: curl -fsSL debout.sybers.fr/linux | sh</string>
     <string name="help_macos_network_access_title">“Wake for network access” turned on</string>
     <string name="help_macos_network_access_detail">System Settings → Energy, or Battery → Options on a laptop.</string>
     <string name="help_macos_sleep_title">Mac asleep, not shut down</string>
