@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">Debout</string>
 
     <string name="navigate_back">Back</string>
@@ -40,6 +40,32 @@
     <string name="hero_hint_elapsed">%1$d s</string>
     <string name="hero_hint_online">Ready.</string>
     <string name="hero_hint_retry">Hold to try again</string>
+    <string name="hero_help">Why doesn’t it wake?</string>
+    <string name="help_title">Troubleshooting</string>
+    <string name="help_os_windows" translatable="false">Windows</string>
+    <string name="help_os_macos" translatable="false">macOS</string>
+    <string name="help_os_linux" translatable="false">Linux</string>
+    <string name="help_intro">The machine did not answer. Check these points, in order, on the machine to wake.</string>
+    <string name="help_item_title">%1$d. %2$s</string>
+    <string name="help_open_site">Full help on debout.sybers.fr</string>
+    <string name="help_bios_title">Wake-on-LAN enabled in the BIOS/UEFI</string>
+    <string name="help_bios_detail">Often named “Wake on LAN”, “Power On by PCI-E” or “Resume by LAN”. Also turn off “ErP” or “Deep sleep” if present: they cut power to the network adapter.</string>
+    <string name="help_windows_adapter_title">Network adapter allowed to wake the PC</string>
+    <string name="help_windows_adapter_detail">Device Manager → your network adapter → Power Management: tick “Allow this device to wake the computer” and “Only allow a magic packet to wake the computer”. In Advanced, enable “Wake on Magic Packet”.</string>
+    <string name="help_windows_fast_startup_title">Fast startup turned off</string>
+    <string name="help_windows_fast_startup_detail">Control Panel → Power Options → Choose what the power buttons do → untick “Turn on fast startup”. With it, the PC cannot wake after a shutdown.</string>
+    <string name="help_windows_script_title">Let the pairing script check</string>
+    <string name="help_windows_script_detail">It checks the adapter and fast startup, and offers to fix them. On the PC, open PowerShell and run: irm debout.sybers.fr/win | iex</string>
+    <string name="help_macos_network_access_title">“Wake for network access” turned on</string>
+    <string name="help_macos_network_access_detail">System Settings → Energy, or Battery → Options on a laptop.</string>
+    <string name="help_macos_sleep_title">Mac asleep, not shut down</string>
+    <string name="help_macos_sleep_detail">A Mac wakes from sleep, not from a full shutdown.</string>
+    <string name="help_linux_interface_title">Wake-on-LAN enabled on the interface</string>
+    <string name="help_linux_interface_detail" tools:ignore="TypographyDashes">Run sudo ethtool eth0 (with your interface name) and check for “Wake-on: g”. With NetworkManager, make it stick: nmcli connection modify &lt;connection&gt; 802-3-ethernet.wake-on-lan magic</string>
+    <string name="help_ethernet_title">Plugged in with an Ethernet cable</string>
+    <string name="help_ethernet_detail">Wake-on-LAN rarely works over Wi-Fi. Leave the machine plugged in to power, too.</string>
+    <string name="help_same_network_title">Phone and machine on the same network</string>
+    <string name="help_same_network_detail">Debout wakes machines on the local network only. A guest Wi-Fi or a separate VLAN blocks the packets.</string>
 
     <string name="hero_word_checking">Let’s see…</string>
     <string name="hero_hint_checking">Checking status…</string>

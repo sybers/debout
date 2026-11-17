@@ -19,6 +19,8 @@ import fr.sybers.debout.domain.PairingParseResult
 import fr.sybers.debout.domain.PairingPayload
 import fr.sybers.debout.ui.grid.MachineGridScreen
 import fr.sybers.debout.ui.grid.MachineGridViewModel
+import fr.sybers.debout.ui.help.HelpOs
+import fr.sybers.debout.ui.help.TroubleshootingScreen
 import fr.sybers.debout.ui.home.HomeScreen
 import fr.sybers.debout.ui.home.HomeViewModel
 import fr.sybers.debout.ui.machine.MachineEditScreen
@@ -33,6 +35,8 @@ private object Routes {
     const val EDIT = "machines/{id}/edit"
     const val SETTINGS = "settings"
     const val SCAN = "scan"
+    const val HELP = "help?os={os}"
+    fun help(os: HelpOs) = "help?os=${os.anchor}"
     fun add(pairing: String? = null) = if (pairing == null) "machines/new" else "machines/new?pairing=${Uri.encode(pairing)}"
     fun edit(id: Long) = "machines/$id/edit"
 }
@@ -99,6 +103,7 @@ fun DeboutApp(
                 onOpenGrid = { navController.navigate(Routes.GRID) },
                 onEditMachine = { navController.navigate(Routes.edit(it)) },
                 onOpenSettings = { navController.navigate(Routes.SETTINGS) },
+                onOpenHelp = { navController.navigate(Routes.help(HelpOs.likelyFor(it.type))) },
             )
         }
         composable(Routes.GRID) {
@@ -145,6 +150,12 @@ fun DeboutApp(
                     navController.getBackStackEntry(Routes.HOME).savedStateHandle[DELETE_REQUEST] = id
                     navController.popBackStack(Routes.HOME, inclusive = false)
                 },
+            )
+        }
+        composable(Routes.HELP, arguments = listOf(navArgument("os") { type = NavType.StringType; nullable = true })) { entry ->
+            TroubleshootingScreen(
+                initialOs = HelpOs.fromAnchor(entry.arguments?.getString("os")),
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Routes.SETTINGS) {

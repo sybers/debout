@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Debout: troubleshooting</title>
+  <meta name="description" content="What to check when Debout cannot wake a computer.">
+  <link rel="stylesheet" href="../site.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1><a href="../">Debout</a></h1>
+      <div class="languages">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="fr">FR</button>
+      </div>
+    </header>
+    <p class="tagline" data-i18n="intro">The machine did not answer? Check these points, in order, on the machine to wake.</p>
+    <nav class="tabs">
+      <a class="button" href="#windows">Windows</a>
+      <a class="button" href="#macos">macOS</a>
+      <a class="button" href="#linux">Linux</a>
+    </nav>
+
+    <section id="windows">
+      <h2>Windows</h2>
+      <ol class="checklist">
+        <li><strong data-i18n="biosTitle"></strong><p data-i18n="biosDetail"></p></li>
+        <li><strong data-i18n="winAdapterTitle"></strong><p data-i18n="winAdapterDetail"></p></li>
+        <li><strong data-i18n="winFastStartupTitle"></strong><p data-i18n="winFastStartupDetail"></p></li>
+        <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
+        <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
+        <li>
+          <strong data-i18n="winScriptTitle"></strong><p data-i18n="winScriptDetail"></p>
+          <div class="command"><code>irm debout.sybers.fr/win | iex</code></div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="macos">
+      <h2>macOS</h2>
+      <ol class="checklist">
+        <li><strong data-i18n="macNetworkTitle"></strong><p data-i18n="macNetworkDetail"></p></li>
+        <li><strong data-i18n="macSleepTitle"></strong><p data-i18n="macSleepDetail"></p></li>
+        <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
+        <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
+      </ol>
+    </section>
+
+    <section id="linux">
+      <h2>Linux</h2>
+      <ol class="checklist">
+        <li><strong data-i18n="biosTitle"></strong><p data-i18n="biosDetail"></p></li>
+        <li>
+          <strong data-i18n="linuxInterfaceTitle"></strong><p data-i18n="linuxInterfaceDetail"></p>
+          <div class="command"><code>sudo ethtool eth0 | grep Wake-on</code></div>
+          <p data-i18n="linuxPersist"></p>
+          <div class="command"><code>nmcli connection modify &lt;connection&gt; 802-3-ethernet.wake-on-lan magic</code></div>
+        </li>
+        <li><strong data-i18n="ethernetTitle"></strong><p data-i18n="ethernetDetail"></p></li>
+        <li><strong data-i18n="sameNetworkTitle"></strong><p data-i18n="sameNetworkDetail"></p></li>
+      </ol>
+    </section>
+
+    <footer>
+      <a href="../" data-i18n="home">Home</a> · <a href="https://github.com/sybers/debout" data-i18n="source">Source code</a>
+    </footer>
+  </main>
+
+  <script>
+    window.STRINGS = {
+      en: {
+        title: "Debout: troubleshooting",
+        intro: "The machine did not answer? Check these points, in order, on the machine to wake.",
+        biosTitle: "Wake-on-LAN enabled in the BIOS/UEFI",
+        biosDetail: "Often named “Wake on LAN”, “Power On by PCI-E” or “Resume by LAN”. Also turn off “ErP” or “Deep sleep” if present: they cut power to the network adapter.",
+        winAdapterTitle: "Network adapter allowed to wake the PC",
+        winAdapterDetail: "Device Manager → your network adapter → Power Management: tick “Allow this device to wake the computer” and “Only allow a magic packet to wake the computer”. In Advanced, enable “Wake on Magic Packet”.",
+        winFastStartupTitle: "Fast startup turned off",
+        winFastStartupDetail: "Control Panel → Power Options → Choose what the power buttons do → untick “Turn on fast startup”. With it, the PC cannot wake after a shutdown.",
+        winScriptTitle: "Let the pairing script check",
+        winScriptDetail: "It checks the adapter and fast startup, and offers to fix them. On the PC, open PowerShell and run:",
+        macNetworkTitle: "“Wake for network access” turned on",
+        macNetworkDetail: "System Settings → Energy, or Battery → Options on a laptop.",
+        macSleepTitle: "Mac asleep, not shut down",
+        macSleepDetail: "A Mac wakes from sleep, not from a full shutdown.",
+        linuxInterfaceTitle: "Wake-on-LAN enabled on the interface",
+        linuxInterfaceDetail: "With your interface name instead of eth0, check for “Wake-on: g”:",
+        linuxPersist: "With NetworkManager, make it stick across reboots:",
+        ethernetTitle: "Plugged in with an Ethernet cable",
+        ethernetDetail: "Wake-on-LAN rarely works over Wi-Fi. Leave the machine plugged in to power, too.",
+        sameNetworkTitle: "Phone and machine on the same network",
+        sameNetworkDetail: "Debout wakes machines on the local network only. A guest Wi-Fi or a separate VLAN blocks the packets.",
+        home: "Home",
+        source: "Source code",
+      },
+      fr: {
+        title: "Debout : dépannage",
+        intro: "La machine n’a pas répondu ? Vérifie ces points, dans l’ordre, sur la machine à réveiller.",
+        biosTitle: "Wake-on-LAN activé dans le BIOS/UEFI",
+        biosDetail: "Souvent appelé « Wake on LAN », « Power On by PCI-E » ou « Resume by LAN ». Désactive aussi « ErP » ou « Deep sleep » s’ils existent : ils coupent l’alimentation de la carte réseau.",
+        winAdapterTitle: "Carte réseau autorisée à réveiller le PC",
+        winAdapterDetail: "Gestionnaire de périphériques → ta carte réseau → Gestion de l’alimentation : coche « Autoriser ce périphérique à sortir l’ordinateur du mode veille » et « Autoriser uniquement un paquet magique à sortir l’ordinateur du mode veille ». Dans Avancé, active « Wake on Magic Packet ».",
+        winFastStartupTitle: "Démarrage rapide désactivé",
+        winFastStartupDetail: "Panneau de configuration → Options d’alimentation → Choisir l’action des boutons d’alimentation → décoche « Activer le démarrage rapide ». Sinon, le PC ne peut pas se réveiller après un arrêt.",
+        winScriptTitle: "Laisse le script d’appairage vérifier",
+        winScriptDetail: "Il vérifie la carte réseau et le démarrage rapide, et propose de les corriger. Sur le PC, ouvre PowerShell et lance :",
+        macNetworkTitle: "« Réveiller pour l’accès au réseau » activé",
+        macNetworkDetail: "Réglages Système → Énergie, ou Batterie → Options sur un portable.",
+        macSleepTitle: "Mac en veille, pas éteint",
+        macSleepDetail: "Un Mac se réveille depuis la veille, pas depuis un arrêt complet.",
+        linuxInterfaceTitle: "Wake-on-LAN activé sur l’interface",
+        linuxInterfaceDetail: "Avec le nom de ton interface à la place de eth0, cherche « Wake-on: g » :",
+        linuxPersist: "Avec NetworkManager, rends-le permanent après un redémarrage :",
+        ethernetTitle: "Branchée en Ethernet",
+        ethernetDetail: "Le Wake-on-LAN marche rarement en Wi-Fi. Laisse aussi la machine branchée sur le secteur.",
+        sameNetworkTitle: "Téléphone et machine sur le même réseau",
+        sameNetworkDetail: "Debout réveille les machines du réseau local uniquement. Un Wi-Fi invité ou un VLAN séparé bloque les paquets.",
+        home: "Accueil",
+        source: "Code source",
+      },
+    };
+  </script>
+  <script src="../i18n.js"></script>
+</body>
+</html>

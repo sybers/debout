@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fr.sybers.debout.R
+import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.network.WakeCoordinator
 import fr.sybers.debout.ui.hero.MachineCarousel
 
@@ -44,6 +45,7 @@ fun HomeScreen(
     onOpenGrid: () -> Unit,
     onEditMachine: (Long) -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenHelp: (Machine) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val recentlyDeleted by viewModel.recentlyDeleted.collectAsStateWithLifecycle()
@@ -74,6 +76,7 @@ fun HomeScreen(
                 onAddMachine = onAddMachine,
                 onEditMachine = onEditMachine,
                 onOpenSettings = onOpenSettings,
+                onOpenHelp = onOpenHelp,
             )
         }
         SnackbarHost(snackbarHostState, Modifier.align(Alignment.BottomCenter).safeDrawingPadding())

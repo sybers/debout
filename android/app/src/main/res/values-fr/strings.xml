@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="navigate_back">Retour</string>
     <string name="save">Enregistrer</string>
     <string name="delete">Supprimer</string>
@@ -38,6 +38,29 @@
     <string name="hero_hint_elapsed">%1$d s</string>
     <string name="hero_hint_online">Prêt.</string>
     <string name="hero_hint_retry">Maintiens pour réessayer</string>
+    <string name="hero_help">Pourquoi ça ne démarre pas ?</string>
+    <string name="help_title">Dépannage</string>
+    <string name="help_intro">La machine n’a pas répondu. Vérifie ces points, dans l’ordre, sur la machine à réveiller.</string>
+    <string name="help_item_title">%1$d. %2$s</string>
+    <string name="help_open_site">Aide complète sur debout.sybers.fr</string>
+    <string name="help_bios_title">Wake-on-LAN activé dans le BIOS/UEFI</string>
+    <string name="help_bios_detail">Souvent appelé « Wake on LAN », « Power On by PCI-E » ou « Resume by LAN ». Désactive aussi « ErP » ou « Deep sleep » s’ils existent : ils coupent l’alimentation de la carte réseau.</string>
+    <string name="help_windows_adapter_title">Carte réseau autorisée à réveiller le PC</string>
+    <string name="help_windows_adapter_detail">Gestionnaire de périphériques → ta carte réseau → Gestion de l’alimentation : coche « Autoriser ce périphérique à sortir l’ordinateur du mode veille » et « Autoriser uniquement un paquet magique à sortir l’ordinateur du mode veille ». Dans Avancé, active « Wake on Magic Packet ».</string>
+    <string name="help_windows_fast_startup_title">Démarrage rapide désactivé</string>
+    <string name="help_windows_fast_startup_detail">Panneau de configuration → Options d’alimentation → Choisir l’action des boutons d’alimentation → décoche « Activer le démarrage rapide ». Sinon, le PC ne peut pas se réveiller après un arrêt.</string>
+    <string name="help_windows_script_title">Laisse le script d’appairage vérifier</string>
+    <string name="help_windows_script_detail">Il vérifie la carte réseau et le démarrage rapide, et propose de les corriger. Sur le PC, ouvre PowerShell et lance : irm debout.sybers.fr/win | iex</string>
+    <string name="help_macos_network_access_title">« Réveiller pour l’accès au réseau » activé</string>
+    <string name="help_macos_network_access_detail">Réglages Système → Énergie, ou Batterie → Options sur un portable.</string>
+    <string name="help_macos_sleep_title">Mac en veille, pas éteint</string>
+    <string name="help_macos_sleep_detail">Un Mac se réveille depuis la veille, pas depuis un arrêt complet.</string>
+    <string name="help_linux_interface_title">Wake-on-LAN activé sur l’interface</string>
+    <string name="help_linux_interface_detail" tools:ignore="TypographyDashes">Lance sudo ethtool eth0 (avec le nom de ton interface) et cherche « Wake-on: g ». Avec NetworkManager, rends-le permanent : nmcli connection modify &lt;connexion&gt; 802-3-ethernet.wake-on-lan magic</string>
+    <string name="help_ethernet_title">Branchée en Ethernet</string>
+    <string name="help_ethernet_detail">Le Wake-on-LAN marche rarement en Wi-Fi. Laisse aussi la machine branchée sur le secteur.</string>
+    <string name="help_same_network_title">Téléphone et machine sur le même réseau</string>
+    <string name="help_same_network_detail">Debout réveille les machines du réseau local uniquement. Un Wi-Fi invité ou un VLAN séparé bloque les paquets.</string>
 
     <string name="hero_word_checking">Voyons…</string>
     <string name="hero_hint_checking">Vérification de l’état…</string>

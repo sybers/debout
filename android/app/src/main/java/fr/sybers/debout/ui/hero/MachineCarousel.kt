@@ -52,6 +52,7 @@ fun MachineCarousel(
     onAddMachine: () -> Unit,
     onEditMachine: (Long) -> Unit,
     onOpenSettings: () -> Unit,
+    onOpenHelp: (Machine) -> Unit,
 ) {
     val currentMachines by rememberUpdatedState(machines)
     val currentOnMachineViewed by rememberUpdatedState(onMachineViewed)
@@ -92,6 +93,7 @@ fun MachineCarousel(
                 onWake = { wakeCoordinator.wake(machine.id) },
                 wakeRequested = machine.id == wakeRequest && pagerState.settledPage == page,
                 onWakeRequestHandled = onWakeRequestHandled,
+                onOpenHelp = { onOpenHelp(machine) },
             )
         }
         Row(

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +23,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -65,6 +67,7 @@ fun HeroPage(
     onWake: suspend () -> WakeRequestResult,
     wakeRequested: Boolean,
     onWakeRequestHandled: () -> Unit,
+    onOpenHelp: () -> Unit,
 ) {
     val state = status.state
     val onLocalNetwork = localNetwork != null
@@ -112,52 +115,66 @@ fun HeroPage(
     )
     val foreground = heroForeground(state)
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(background)
-            .then(hold.modifier),
-    ) {
-        Canvas(Modifier.fillMaxSize()) {
-            with(hold) { drawFlood(HeroColors.EmberDeep.copy(alpha = 0.9f)) }
-        }
-        Column(
+    // The help button sits beside the hold zone, not inside: the zone merges its children's semantics.
+    Box(Modifier.fillMaxSize()) {
+        Box(
             Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
-                .padding(32.dp),
-            verticalArrangement = Arrangement.Center,
+                .background(background)
+                .then(hold.modifier),
         ) {
-            if (slot != null) {
-                QuickAccessBadge(slot, size = 40.dp, outline = foreground.copy(alpha = 0.6f))
-                Spacer(Modifier.height(16.dp))
+            Canvas(Modifier.fillMaxSize()) {
+                with(hold) { drawFlood(HeroColors.EmberDeep.copy(alpha = 0.9f)) }
             }
-            Text(
-                machine.name.uppercase(),
-                color = foreground.copy(alpha = 0.7f),
-                style = MaterialTheme.typography.labelLarge,
-                letterSpacing = 3.sp,
-            )
-            Text(
-                stringResource(state.heroWord(onLocalNetwork)),
-                color = foreground,
-                fontSize = 72.sp,
-                lineHeight = 72.sp,
-                fontWeight = FontWeight.Black,
-            )
-            Spacer(Modifier.height(12.dp))
-            Text(
-                notice?.let { stringResource(it) } ?: hint(status, onLocalNetwork),
-                color = foreground.copy(alpha = 0.7f),
-                style = MaterialTheme.typography.titleMedium,
-            )
-            if (localNetwork != null && machine.seemsOutside(localNetwork)) {
-                Spacer(Modifier.height(8.dp))
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .safeDrawingPadding()
+                    .padding(32.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                if (slot != null) {
+                    QuickAccessBadge(slot, size = 40.dp, outline = foreground.copy(alpha = 0.6f))
+                    Spacer(Modifier.height(16.dp))
+                }
                 Text(
-                    stringResource(R.string.hero_other_network),
-                    color = foreground.copy(alpha = 0.5f),
-                    style = MaterialTheme.typography.bodyMedium,
+                    machine.name.uppercase(),
+                    color = foreground.copy(alpha = 0.7f),
+                    style = MaterialTheme.typography.labelLarge,
+                    letterSpacing = 3.sp,
                 )
+                Text(
+                    stringResource(state.heroWord(onLocalNetwork)),
+                    color = foreground,
+                    fontSize = 72.sp,
+                    lineHeight = 72.sp,
+                    fontWeight = FontWeight.Black,
+                )
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    notice?.let { stringResource(it) } ?: hint(status, onLocalNetwork),
+                    color = foreground.copy(alpha = 0.7f),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                if (localNetwork != null && machine.seemsOutside(localNetwork)) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        stringResource(R.string.hero_other_network),
+                        color = foreground.copy(alpha = 0.5f),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
+        }
+        if (state == WakeState.NoResponse) {
+            TextButton(
+                onClick = onOpenHelp,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .safeDrawingPadding()
+                    .padding(bottom = 56.dp),
+            ) {
+                Text(stringResource(R.string.hero_help), color = foreground, style = MaterialTheme.typography.titleMedium)
             }
         }
     }
