@@ -128,6 +128,8 @@
     <string name="settings_wake_notifications_summary">Follows the machine’s startup after a wake</string>
     <string name="settings_wake_notifications_blocked">Notifications are blocked for Debout</string>
     <string name="settings_open_system_notifications">Allow in system settings</string>
+    <string name="settings_wallpaper_colors">Wallpaper colors</string>
+    <string name="settings_wallpaper_colors_summary">For menus and forms. Machine screens keep their colors.</string>
 
     <string name="notification_channel_wake">Wake tracking</string>
     <string name="notification_booting">%1$s is starting…</string>

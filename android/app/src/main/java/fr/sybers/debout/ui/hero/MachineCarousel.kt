@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +31,6 @@ import kotlinx.coroutines.flow.drop
 import fr.sybers.debout.R
 import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.QuickAccessSlot
-import fr.sybers.debout.domain.WakeState
 import fr.sybers.debout.network.WakeCoordinator
 import fr.sybers.debout.ui.wake.watchedStatus
 
@@ -72,8 +72,9 @@ fun MachineCarousel(
     val localNetwork by wakeCoordinator.localNetwork.collectAsStateWithLifecycle()
     val current = machines[pagerState.currentPage.coerceIn(machines.indices)]
     val currentStatus by wakeCoordinator.watchedStatus(current.id)
-    val foreground = heroForeground(currentStatus.state)
-    StatusBarIcons(dark = currentStatus.state == WakeState.Online)
+    val palette = heroPalette(currentStatus.state, onLocalNetwork = localNetwork != null)
+    val foreground = palette.ink
+    StatusBarIcons(dark = palette.background.luminance() > 0.5f)
 
     Box(Modifier.fillMaxSize()) {
         HorizontalPager(

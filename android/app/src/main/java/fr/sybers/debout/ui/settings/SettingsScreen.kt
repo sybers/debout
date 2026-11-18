@@ -39,6 +39,7 @@ import fr.sybers.debout.tracking.canPostNotifications
 fun SettingsScreen(preferences: UserPreferences, onBack: () -> Unit) {
     val context = LocalContext.current
     val notificationsEnabled by preferences.wakeNotificationsEnabled.collectAsStateWithLifecycle(initialValue = null)
+    val wallpaperColors by preferences.wallpaperColors.collectAsStateWithLifecycle(initialValue = false)
     // The user can change it in the system settings: read it again on every return.
     var notificationsAllowed by remember { mutableStateOf(context.canPostNotifications()) }
     LifecycleResumeEffect(Unit) {
@@ -94,6 +95,14 @@ fun SettingsScreen(preferences: UserPreferences, onBack: () -> Unit) {
                     Text(stringResource(R.string.settings_open_system_notifications))
                 }
             }
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_wallpaper_colors)) },
+                supportingContent = { Text(stringResource(R.string.settings_wallpaper_colors_summary)) },
+                trailingContent = { Switch(checked = wallpaperColors, onCheckedChange = null) },
+                modifier = Modifier.toggleable(value = wallpaperColors, role = Role.Switch) {
+                    preferences.setWallpaperColors(it)
+                },
+            )
         }
     }
 }

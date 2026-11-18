@@ -122,6 +122,8 @@
     <string name="settings_wake_notifications_summary">Suit le démarrage de la machine après un réveil</string>
     <string name="settings_wake_notifications_blocked">Les notifications sont bloquées pour Debout</string>
     <string name="settings_open_system_notifications">Autoriser dans les réglages système</string>
+    <string name="settings_wallpaper_colors">Couleurs du fond d’écran</string>
+    <string name="settings_wallpaper_colors_summary">Pour les menus et les formulaires. Les écrans des machines gardent leurs couleurs.</string>
 
     <string name="notification_channel_wake">Suivi du réveil</string>
     <string name="notification_booting">%1$s démarre…</string>

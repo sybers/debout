@@ -26,6 +26,8 @@ class UserPreferences(context: Context, private val scope: CoroutineScope) {
 
     val wakeNotificationsEnabled: Flow<Boolean> = preferences.map { it[WAKE_NOTIFICATIONS] ?: true }
 
+    val wallpaperColors: Flow<Boolean> = preferences.map { it[WALLPAPER_COLORS] ?: false }
+
     fun setLastViewedMachine(id: Long) {
         scope.launch { dataStore.edit { it[LAST_VIEWED_MACHINE] = id } }
     }
@@ -34,8 +36,13 @@ class UserPreferences(context: Context, private val scope: CoroutineScope) {
         scope.launch { dataStore.edit { it[WAKE_NOTIFICATIONS] = enabled } }
     }
 
+    fun setWallpaperColors(enabled: Boolean) {
+        scope.launch { dataStore.edit { it[WALLPAPER_COLORS] = enabled } }
+    }
+
     private companion object {
         val LAST_VIEWED_MACHINE = longPreferencesKey("last_viewed_machine")
         val WAKE_NOTIFICATIONS = booleanPreferencesKey("wake_notifications")
+        val WALLPAPER_COLORS = booleanPreferencesKey("wallpaper_colors")
     }
 }

@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val wake by wakeRequest.collectAsStateWithLifecycle()
             val pairing by pairingRequest.collectAsStateWithLifecycle()
-            DeboutTheme {
+            val wallpaperColors by appContainer.preferences.wallpaperColors.collectAsStateWithLifecycle(initialValue = false)
+            DeboutTheme(dynamicColor = wallpaperColors) {
                 DeboutApp(
                     wakeRequest = wake,
                     onWakeRequestHandled = { wakeRequest.value = null },
