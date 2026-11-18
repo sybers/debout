@@ -67,7 +67,7 @@ class WakeNotifications(private val context: Context) {
     }
 
     private fun builder() = NotificationCompat.Builder(context, CHANNEL)
-        .setSmallIcon(R.drawable.ic_power)
+        .setSmallIcon(R.drawable.ic_notification)
         .setCategory(NotificationCompat.CATEGORY_STATUS)
         .setOnlyAlertOnce(true)
         .setContentIntent(
