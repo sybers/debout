@@ -59,6 +59,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import fr.sybers.debout.R
+import kotlinx.coroutines.delay
+import fr.sybers.debout.ui.theme.HeroColors
+import fr.sybers.debout.ui.character.PillEyes
+import fr.sybers.debout.ui.character.Expression
+import androidx.compose.foundation.layout.aspectRatio
 import fr.sybers.debout.ui.theme.Grain
 import fr.sybers.debout.domain.PairingParseResult
 import fr.sybers.debout.domain.PairingPayload
@@ -133,15 +138,14 @@ private fun Scanner(onPaired: (String) -> Unit) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val haptics = LocalHapticFeedback.current
     var problem by remember { mutableStateOf<ScanProblem?>(null) }
-    var paired by remember { mutableStateOf(false) }
+    var paired by remember { mutableStateOf<String?>(null) }
 
     val onText by rememberUpdatedState { text: String ->
-        if (!paired) {
+        if (paired == null) {
             when (PairingPayload.parse(text)) {
                 is PairingParseResult.Valid -> {
-                    paired = true
+                    paired = text
                     haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-                    onPaired(text)
                 }
                 PairingParseResult.UnsupportedVersion -> problem = ScanProblem.UpdateApp
                 PairingParseResult.Invalid -> problem = ScanProblem.NotDebout
@@ -189,8 +193,35 @@ private fun Scanner(onPaired: (String) -> Unit) {
                 .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
                 .padding(16.dp),
         )
+        paired?.let { PairedFlash(it, onPaired) }
     }
 }
+
+/** The character's "Hey!" for a moment, before the form opens. */
+@Composable
+private fun PairedFlash(text: String, onPaired: (String) -> Unit) {
+    val currentOnPaired by rememberUpdatedState(onPaired)
+    LaunchedEffect(text) {
+        delay(PAIRED_FLASH_MILLIS)
+        currentOnPaired(text)
+    }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(HeroColors.Hey.background),
+        contentAlignment = Alignment.Center,
+    ) {
+        PillEyes(
+            Expression.Surprised,
+            HeroColors.Hey.ink,
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(2.4f),
+        )
+    }
+}
+
+private const val PAIRED_FLASH_MILLIS = 450L
 
 @Composable
 private fun CameraDenied(modifier: Modifier, onAllow: () -> Unit) {

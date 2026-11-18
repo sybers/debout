@@ -33,6 +33,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import fr.sybers.debout.R
+import fr.sybers.debout.ui.theme.HeroColors
+import fr.sybers.debout.ui.character.IdleMotion
+import fr.sybers.debout.ui.character.Expression
+import fr.sybers.debout.ui.character.CharacterHead
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 
 private class CheckItem(@StringRes val title: Int, @StringRes val detail: Int)
 
@@ -107,7 +115,11 @@ fun TroubleshootingScreen(initialOs: HelpOs, onBack: () -> Unit) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Text(stringResource(R.string.help_intro), style = MaterialTheme.typography.bodyLarge)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CharacterHead(Expression.Sad, HeroColors.Silent, size = 64.dp, idleMotion = IdleMotion.Lively)
+                    Spacer(Modifier.width(16.dp))
+                    Text(stringResource(R.string.help_intro), style = MaterialTheme.typography.bodyLarge)
+                }
                 os.checklist.forEachIndexed { index, item ->
                     Card(Modifier.fillMaxWidth()) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {

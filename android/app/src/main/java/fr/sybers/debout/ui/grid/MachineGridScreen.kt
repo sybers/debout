@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -42,6 +43,9 @@ import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.QuickAccessSlot
 import fr.sybers.debout.domain.WakeState
 import fr.sybers.debout.network.WakeCoordinator
+import fr.sybers.debout.ui.character.CharacterHead
+import fr.sybers.debout.ui.character.expression
+import fr.sybers.debout.ui.hero.heroPalette
 import fr.sybers.debout.ui.machine.QuickAccessBadge
 import fr.sybers.debout.ui.machine.icon
 import fr.sybers.debout.ui.wake.statusLabel
@@ -142,22 +146,32 @@ private fun MachineCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = elevation),
     ) {
         Column(Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.Top) {
                 Icon(
                     painterResource(machine.type.icon),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(Modifier.weight(1f))
-                if (slot != null) QuickAccessBadge(slot, size = 20.dp)
+                CharacterHead(
+                    expression = state.expression(onLocalNetwork),
+                    palette = heroPalette(state, onLocalNetwork),
+                    size = 44.dp,
+                )
             }
             Spacer(Modifier.height(12.dp))
-            Text(
-                machine.name,
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (slot != null) {
+                    QuickAccessBadge(slot, color = MaterialTheme.colorScheme.onSurface, size = 12.dp)
+                    Spacer(Modifier.width(8.dp))
+                }
+                Text(
+                    machine.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
             Text(
                 stringResource(state.statusLabel(onLocalNetwork)),
                 style = MaterialTheme.typography.bodyMedium,

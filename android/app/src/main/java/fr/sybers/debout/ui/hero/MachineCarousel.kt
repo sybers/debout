@@ -1,6 +1,5 @@
 package fr.sybers.debout.ui.hero
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
@@ -21,14 +19,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.drop
 import fr.sybers.debout.R
+import fr.sybers.debout.ui.theme.SystemBarIcons
 import fr.sybers.debout.domain.Machine
 import fr.sybers.debout.domain.QuickAccessSlot
 import fr.sybers.debout.network.WakeCoordinator
@@ -74,7 +71,7 @@ fun MachineCarousel(
     val currentStatus by wakeCoordinator.watchedStatus(current.id)
     val palette = heroPalette(currentStatus.state, onLocalNetwork = localNetwork != null)
     val foreground = palette.ink
-    StatusBarIcons(dark = palette.background.luminance() > 0.5f)
+    SystemBarIcons(dark = palette.background.luminance() > 0.5f)
 
     Box(Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -130,25 +127,6 @@ fun MachineCarousel(
                     .safeDrawingPadding()
                     .padding(bottom = 24.dp),
             )
-        }
-    }
-}
-
-/** The hero paints behind the system bars, so their icons follow the hero background, not the theme. */
-@Composable
-private fun StatusBarIcons(dark: Boolean) {
-    val view = LocalView.current
-    if (view.isInEditMode) return
-    val window = (view.context as? Activity)?.window ?: return
-    DisposableEffect(window, dark) {
-        val controller = WindowCompat.getInsetsController(window, view)
-        val previousStatus = controller.isAppearanceLightStatusBars
-        val previousNavigation = controller.isAppearanceLightNavigationBars
-        controller.isAppearanceLightStatusBars = dark
-        controller.isAppearanceLightNavigationBars = dark
-        onDispose {
-            controller.isAppearanceLightStatusBars = previousStatus
-            controller.isAppearanceLightNavigationBars = previousNavigation
         }
     }
 }

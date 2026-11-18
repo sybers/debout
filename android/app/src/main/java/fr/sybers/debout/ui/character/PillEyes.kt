@@ -34,6 +34,18 @@ import kotlin.random.Random
 
 private val HOLDABLE = setOf(Expression.Asleep, Expression.Sad, Expression.Awake)
 
+/** How much the eyes move on their own. */
+enum class IdleMotion {
+    /** The hero view: every motion of the expression. */
+    Lively,
+
+    /** Small faces seen many at once: an occasional blink only, so a screen full of them stays restful. */
+    Calm,
+
+    /** Asleep, waiting for a first machine: breathes and now and then opens an eye. */
+    Expectant,
+}
+
 /** Distance from the face's middle to each eye's center, in face widths. */
 private const val EYE_SPACING = 0.16f
 
@@ -46,8 +58,9 @@ private const val EYE_SPACING = 0.16f
 fun PillEyes(
     expression: Expression,
     ink: Color,
-    holdProgress: () -> Float,
     modifier: Modifier = Modifier,
+    holdProgress: () -> Float = { 0f },
+    idleMotion: IdleMotion = IdleMotion.Lively,
 ) {
     // Honors "Remove animations": the expression stays, the idle motion stops.
     val motion = remember { ValueAnimator.areAnimatorsEnabled() }
@@ -64,28 +77,35 @@ fun PillEyes(
     val twitch = remember { Animatable(1f) }
     var clock by remember { mutableLongStateOf(0L) }
 
-    LaunchedEffect(expression, motion) {
+    LaunchedEffect(expression, motion, idleMotion) {
         blink.snapTo(1f)
         glance.snapTo(0f)
         peek.snapTo(0f)
         twitch.snapTo(1f)
         if (!motion) return@LaunchedEffect
-        val idle: suspend () -> Unit = {
-            coroutineScope {
-                if (expression == Expression.Asleep || expression == Expression.Searching) {
-                    launch { while (true) withFrameMillis { clock = it } }
-                }
-                when (expression) {
-                    Expression.Asleep -> launch { twitches(twitch) }
-                    Expression.Drowsy -> launch { heavyBlinks(blink) }
-                    Expression.Awake -> {
-                        launch { blinks(blink, minGap = 2_500, maxGap = 6_000) }
-                        launch { glances(glance) }
+        val idle: suspend () -> Unit = if (idleMotion == IdleMotion.Calm) {
+            { if (expression.eyesOpen) blinks(blink, minGap = 4_000, maxGap = 9_000) }
+        } else {
+            {
+                coroutineScope {
+                    if (expression == Expression.Asleep || expression == Expression.Searching) {
+                        launch { while (true) withFrameMillis { clock = it } }
                     }
-                    Expression.Sad -> launch { peeks(peek) }
-                    Expression.Searching -> launch { blinks(blink, minGap = 3_000, maxGap = 7_000) }
-                    Expression.Blank -> launch { blinks(blink, minGap = 8_000, maxGap = 12_000) }
-                    Expression.Surprised -> Unit
+                    when (expression) {
+                        Expression.Asleep -> {
+                            launch { twitches(twitch) }
+                            if (idleMotion == IdleMotion.Expectant) launch { peeks(peek) }
+                        }
+                        Expression.Drowsy -> launch { heavyBlinks(blink) }
+                        Expression.Awake -> {
+                            launch { blinks(blink, minGap = 2_500, maxGap = 6_000) }
+                            launch { glances(glance) }
+                        }
+                        Expression.Sad -> launch { peeks(peek) }
+                        Expression.Searching -> launch { blinks(blink, minGap = 3_000, maxGap = 7_000) }
+                        Expression.Blank -> launch { blinks(blink, minGap = 8_000, maxGap = 12_000) }
+                        Expression.Surprised -> Unit
+                    }
                 }
             }
         }
@@ -131,6 +151,9 @@ private fun DrawScope.drawEye(
         )
     }
 }
+
+private val Expression.eyesOpen: Boolean
+    get() = this != Expression.Asleep && this != Expression.Sad && this != Expression.Surprised
 
 private suspend fun blinks(blink: Animatable<Float, *>, minGap: Long, maxGap: Long) {
     while (true) {

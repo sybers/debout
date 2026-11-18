@@ -10,7 +10,9 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -152,17 +154,19 @@ fun HeroPage(
                     .padding(horizontal = 32.dp)
                     .padding(top = 72.dp, bottom = 32.dp),
             ) {
-                if (slot != null) {
-                    QuickAccessBadge(slot, size = 40.dp, outline = foreground)
-                    Spacer(Modifier.height(16.dp))
-                }
                 // Every text uses the full ink: each pair is tuned for 4.5:1, which transparency would break.
-                Text(
-                    machine.name.uppercase(),
-                    color = foreground,
-                    style = MaterialTheme.typography.labelLarge,
-                    letterSpacing = 3.sp,
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (slot != null) {
+                        QuickAccessBadge(slot, color = foreground)
+                        Spacer(Modifier.width(10.dp))
+                    }
+                    Text(
+                        machine.name.uppercase(),
+                        color = foreground,
+                        style = MaterialTheme.typography.labelLarge,
+                        letterSpacing = 3.sp,
+                    )
+                }
                 Spacer(Modifier.weight(1f))
                 PillEyes(
                     expression = state.expression(onLocalNetwork),

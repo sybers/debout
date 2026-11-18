@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Provisional: chosen to stay apart in light, dark and for colour-blind eyes; the shape carries the meaning. -->
-    <color name="quick_access_first">#FF4C8DF6</color>
-    <color name="quick_access_second">#FFE0559A</color>
-    <color name="quick_access_third">#FF2BB39A</color>
-</resources>
