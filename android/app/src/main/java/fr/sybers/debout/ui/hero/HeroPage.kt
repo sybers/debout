@@ -4,7 +4,8 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.layout.Box
@@ -42,6 +43,8 @@ import fr.sybers.debout.domain.WakeRequestResult
 import fr.sybers.debout.domain.WakeState
 import fr.sybers.debout.network.LocalNetwork
 import fr.sybers.debout.network.WakeStatus
+import fr.sybers.debout.ui.character.PillEyes
+import fr.sybers.debout.ui.character.expression
 import fr.sybers.debout.ui.machine.QuickAccessBadge
 import fr.sybers.debout.ui.theme.HeroColors
 import fr.sybers.debout.ui.theme.HeroPalette
@@ -144,8 +147,8 @@ fun HeroPage(
                 Modifier
                     .fillMaxSize()
                     .safeDrawingPadding()
-                    .padding(32.dp),
-                verticalArrangement = Arrangement.Center,
+                    .padding(horizontal = 32.dp)
+                    .padding(top = 72.dp, bottom = 32.dp),
             ) {
                 if (slot != null) {
                     QuickAccessBadge(slot, size = 40.dp, outline = foreground)
@@ -158,6 +161,16 @@ fun HeroPage(
                     style = MaterialTheme.typography.labelLarge,
                     letterSpacing = 3.sp,
                 )
+                Spacer(Modifier.weight(1f))
+                PillEyes(
+                    expression = state.expression(onLocalNetwork),
+                    ink = foreground,
+                    holdProgress = { hold.progress },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(2.4f),
+                )
+                Spacer(Modifier.weight(0.6f))
                 BasicText(
                     stringResource(state.heroWord(onLocalNetwork)),
                     color = { foreground },
@@ -184,6 +197,7 @@ fun HeroPage(
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
+                Spacer(Modifier.weight(0.8f))
             }
         }
         if (state == WakeState.NoResponse) {

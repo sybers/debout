@@ -44,6 +44,9 @@ class HoldToWake internal constructor(
     /** Apply to the hold area: pointer gesture plus the accessibility "Wake" action. */
     val modifier: Modifier,
 ) {
+    /** 0 at rest, 1 when the hold completes. Read it in a draw phase to redraw without recomposing. */
+    val progress: Float get() = fill.value
+
     /** Paints the colour spreading from the finger; draw it behind the hold area's content. */
     fun DrawScope.drawFlood(color: Color) {
         val progress = fill.value
