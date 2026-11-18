@@ -46,6 +46,7 @@ import fr.sybers.debout.network.WakeStatus
 import fr.sybers.debout.ui.character.PillEyes
 import fr.sybers.debout.ui.character.expression
 import fr.sybers.debout.ui.machine.QuickAccessBadge
+import fr.sybers.debout.ui.theme.Grain
 import fr.sybers.debout.ui.theme.HeroColors
 import fr.sybers.debout.ui.theme.HeroPalette
 import fr.sybers.debout.ui.theme.Unbounded
@@ -143,6 +144,7 @@ fun HeroPage(
             Canvas(Modifier.fillMaxSize()) {
                 with(hold) { drawFlood(HeroColors.Waking.background) }
             }
+            Grain(Modifier.fillMaxSize())
             Column(
                 Modifier
                     .fillMaxSize()

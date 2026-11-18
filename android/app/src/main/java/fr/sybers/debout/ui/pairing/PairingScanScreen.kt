@@ -59,6 +59,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import fr.sybers.debout.R
+import fr.sybers.debout.ui.theme.Grain
 import fr.sybers.debout.domain.PairingParseResult
 import fr.sybers.debout.domain.PairingPayload
 import java.util.concurrent.Executors
@@ -168,6 +169,7 @@ private fun Scanner(onPaired: (String) -> Unit) {
             factory = { PreviewView(it).apply { this.controller = controller } },
             modifier = Modifier.fillMaxSize(),
         )
+        Grain(Modifier.fillMaxSize(), intensity = 0.08f)
         Box(
             Modifier
                 .align(Alignment.Center)
