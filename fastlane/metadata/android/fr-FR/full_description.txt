@@ -1,0 +1,19 @@
+Debout réveille les ordinateurs de ton réseau local avec le Wake-on-LAN, et te dit honnêtement si ça a marché.
+
+<b>Un seul geste</b>
+Chaque machine occupe tout l’écran. Maintiens n’importe où pendant une demi-seconde : ses yeux s’ouvrent, les magic packets partent, et Debout suit le démarrage. Glisse pour passer d’une machine à l’autre.
+
+<b>Toujours honnête</b>
+Debout vérifie si chaque machine est allumée, endormie ou silencieuse, et suit un réveil jusqu’à ce que la machine réponde, avec une notification si tu veux.
+
+<b>Accès rapides partout</b>
+Tes trois premières machines ont leurs tuiles de réglages rapides et leurs raccourcis d’app : un tap les réveille.
+
+<b>Appairage en quelques secondes</b>
+Sur ton ordinateur, ouvre debout.sybers.fr et lance une commande (Windows, macOS ou Linux). Elle trouve la carte réseau, vérifie le Wake-on-LAN, propose de le corriger, et affiche un QR code à scanner. Tu peux aussi saisir une machine à la main.
+
+<b>De l’aide quand ça ne démarre pas</b>
+Une courte checklist par système : BIOS, carte réseau, démarrage rapide, Ethernet plutôt que Wi-Fi.
+
+<b>Libre et respectueuse</b>
+Pas de pub, pas de compte, pas de pistage, pas de permission de localisation. Open source sous licence GPL-3.0.

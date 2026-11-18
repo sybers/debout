@@ -1,0 +1,19 @@
+Debout wakes the computers on your home network with Wake-on-LAN, and tells you honestly whether it worked.
+
+<b>One gesture</b>
+Each machine fills the screen. Hold anywhere for half a second: its eyes open, the magic packets leave, and Debout watches the machine start. Swipe to go from one machine to the next.
+
+<b>Always honest</b>
+Debout checks whether each machine is on, asleep or not answering, and follows a wake until the machine replies, with an optional notification.
+
+<b>Quick access everywhere</b>
+Your first three machines get Quick Settings tiles and app shortcuts: a tap wakes them.
+
+<b>Pair in seconds</b>
+On your computer, open debout.sybers.fr and run one command (Windows, macOS or Linux). It finds the network adapter, checks the Wake-on-LAN settings, offers to fix them, and shows a QR code to scan. You can also enter a machine by hand.
+
+<b>Help when it does not wake</b>
+A short checklist for each system: BIOS, network adapter, fast startup, Ethernet rather than Wi-Fi.
+
+<b>Free and respectful</b>
+No ads, no account, no tracking, no location permission. Open source under GPL-3.0.

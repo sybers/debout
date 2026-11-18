@@ -1,0 +1,5 @@
+Première version.
+• Réveille les machines de ton réseau local d’un appui long, et suis-les jusqu’à ce qu’elles répondent.
+• Tuiles de réglages rapides, raccourcis d’app et notification de réveil optionnelle.
+• Appairage par QR code, avec des scripts pour Windows, macOS et Linux qui vérifient le Wake-on-LAN.
+• Checklist de dépannage par système.

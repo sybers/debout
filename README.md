@@ -35,14 +35,33 @@ Invoke-Pester -Path scripts
 
 ## Releases
 
-Pushing a `v*` tag builds a signed APK and publishes it on GitHub Releases. Signing uses these repository secrets:
+Pushing a `v*` tag builds a signed APK and publishes it on GitHub Releases, with the English changelog as release notes. Running the Android workflow by hand (`gh workflow run android.yml`) builds the signed APK as a workflow artifact without publishing anything: use it to check signing before a tag.
 
-| Secret | Value |
-|---|---|
-| `DEBOUT_KEYSTORE_BASE64` | The release keystore, base64-encoded |
-| `DEBOUT_KEYSTORE_PASSWORD` | Keystore password |
-| `DEBOUT_KEY_ALIAS` | Key alias |
-| `DEBOUT_KEY_PASSWORD` | Key password |
+To release:
+
+1. Bump `versionCode` (+1) and `versionName` in `android/app/build.gradle.kts`.
+2. Write `fastlane/metadata/android/{en-US,fr-FR}/changelogs/<versionCode>.txt`, short and for users.
+3. Tag `v<versionName>` and push the tag. CI refuses a tag that does not match `versionName`, or a missing changelog.
+
+App store metadata (title, descriptions, changelogs) lives in [`fastlane/metadata/android`](fastlane/metadata/android), the layout F-Droid reads.
+
+### Signing key
+
+The key signs every future release: losing it means users must uninstall to update, so keep it in a password manager with an offline copy. Create it once:
+
+```sh
+"/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/keytool" -genkeypair -v \
+  -keystore debout-release.jks -alias debout -keyalg RSA -keysize 4096 -validity 10950 -dname "CN=Debout"
+```
+
+Then set the repository secrets (each command without `--body` prompts for the value):
+
+```sh
+base64 -i debout-release.jks | gh secret set DEBOUT_KEYSTORE_BASE64
+gh secret set DEBOUT_KEYSTORE_PASSWORD
+gh secret set DEBOUT_KEY_ALIAS --body debout
+gh secret set DEBOUT_KEY_PASSWORD   # the keystore password: PKCS12 keystores use one password for both
+```
 
 ## License
 

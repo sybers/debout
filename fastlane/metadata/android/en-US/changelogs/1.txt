@@ -1,0 +1,5 @@
+First release.
+• Wake machines on your local network with a long press, and follow them until they reply.
+• Quick Settings tiles, app shortcuts and an optional wake notification.
+• QR pairing with scripts for Windows, macOS and Linux that check Wake-on-LAN.
+• Troubleshooting checklist per system.
