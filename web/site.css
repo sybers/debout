@@ -1,24 +1,48 @@
+/* Same palette as the app: a Material 3 scheme from ultramarine on greige, plus the hero view's color-block pairs. */
+@font-face {
+  font-family: "Unbounded";
+  src: url("fonts/unbounded-latin.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Recursive Mono";
+  src: url("fonts/recursive-mono-latin.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
 :root {
-  --bg: #fffbf8;
-  --surface: #f6ebe4;
-  --fg: #1c1410;
-  --muted: #6b5a50;
-  --accent: #944a15;
+  --bg: #fef9f2;
+  --surface: #f2ede6;
+  --fg: #1d1b18;
+  --muted: #49473e;
+  --accent: #2a3fff;
   --on-accent: #ffffff;
-  --border: #e2d2c8;
+  --border: #cbc6bb;
   --radius: 16px;
+  --display: "Unbounded", system-ui, sans-serif;
+  --mono: "Recursive Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --asleep-bg: #c9b6ff;
+  --asleep-ink: #8a1c12;
+  --awake-bg: #e9b949;
+  --awake-ink: #4b1f78;
+  --silent-bg: #2b2b5e;
+  --silent-ink: #f5a3b8;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.6 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1c1410;
-    --surface: #2a201b;
-    --fg: #f1dfd5;
-    --muted: #b8a59a;
-    --accent: #ffb68a;
-    --on-accent: #4f2500;
-    --border: #3d312a;
+    --bg: #141310;
+    --surface: #211f1b;
+    --fg: #e7e2db;
+    --muted: #cbc6bb;
+    --accent: #bdc2ff;
+    --on-accent: #0013a0;
+    --border: #49473e;
   }
 }
 
@@ -48,14 +72,18 @@ header {
 }
 
 h1 {
-  color: var(--accent);
-  font-size: clamp(3rem, 12vw, 5rem);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  letter-spacing: -0.02em;
   line-height: 1;
   margin: 1rem 0 0.5rem;
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
   margin: 2.5rem 0 0.75rem;
 }
 
@@ -82,6 +110,16 @@ h1 a {
 
 section[id] {
   scroll-margin-top: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-face {
+  margin: 1.5rem 0 0.5rem;
 }
 
 .tagline {
@@ -151,6 +189,7 @@ section[id] {
 }
 
 .command code {
+  font-family: var(--mono);
   flex: 1;
   overflow-x: auto;
   white-space: nowrap;
@@ -195,13 +234,97 @@ dl.machine dt {
 
 dl.machine dd {
   margin: 0;
-  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-family: var(--mono);
 }
 
 footer {
   margin-top: 3rem;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+/* The character: two pill eyes on a color block, with grain. */
+.face {
+  --face-bg: var(--asleep-bg);
+  --face-ink: var(--asleep-ink);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18%;
+  aspect-ratio: 2.2;
+  border-radius: 28px;
+  background: var(--face-bg);
+  overflow: hidden;
+  transition: background-color 600ms ease;
+}
+
+.face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.face .eye {
+  width: 11%;
+  height: 7%;
+  border-radius: 999px;
+  background: var(--face-ink);
+  transition: height 380ms cubic-bezier(0.3, 1.4, 0.5, 1), background-color 600ms ease;
+  animation: breathe 4.2s ease-in-out infinite;
+}
+
+.face[data-state="awake"],
+.face.wakes:hover,
+.face.wakes:focus-visible {
+  --face-bg: var(--awake-bg);
+  --face-ink: var(--awake-ink);
+}
+
+.face[data-state="awake"] .eye,
+.face.wakes:hover .eye,
+.face.wakes:focus-visible .eye {
+  height: 42%;
+  animation: blink 4.6s infinite;
+}
+
+.face[data-state="silent"] {
+  --face-bg: var(--silent-bg);
+  --face-ink: var(--silent-ink);
+}
+
+.face[data-state="silent"] .eye {
+  height: 6%;
+  animation: none;
+  transform: translateY(40%) rotate(12deg);
+}
+
+.face[data-state="silent"] .eye + .eye {
+  transform: translateY(40%) rotate(-12deg);
+}
+
+.face.small {
+  width: 4.5rem;
+  border-radius: 18px;
+  flex: none;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-30%); }
+}
+
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face .eye { animation: none; transition: none; }
 }
 
 [hidden] {
