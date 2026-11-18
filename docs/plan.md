@@ -145,9 +145,27 @@ Ce plan découpe la V1 décrite dans [spec.md](spec.md) en étapes livrables. Ch
 
 ### 11. Identité visuelle et première release
 
-- Palette, typographie et icône définitives (remplacer le `TODO` de `ui/theme/Color.kt`).
-- Couleurs dynamiques en option dans les réglages.
-- Keystore de release et les 4 secrets GitHub (voir le README), puis le tag `v0.1.0`.
+L'identité est décrite dans la section Design de la spec. Une sous-étape = un build vert et un commit.
+
+1. **Fondations** : minSdk 33 (suppression des vérifications de version devenues inutiles), règles d'extraction de données pour la sauvegarde, spec et plan à jour.
+2. **Thème** : palette color-block de la vue héros, thème Material généré depuis l'outremer avec surfaces grège, Unbounded et Recursive Mono embarquées, réglage « Couleurs du fond d'écran » (DataStore).
+3. **Le personnage** : composant des yeux, expressions par état, animations au repos, maintien qui ouvre les yeux, figé sans animations système. Test UI Compose.
+4. **Grain** : shader AGSL sur la vue héros, l'état vide et le fond du scan.
+5. **Partout ailleurs** : badges sans couleur (~14 dp, en ligne devant le nom), mini-têtes de la grille, état vide, scan réussi, en-tête du dépannage.
+6. **Icône** : icône adaptative avec calque monochrome, icônes des raccourcis, favicon et image de partage.
+7. **Site** : palette, typographie et grain.
+8. **Release** :
+   - clé de signature créée par le propriétaire du dépôt (`keytool`, RSA 4096, alias `debout`), conservée dans un gestionnaire de mots de passe avec une copie hors ligne, et les 4 secrets posés avec `gh secret set` ;
+   - `versionName` et `versionCode` écrits en dur, et la CI refuse un tag qui ne correspond pas au `versionName` ;
+   - notes de version et fiche de l'app au format fastlane (`fastlane/metadata/android/{en-US,fr-FR}`), reprises par la release GitHub.
+
+**Avant le tag `v0.1.0`** :
+
+- [ ] identité implémentée (sous-étapes 2 à 7) ;
+- [ ] CI verte : Android, Pester, scripts sh, ShellCheck ;
+- [ ] DNS `debout.sybers.fr` en place, HTTPS forcé ;
+- [ ] sur un vrai téléphone : réveil du PC du salon depuis l'app, une tuile et un raccourci ; appairage par QR avec le script Windows ; scripts macOS et Linux lancés au moins une fois ;
+- [ ] clé et secrets posés, premier build de release signé réussi.
 
 ## Environnement
 

@@ -38,12 +38,14 @@ Les besoins avancés de ce public ne doivent pas alourdir la V1.
 
 | État | Signification | Mot affiché (vue héros) | Rendu |
 |---|---|---|---|
-| Hors ligne | La machine ne répond pas | « Endormi » | Fond sombre et froid |
-| Envoi | Paquets en cours d'émission | « Hé ! » | Transition brève, haptique net |
-| Démarrage… | Paquets envoyés, en attente de réponse | « Réveil… » | Fond ambre sombre qui respire, temps écoulé discret |
-| En ligne | La machine répond | « Debout ! » | Fond ambre plein, haptique double tick |
-| Pas de réponse | Aucune réponse après ~90 s | « Silence radio » | Fond éteint, haptique de rejet, maintien pour réessayer, accès à l'aide |
-| Inconnu | Statut impossible à déterminer : hors réseau local, ou première sonde en cours (« Voyons… ») | « Hors réseau » | Fond neutre, distinct de « Hors ligne », maintien désactivé |
+| Hors ligne | La machine ne répond pas | « Endormi » | Lilas, yeux fermés qui respirent |
+| Envoi | Paquets en cours d'émission | « Hé ! » | Flash blanc, yeux grands ouverts, haptique net |
+| Démarrage… | Paquets envoyés, en attente de réponse | « Réveil… » | Menthe, yeux mi-clos qui clignent lentement, temps écoulé discret |
+| En ligne | La machine répond | « Debout ! » | Ocre, yeux ouverts qui clignent et regardent autour, haptique double tick |
+| Pas de réponse | Aucune réponse après ~90 s | « Silence radio » | Indigo, yeux refermés et tombants, haptique de rejet, maintien pour réessayer, accès à l'aide |
+| Inconnu | Statut impossible à déterminer : hors réseau local, ou première sonde en cours (« Voyons… ») | « Hors réseau » | Grège, distinct de « Hors ligne », maintien désactivé ; yeux qui cherchent (« Voyons… ») ou ternes (« Hors réseau ») |
+
+Les couleurs exactes et les expressions sont détaillées dans la section [Design](#design).
 
 Une demande de réveil sur une machine déjà en ligne n'envoie rien et affiche « Déjà allumé ».
 
@@ -78,8 +80,8 @@ Après un réveil, une notification temporaire suit la progression (« Mon-PC d�
 
 ### Appui maintenu dans l'app
 
-- Dans la vue héros, tout l'écran est la zone de maintien. Pendant l'appui, la couleur se répand en cercle depuis le doigt. Au terme des ~0,5 s, le réveil part avec un retour haptique.
-- Si l'utilisateur relâche avant, la couleur se retire en douceur et rien n'est envoyé.
+- Dans la vue héros, tout l'écran est la zone de maintien. Pendant l'appui, la couleur se répand en cercle depuis le doigt et les yeux du personnage s'ouvrent progressivement. Au terme des ~0,5 s, le réveil part avec un retour haptique.
+- Si l'utilisateur relâche avant, la couleur se retire en douceur, les yeux se referment et rien n'est envoyé.
 - Le maintien n'aboutit que si le doigt reste immobile : dès qu'il glisse au-delà du seuil système, le maintien est annulé et le carousel suit le doigt. Le geste évite ainsi les déclenchements accidentels en passant d'une machine à l'autre.
 - Les éléments de navigation (grille, ajout, modification) restent au-dessus de la zone de maintien et ne la déclenchent pas.
 - TalkBack expose une action « Réveiller » standard.
@@ -90,14 +92,14 @@ Les tuiles et les raccourcis gardent un tap simple : ce sont déjà des actions 
 
 L'ordre de la liste décide des accès rapides : la 1re machine pilote la tuile 1 et le 1er raccourci, et ainsi de suite jusqu'à la 3e. Pour changer de machine, on réordonne.
 
-Chaque position porte un badge arrondi dans le style Material 3, qui fait le lien entre la machine et ses accès rapides : rond (1), triangle (2), carré (3), chacun avec sa couleur. Le badge suit la position, pas la machine.
+Chaque position porte un badge arrondi dans le style Material 3, qui fait le lien entre la machine et ses accès rapides : rond (1), triangle (2), carré (3). Les badges n'ont pas de couleur : seule la forme les distingue, et ils restent discrets. Le badge suit la position, pas la machine.
 
 | Où | Rendu du badge |
 |---|---|
-| Vue héros | ~40 dp, au-dessus du nom de la machine |
-| Grille | Forme et couleur, sur la carte |
+| Vue héros | ~14 dp, en ligne devant le nom de la machine, dans la couleur du nom |
+| Grille | Même rendu, devant le nom sur la carte |
 | Tuile | Forme seule, comme icône (le système impose une icône monochrome) |
-| Raccourci d'app | Forme et couleur |
+| Raccourci d'app | Forme violette sur le fond ocre de l'icône de l'app |
 
 Les widgets (V1.1) choisissent leur machine à la pose et ne portent pas de badge.
 
@@ -121,12 +123,13 @@ Les widgets (V1.1) choisissent leur machine à la pose et ne portent pas de badg
 ### Réglages
 
 - Notification de réveil, activée par défaut. Si les notifications sont bloquées pour l'app, l'écran le signale et renvoie vers les réglages système.
+- Couleurs du fond d'écran (Material You), désactivées par défaut. Elles s'appliquent aux menus et aux formulaires ; la vue héros garde toujours ses couleurs d'état.
 
 ### Premier lancement
 
 Pas de carrousel d'onboarding. L'état vide guide vers l'appairage :
 
-- une illustration ;
+- le personnage, endormi, sur le lilas d'« Endormi », qui entrouvre un œil de temps en temps ;
 - un bouton principal **« Scanner un QR code »** ;
 - une ligne d'explication : « Sur ton PC, ouvre debout.sybers.fr » ;
 - un lien secondaire « Saisir manuellement ».
@@ -212,10 +215,58 @@ URI versionnée : `debout://v1?mac=…&ip=…&name=…&os=…&host=…`. L'app r
 ## Design
 
 - **Material 3** pour la structure, les composants et les comportements attendus.
-- **Identité propre** : palette, typographie et un composant signature, la vue héros plein écran et ses états animés.
-- Micro-animations et retours haptiques soignés.
+- **Identité propre**, colorée et contrastée sans ton sur ton : des aplats francs en duos de couleurs (color-block), une texture de grain, et un composant signature, le personnage de la vue héros.
+- Micro-animations et retours haptiques soignés, y compris au repos.
 - Mode sombre de premier ordre.
-- Couleurs dynamiques (Material You) en option dans les réglages.
+
+### Le personnage
+
+L'écran entier de la vue héros est un visage : deux yeux en forme de pilule, centrés un peu au-dessus du milieu, sans contour de tête. Le mot d'état est en dessous ; le nom de la machine et son badge en haut. Les yeux vivent aussi au repos, et le maintien pilote directement l'ouverture des paupières.
+
+| État | Yeux | Au repos |
+|---|---|---|
+| Endormi | Fermés : pilules horizontales fines | Respiration lente, petit tressaillement de temps en temps |
+| Pendant le maintien | S'ouvrent avec le doigt ; relâcher tôt les referme | – |
+| Hé ! | Grands ouverts, ronds | Rebond bref |
+| Réveil… | Mi-clos, paupières lourdes | Clignements lents, oscillation somnolente |
+| Debout ! | Pilules verticales, bien ouverts | Clignements naturels, regard qui balaie de temps en temps |
+| Silence radio | Refermés et tombants | Immobiles, un œil qui s'entrouvre parfois |
+| Voyons… | Ouverts, plissés | Le regard va de gauche à droite |
+| Hors réseau | Ouverts, ternes | Clignement rare |
+
+Avec « Supprimer les animations » activé dans le système, les yeux gardent leur expression mais ne bougent plus.
+
+Le personnage apparaît aussi dans l'état vide (endormi), en mini-tête sur chaque carte de la grille (couleur et yeux de l'état, clignement occasionnel), au scan réussi (« Hé ! » une fraction de seconde) et dans l'en-tête du dépannage (« Silence radio »). Pas de personnage dans les formulaires, les réglages ni la notification.
+
+### Couleurs
+
+Vue héros : un duo par état, fond et encre. Les yeux et le texte partagent l'encre. Chaque duo dépasse 4,5:1.
+
+| État | Fond | Yeux et texte |
+|---|---|---|
+| Endormi | Lilas `#C9B6FF` | Sang de bœuf `#8A1C12` |
+| Hé ! | Blanc `#FFFFFF` | `#111111` |
+| Réveil… | Menthe `#B8F2D8` | Outremer `#1F2FBF` |
+| Debout ! | Ocre `#E9B949` | Violet `#4B1F78` |
+| Silence radio | Indigo `#2B2B5E` | Rose `#F5A3B8` |
+| Voyons… | Grège `#D9D4CC` | `#2A3FA8` |
+| Hors réseau | Grège `#D9D4CC` | `#4A443E` |
+
+Reste de l'interface : schéma Material 3 généré depuis l'outremer `#1F2FBF`, surfaces neutres légèrement chaudes tirées du grège, en clair et en sombre. Les autres couleurs sont réservées à la vue héros. Avec les couleurs du fond d'écran activées, seul ce schéma change.
+
+### Texture
+
+Un grain fin, type pellicule, à environ 5 % d'opacité, qui bouge lentement : vue héros, état vide et fond du scan. Les formulaires, la grille et les réglages restent lisses. Le grain se fige quand les animations système sont désactivées.
+
+### Typographie
+
+- **Unbounded** (OFL, variable) pour le mot d'état et les titres. Sa graisse suit l'état : légère en « Endormi », extra-grasse en « Debout ! ».
+- La **police système** pour le texte courant.
+- **Recursive Mono** (OFL) pour les adresses MAC et IP.
+
+### Icône
+
+Deux yeux-pilules ouverts, violet `#4B1F78` sur fond ocre `#E9B949` : l'état « Debout ! ». Icône adaptative avec un calque monochrome pour les icônes à thème. Le favicon et l'image de partage du site en dérivent.
 
 ## Langues
 
@@ -232,7 +283,7 @@ Android Auto Backup : les machines et les préférences sont restaurées automat
 | Sujet | Choix |
 |---|---|
 | Langage / UI | Kotlin, Jetpack Compose, Material 3 |
-| minSdk | 26 |
+| minSdk | 33 (Android 13) |
 | Persistance | Room (machines), DataStore (préférences) |
 | Scan QR | CameraX + ZXing (pas de Play Services) |
 | Suivi du réveil | WorkManager expedited ou foreground service court |

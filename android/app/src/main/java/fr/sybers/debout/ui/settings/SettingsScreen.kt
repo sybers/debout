@@ -2,7 +2,6 @@ package fr.sybers.debout.ui.settings
 
 import android.Manifest
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -77,7 +76,7 @@ fun SettingsScreen(preferences: UserPreferences, onBack: () -> Unit) {
                 trailingContent = { Switch(checked = enabled, onCheckedChange = null) },
                 modifier = Modifier.toggleable(value = enabled, role = Role.Switch) { on ->
                     preferences.setWakeNotificationsEnabled(on)
-                    if (on && !notificationsAllowed && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (on && !notificationsAllowed) {
                         permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                     }
                 },

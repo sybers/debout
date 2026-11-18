@@ -96,7 +96,7 @@ abstract class QuickAccessTileService(private val slot: QuickAccessSlot) : TileS
         val tile = qsTile ?: return
         tile.icon = Icon.createWithResource(this, slot.tileIcon)
         tile.label = label
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) tile.subtitle = subtitle
+        tile.subtitle = subtitle
         tile.state = state
         tile.updateTile()
     }

@@ -1,7 +1,6 @@
 package fr.sybers.debout.ui.hero
 
 import android.app.Application
-import android.os.Build
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -19,12 +18,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 import kotlin.time.TimeSource
 
-// Below Android 13, the hero asks for no permission, so it needs no app container.
 @RunWith(AndroidJUnit4::class)
-@Config(application = Application::class, sdk = [Build.VERSION_CODES.S_V2])
 class HeroHelpTest {
 
     @get:Rule

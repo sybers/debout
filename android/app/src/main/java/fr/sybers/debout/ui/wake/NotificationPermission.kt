@@ -1,13 +1,11 @@
 package fr.sybers.debout.ui.wake
 
 import android.Manifest
-import android.os.Build
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,8 +19,6 @@ import fr.sybers.debout.tracking.canPostNotifications
  */
 @Composable
 fun rememberWakeNotificationsPermission(): () -> Unit {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return remember { {} }
-
     val activity = LocalActivity.current
     val enabled by LocalContext.current.appContainer.preferences.wakeNotificationsEnabled
         .collectAsStateWithLifecycle(initialValue = false)
