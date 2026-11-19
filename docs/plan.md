@@ -163,7 +163,7 @@ L'identité est décrite dans la section Design de la spec. Une sous-étape = un
 
 - [x] identité implémentée (sous-étapes 2 à 7) ;
 - [x] CI verte : Android, Pester, scripts sh, ShellCheck ;
-- [ ] DNS `debout.sybers.fr` en place, HTTPS forcé ;
+- [x] DNS `debout.sybers.fr` en place, HTTPS forcé ;
 - [ ] sur un vrai téléphone : réveil du PC du salon depuis l'app, une tuile et un raccourci ; appairage par QR avec le script Windows ; scripts macOS et Linux lancés au moins une fois ;
 - [x] clé et secrets posés, premier build de release signé réussi.
 
@@ -174,4 +174,3 @@ L'identité est décrite dans la section Design de la spec. Une sous-étape = un
 - **Stack** : Gradle 9.8.2, AGP 9.5.0 (Kotlin intégré, pas de plugin `kotlin-android`), Kotlin 2.4.21, Compose BOM 2026.09.00.
 - **Versions** : vérifier les dates de publication avant d'ajouter une dépendance (`maven-metadata.xml` sur `dl.google.com/android/maven2` ou Maven Central, puis l'en-tête `Last-Modified` du `.pom`).
 - **Dépôt** : https://github.com/sybers/debout. GitHub Pages est actif avec le domaine `debout.sybers.fr`.
-- **DNS en attente** : enregistrement `CNAME debout → sybers.github.io.` à ajouter chez le registrar, puis activer « Enforce HTTPS ».
