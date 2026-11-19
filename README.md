@@ -1,6 +1,18 @@
-# Debout
+<p align="center">
+  <img src="docs/images/banner.svg" alt="" width="480">
+</p>
 
-Android Wake on LAN app. Beautiful, ergonomic, free and open source.
+<h1 align="center">Debout</h1>
+
+<p align="center">Android Wake on LAN app. Beautiful, ergonomic, free and open source.</p>
+
+<p align="center">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1-asleep.jpg" alt="A sleeping machine: closed eyes on lilac, and the word Asleep" width="19%">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2-waking.jpg" alt="Holding wakes it: half-open eyes on mint, and the word Waking" width="19%">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3-awake.jpg" alt="The machine answers: open eyes on ochre, and the word Awake" width="19%">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4-silent.jpg" alt="No answer after 90 seconds: drooping eyes on indigo, and a link to troubleshooting" width="19%">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5-grid.jpg" alt="All machines in a grid, each with a small face showing its state" width="19%">
+</p>
 
 ## Repository
 
