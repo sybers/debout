@@ -47,6 +47,12 @@ App store metadata (title, descriptions, changelogs) lives in [`fastlane/metadat
 
 ### Signing key
 
+Release APKs are signed with this certificate (SHA-256), which you can check with `apksigner verify --print-certs` or AppVerifier:
+
+```
+E8:02:90:FA:C7:74:1D:B9:37:09:3D:62:EA:A4:D2:F9:1B:0C:58:44:CB:26:9A:10:28:E1:F1:CD:F7:90:A2:56
+```
+
 The key signs every future release: losing it means users must uninstall to update, so keep it in a password manager with an offline copy. Create it once:
 
 ```sh

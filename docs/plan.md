@@ -161,11 +161,11 @@ L'identité est décrite dans la section Design de la spec. Une sous-étape = un
 
 **Avant le tag `v0.1.0`** :
 
-- [ ] identité implémentée (sous-étapes 2 à 7) ;
-- [ ] CI verte : Android, Pester, scripts sh, ShellCheck ;
+- [x] identité implémentée (sous-étapes 2 à 7) ;
+- [x] CI verte : Android, Pester, scripts sh, ShellCheck ;
 - [ ] DNS `debout.sybers.fr` en place, HTTPS forcé ;
 - [ ] sur un vrai téléphone : réveil du PC du salon depuis l'app, une tuile et un raccourci ; appairage par QR avec le script Windows ; scripts macOS et Linux lancés au moins une fois ;
-- [ ] clé et secrets posés, premier build de release signé réussi.
+- [x] clé et secrets posés, premier build de release signé réussi.
 
 ## Environnement
 
